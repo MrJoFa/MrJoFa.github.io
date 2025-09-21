@@ -24,14 +24,14 @@ Vilken är den första av de fyra ädla sanningarna?
   <!-- Indien -->
   <area shape="rect" coords="500,200,550,250" href="rooms/india.html" alt="Indien">
   
-  <!-- Sverige -->
-  <area shape="rect" coords="400,50,430,80" href="rooms/sweden.html" alt="Sverige">
-  
-  <!-- Kina -->
-  <area shape="rect" coords="560,180,610,230" href="rooms/china.html" alt="Kina">
-  
-  <!-- Brasilien -->
-  <area shape="rect" coords="250,300,300,350" href="rooms/brazil.html" alt="Brasilien">
+  <!-- Sverige visar en text -->
+  <area shape="rect" coords="400,50,430,80" href="#" alt="Sverige" onclick="alert('Bra gissat, men inte rätt land!')">
+
+  <!-- Kina visar en text -->
+  <area shape="rect" coords="560,180,610,230" href="#" alt="Kina" onclick="alert('Inte rätt, försök igen!')">
+
+  <!-- Brasilien visar en text -->
+  <area shape="rect" coords="250,300,300,350" href="#" alt="Brasilien" onclick="alert('Nej, tänk Asien!')">
 </map>
 
 
