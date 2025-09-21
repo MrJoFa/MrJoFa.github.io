@@ -16,22 +16,37 @@ Vilken är den första av de fyra ädla sanningarna?
 
 ## Uppgift 2
 
-<img src="/assets/images/world.gif" usemap="#worldmap" alt="Världskarta" style="max-width:100%;height:auto;">
+<img src="/assets/images/world.gif" usemap="#worldmap" alt="Världskarta" width="4200" height="2160"">
 
 <map name="worldmap">
-  <!-- Koordinaterna är exempel, du behöver justera dem för din bild -->
-   <area shape="rect" coords="0,0,1000,1000" href="#" onclick="alert('Du klickade på bilden!')" alt="Test">
   <!-- Indien -->
-  <area shape="rect" coords="500,200,550,250" href="rooms/india.html" alt="Indien">
-  
-  <!-- Sverige visar en text -->
-  <area shape="rect" coords="400,50,430,80" href="#" alt="Sverige" onclick="alert('Bra gissat, men inte rätt land!')">
+  <area target="" alt="Indien" title="Indien" href="rooms/india.html" 
+        coords="792,209,841,270" shape="rect">
 
-  <!-- Kina visar en text -->
-  <area shape="rect" coords="560,180,610,230" href="#" alt="Kina" onclick="alert('Inte rätt, försök igen!')">
+  <!-- Sverige -->
+  <area target="" alt="Sverige" title="Sverige" href="#" 
+        coords="603,69,618,101" shape="rect" 
+        onclick="alert('Nej, asatron kommer från skandinavien. Buddhismen kommer från asien')">
 
-  <!-- Brasilien visar en text -->
-  <area shape="rect" coords="250,300,300,350" href="#" alt="Brasilien" onclick="alert('Nej, tänk Asien!')">
+  <!-- Nepal -->
+  <area target="" alt="Nepal" title="Nepal" href="#" 
+        coords="854,197,811,207" shape="rect" 
+        onclick="alert('Nära, här är buddhismen stark, men det var inte här den uppkom!')">
+
+  <!-- USA -->
+  <area target="" alt="USA" title="USA" href="#" 
+        coords="195,134,331,197" shape="rect" 
+        onclick="alert('Nej, tänk Asien!')">
+
+  <!-- Brasilien (polygon) -->
+  <area target="" alt="Brasilien" title="Brasilien" href="#" 
+        coords="386,300,444,335,406,419,354,342,329,342,340,304,340,304" shape="poly" 
+        onclick="alert('Nej, tänk Asien!')">
+
+  <!-- Kina (polygon) -->
+  <area target="" alt="Kina" title="Kina" href="#" 
+        coords="816,130,792,164,816,189,861,195,889,217,926,220,943,199,923,171,948,144,911,121,896,140,879,157,861,157" shape="poly" 
+        onclick="alert('Nära, men det var inte här buddhismen uppkom!')">
 </map>
 
 
