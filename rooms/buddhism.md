@@ -16,7 +16,7 @@ Vilken är den första av de fyra ädla sanningarna?
 
 ## Uppgift 2
 
-<img src="/assets/images/world.gif" usemap="#worldmap" alt="Världskarta" width="4200" height="2160"">
+<img src="/assets/images/world.gif" usemap="#worldmap" alt="Världskarta" width="4200" height="2160">
 
 <map name="worldmap">
   <!-- Indien -->
