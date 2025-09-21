@@ -1,20 +1,14 @@
 ---
 layout: default
-title: Buddhism Escape Room
+title: Buddhismen Escape Room
 ---
 
-# Buddhism Escape Room
+# Välkommen! 
+Du har blivit inbjuden att besöka ett kloster i landet där buddhismen uppstod. 
+Låt din resa börja! 
 
-## Uppgift 1
-Vilken är den första av de fyra ädla sanningarna?
 
-- [Svar A](#)  
-- [Svar B](#)  
-- [Svar C](#)  
-
-*(Lämna länkarna tomma för att lägga in riktig interaktiv logik senare)*
-
-## Uppgift 2
+### Klicka på buddhismens vagga
 
 <img src="/assets/images/world.gif" usemap="#worldmap" alt="Världskarta" width="1200" height="617">
 
@@ -51,5 +45,4 @@ Vilken är den första av de fyra ädla sanningarna?
 
 
 ## Tips:
-- Använd bilder i `/assets/images/` för illustrationer.
-- Varje uppgift kan leda vidare till nästa uppgift i rummet.
+- Om du inte vet svaret kan du hitta information [här](https://www.so-rummet.se/kategorier/religion/buddhismen).
