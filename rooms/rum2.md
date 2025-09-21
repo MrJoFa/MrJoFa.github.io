@@ -3,9 +3,9 @@ layout: default
 title: Buddhismen Escape Room
 ---
 
-# Välkommen! 
-Du har blivit inbjuden att besöka ett kloster i landet där buddhismen uppstod. 
-Låt din resa börja! 
+# Indien 
+Du har anlänt till Indien. 
+ 
 
 
 ### Klicka på buddhismens vagga
