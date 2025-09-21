@@ -20,7 +20,7 @@ Vilken är den första av de fyra ädla sanningarna?
 
 <map name="worldmap">
   <!-- Koordinaterna är exempel, du behöver justera dem för din bild -->
-  
+   <area shape="rect" coords="0,0,1000,1000" href="#" onclick="alert('Du klickade på bilden!')" alt="Test">
   <!-- Indien -->
   <area shape="rect" coords="500,200,550,250" href="rooms/india.html" alt="Indien">
   
