@@ -17,11 +17,11 @@ Efter en stund kommer du fram till att följande sekvens med korta och långa pi
 <map name="seat">
   <!-- Stolsfack 1 -->
   <area alt="Stolsfack 1" title="Stolsfack 1" href="#"
-        coords="136,281,250,329" shape="rect" onclick="showImage('/assets/images/meny.jpg')">
+        coords="136,281,250,329" shape="rect" onclick="showImage('/assets/images/menu.jpg')">
 
   <!-- Stolsfack 2 -->
   <area alt="Stolsfack 2" title="Stolsfack 2" href="#"
-        coords="335,267,459,317" shape="rect" onclick="showImage('/assets/images/morse.jpg')">
+        coords="335,267,459,317" shape="rect" onclick="showImage('/assets/images/morse.png')">
 </map>
 
 <!-- Popup-container (dold som standard) -->
