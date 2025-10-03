@@ -4,7 +4,8 @@ title: Buddhismen Escape Room
 ---
 
 # Indien 
-Du har anlänt till Indien. 
+Du har anlänt till Indien. Här levde Siddharta Gautama på 500-talet f.v.t. 
+Han blev en buddha genom att förstå sanningen om livet och bli upplyst. 
  
 
 <img src="/assets/images/Flag_of_India.png" alt="Indiens flagga"> <!--  width="1200" height="617"--> 
