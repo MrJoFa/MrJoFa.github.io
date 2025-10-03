@@ -3,19 +3,32 @@ layout: default
 title: Buddhismen Escape Room
 ---
 
-# Bodh Gaya 
-Du har kommit till Bodh Gaya i norra Indien. Det var här Buddha nådde upplysningen. Här finns idag ett stort tempel som heter Mahabodhitemplet. Bredvid templet finns ett bodhiträd som sägs vara det träd som Buddha satt under när han nådde upplysningen.
+## Fråga:
 
- 
+Vad heter den viktigaste heliga skriften inom buddhismen?
 
+<input type="text" id="answer" placeholder="Skriv ditt svar här">
+<button onclick="checkAnswer()">Skicka</button>
 
+<p id="message"></p>
+<a href="rum3.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
-<img src="/assets/images/Bodhgaya-Mahabodhitemple.jpg">  <!--  width="1200" height="617"--> 
+<script>
+function checkAnswer() {
+    var userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+    var message = document.getElementById('message');
+    var nextLink = document.getElementById('nextLink');
 
-Vill du 
-1. Prata med munkarna
-2. Gå till trädet
-3. Besöka templet
+    // Accepterar "tripitaka" som korrekt svar
+    if(userAnswer === 'tripitaka') {
+        message.textContent = "Rätt! Du kan gå vidare.";
+        nextLink.style.display = 'inline';
+    } else {
+        message.textContent = "Fel svar, försök igen!";
+        nextLink.style.display = 'none';
+    }
+}
+</script>
 
 
 ## Tips:

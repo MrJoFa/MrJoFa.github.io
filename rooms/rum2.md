@@ -13,8 +13,8 @@ Du har anlänt till Indien.
 Du hoppar in i en taxi och chauffören frågar dig vart du vill åka.
 
 1. Kör mig till [Bodh Gaya!](/rooms/rum3.html) 
-2. Jag vill till [nirvana!](/rooms/xnirvana.html)
-3. Följ efter den där [bilen!](/rooms/bilen.html) 
+2. Jag vill till [nirvana!](/rooms/rum2-2.html)
+3. Följ efter den där [bilen!](/rooms/rum2-1.html) 
 
 ## Tips:
 - Om du inte vet svaret kan du hitta information [här](https://www.so-rummet.se/kategorier/religion/buddhismen).

@@ -3,18 +3,76 @@ layout: default
 title: Buddhismen Escape Room
 ---
 
-# Indien 
-Du har anlänt till Indien. 
- 
-
-<img src="/assets/images/Flag_of_India.png" alt="Indiens flagga"> <!--  width="1200" height="617"--> 
+# Resan 
+Du sitter på flyget på väg till Indien och försöker slappna av. 
 
 
-Du hoppar in i en taxi och chauffören frågar dig vart du vill åka.
+Men du hör ett konstigt ljud som fångar din uppmärksamhet.  
+Efter en stund kommer du fram till att följande sekvens med korta och långa pip upprepar sig:
+### **-... ..- -.. -.. .... .-**
 
-1. Kör mig till [Bodh Gaya!](/rooms/rum3.html) 
-2. Jag vill till [nirvana!](/rooms/xnirvana.html)
-3. Följ efter den där [bilen!](/rooms/bilen.html) 
+<img src="/assets/images/seat.jpg" usemap="#seat" alt="Kan det finnas något i facken?"
+     width="580" height="382" style="width:580px; height:382px;">
 
-## Tips:
-- Om du inte vet svaret kan du hitta information [här](https://www.so-rummet.se/kategorier/religion/buddhismen).
+<map name="seat">
+  <!-- Stolsfack 1 -->
+  <area alt="Stolsfack 1" title="Stolsfack 1" href="#"
+        coords="136,281,250,329" shape="rect" onclick="showImage('/assets/images/meny.jpg')">
+
+  <!-- Stolsfack 2 -->
+  <area alt="Stolsfack 2" title="Stolsfack 2" href="#"
+        coords="335,267,459,317" shape="rect" onclick="showImage('/assets/images/morse.jpg')">
+</map>
+
+<!-- Popup-container (dold som standard) -->
+<div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.8); text-align:center; z-index:9999;">
+  <span onclick="closePopup()" 
+        style="color:white; font-size:30px; position:absolute; top:20px; right:30px; cursor:pointer;">&times;</span>
+  <img id="popupImg" src="" alt="Bild" style="max-width:90%; max-height:90%; margin-top:50px;">
+</div>
+
+<script>
+function showImage(imgPath) {
+  document.getElementById('popupImg').src = imgPath;
+  document.getElementById('popup').style.display = 'block';
+}
+
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+}
+
+// Bonus: gör så att man kan stänga genom att klicka på bakgrunden
+document.getElementById('popup').addEventListener('click', function(e) {
+  if (e.target.id === 'popup') {
+    closePopup();
+  }
+});
+</script>
+
+
+
+<!-- Frågebox som kräver rätt svar för att länken vidare ska fungera -->
+<input type="text" id="answer" placeholder="Vad är det du hör?">
+<button onclick="checkAnswer()">Skicka</button>
+
+<p id="message"></p>
+<a href="rum2.html" id="nextLink" style="display:none;">Gå vidare!</a>
+
+<script>
+function checkAnswer() {
+    var userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+    var message = document.getElementById('message');
+    var nextLink = document.getElementById('nextLink');
+
+    // Accepterar "buddha" som korrekt svar (case-insensitive)
+    if(userAnswer === 'buddha') {
+        message.textContent = "Rätt! Du kan gå vidare.";
+        nextLink.style.display = 'inline';
+    } else {
+        message.textContent = "Fel svar, försök igen!";
+        nextLink.style.display = 'none';
+    }
+}
+</script>
+

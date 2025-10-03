@@ -6,7 +6,7 @@ title: Buddhismen Escape Room
 # Hoppsan!  
 
 <div style="margin: 20px 0;">
-  <video style="max-width: 100%; height: auto;" controls>
+  <video style="max-width: 100%; height: auto;" controls autoplay muted>
     <source src="/assets/videos/carcrash.mp4" type="video/mp4">
     Din webbläsare stödjer inte videon.
   </video>
