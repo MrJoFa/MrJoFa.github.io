@@ -14,7 +14,7 @@ Låt din resa börja!
 
 <map name="worldmap">
   <!-- Indien -->
-  <area target="" alt="Indien" title="Indien" href="rooms/rum2.html" 
+  <area target="" alt="Indien" title="Indien" href="rum2.html" 
         coords="792,209,841,270" shape="rect">
 
   <!-- Sverige -->
