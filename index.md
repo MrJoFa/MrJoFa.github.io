@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Välkommen
+title: Välkommen!
 ---
 
-# Välkommen till Escape Room Education
+# Escape Room Education
 
 Välj ett rum och börja utforska:
 
