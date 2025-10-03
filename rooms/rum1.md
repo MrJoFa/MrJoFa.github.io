@@ -9,7 +9,7 @@ Du sitter på flyget på väg till Indien och försöker slappna av.
 
 Men du hör ett konstigt ljud som fångar din uppmärksamhet.  
 Efter en stund kommer du fram till att följande sekvens med korta och långa pip upprepar sig:
-### **-... ..- -.. -.. .... .-**
+### **-...  ..-  -..  -..  ....  .-**
 
 <img src="/assets/images/seat.jpg" usemap="#seat" alt="Kan det finnas något i facken?"
      width="580" height="382" style="width:580px; height:382px;">
@@ -76,3 +76,22 @@ function checkAnswer() {
 }
 </script>
 
+<!-- Ledtrådsruta -->
+<button onclick="toggleClue()" style="margin:10px 0;">Visa ledtråd</button>
+
+<p id="clue" style="display:none; background:#f0f0f0; padding:10px; border-radius:5px;">
+Börja på Start here för varje bokstav.
+För att komma till första bokstaven gå streck-punkt-punkt-punkt. Läs bara av bokstaven du stannar på, inte de på vägen.
+
+</p>
+
+<script>
+function toggleClue() {
+  var clue = document.getElementById('clue');
+  if(clue.style.display === 'none') {
+    clue.style.display = 'block';
+  } else {
+    clue.style.display = 'none';
+  }
+}
+</script>

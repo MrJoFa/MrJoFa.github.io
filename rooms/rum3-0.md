@@ -3,20 +3,16 @@ layout: default
 title: Buddhismen Escape Room
 ---
 
-# Bodh Gaya 
-På väg till trädet så får du en uppenbarelse. Framför dina ögon svävar en splittrad bild. 
-Du anar att du på något sätt fått kontakt med tidpunkten för Buddhas upplysning.
-Kan du se vad bilden visar?
+## Fråga:
 
- 
-
-
-
-<input type="text" id="answer" placeholder="Hur många lärjungar sitter framför Buddha?">
+Chauffören kör dig gärna till Bodh Gaya, men han hittar inte dit.
+Han tar fram en gammal karta och säger att den kan visa vägen.
+<img src="/assets/images/treasuremap.png"> 
+<input type="text" id="answer" placeholder="Vart ska ni åka">
 <button onclick="checkAnswer()">Skicka</button>
 
 <p id="message"></p>
-<a href="rum4.html" id="nextLink" style="display:none;">Gå vidare!</a>
+<a href="rum3.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
 function checkAnswer() {
@@ -25,7 +21,7 @@ function checkAnswer() {
     var nextLink = document.getElementById('nextLink');
 
     // Accepterar "tripitaka" som korrekt svar
-    if(userAnswer === '5') {
+    if(userAnswer === 'crystal cave') {
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
     } else {
@@ -35,6 +31,3 @@ function checkAnswer() {
 }
 </script>
 
-
-## Tips:
-- Om du inte vet svaret kan du hitta information [här](https://www.so-rummet.se/kategorier/religion/buddhismen).
