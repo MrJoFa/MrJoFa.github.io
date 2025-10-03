@@ -3,12 +3,12 @@ layout: default
 title: Buddhismen Escape Room
 ---
 
-## Fråga:
+## Vägval
 
 Chauffören kör dig gärna till Bodh Gaya, men han hittar inte dit.
-Han tar fram en gammal karta och säger att den kan visa vägen.
+Han tar fram en gammal karta och säger att den kan visa vägen, men du måste hjälpa honom att tyda den.
 <img src="/assets/images/treasuremap.png"> 
-<input type="text" id="answer" placeholder="Vart ska ni åka">
+<input type="text" id="answer" placeholder="Vart ska ni åka?">
 <button onclick="checkAnswer()">Skicka</button>
 
 <p id="message"></p>

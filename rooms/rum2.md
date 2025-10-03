@@ -13,7 +13,7 @@ Han blev en buddha genom att förstå sanningen om livet och bli upplyst.
 
 Du hoppar in i en taxi och chauffören frågar dig vart du vill åka.
 
-1. Kör mig till [Bodh Gaya!](/rooms/rum3-1.html) 
+1. Kör mig till [Bodh Gaya!](/rooms/rum3-0.html) 
 2. Jag vill till [nirvana!](/rooms/rum2-2.html)
 3. Följ efter den där [bilen!](/rooms/rum2-1.html) 
 

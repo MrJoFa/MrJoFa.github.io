@@ -3,7 +3,7 @@ layout: default
 title: Buddhismen Escape Room
 ---
 
-# Bodh Gaya 
+# Bodhiträdet
 På väg till trädet så får du en uppenbarelse. Framför dina ögon svävar en splittrad bild. 
 Du anar att du på något sätt fått kontakt med tidpunkten för Buddhas upplysning.
 Kan du se vad bilden visar?
@@ -16,8 +16,8 @@ Kan du se vad bilden visar?
     title="Buddhas predikan">
 </iframe>
 
-
-<input type="text" id="answer" placeholder="Hur många lärjungar sitter framför Buddha?">
+Hur många lärjungar sitter framför Buddha?
+<input type="text" id="answer" placeholder="Svara med en siffra">
 <button onclick="checkAnswer()">Skicka</button>
 
 <p id="message"></p>
@@ -41,5 +41,3 @@ function checkAnswer() {
 </script>
 
 
-## Tips:
-- Om du inte vet svaret kan du hitta information [här](https://www.so-rummet.se/kategorier/religion/buddhismen).
