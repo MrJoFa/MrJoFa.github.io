@@ -21,7 +21,7 @@ Hur många lärjungar sitter framför Buddha?
 <button onclick="checkAnswer()">Skicka</button>
 
 <p id="message"></p>
-<a href="rum4.html" id="nextLink" style="display:none;">Gå vidare!</a>
+<a href="rum3-2.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
 function checkAnswer() {
@@ -29,7 +29,7 @@ function checkAnswer() {
     var message = document.getElementById('message');
     var nextLink = document.getElementById('nextLink');
 
-    // Accepterar "tripitaka" som korrekt svar
+    // Accepterar "5" som korrekt svar
     if(userAnswer === '5') {
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';

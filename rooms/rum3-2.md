@@ -10,17 +10,17 @@ Trädet har varit en viktig plats för buddhister att besöka i över två tusen
 
 ---
 
-## Escape Room: De fyra ädla sanningarna
+## De fyra ädla sanningarna
 
-Dra varje sanning till rätt förklaring. När alla fyra är rätt får ni koden och kan gå vidare!
+Dra varje sanning till rätt förklaring.
 
 <div class="container">
   <div class="cards">
     <div class="card" draggable="true" id="card3">Sanningen om befrielsen från lidandet</div>
-    <div class="card" draggable="true" id="card7">Sanningen om att meditation</div> <!-- fel -->
+    <div class="card" draggable="true" id="card7">Sanningen om meditation</div> <!-- fel -->
     <div class="card" draggable="true" id="card1">Sanningen om lidandet</div>
     <div class="card" draggable="true" id="card2">Sanningen om hur lidandet kom till</div>
-    <div class="card" draggable="true" id="card5">Sanningen om att bli rik</div> <!-- fel -->
+    <div class="card" draggable="true" id="card5">Sanningen om rikedom</div> <!-- fel -->
     <div class="card" draggable="true" id="card4">Sanningen om den åttafaldiga vägen</div>
     <div class="card" draggable="true" id="card6">Sanningen om Buddha</div> <!-- fel -->
     
@@ -31,8 +31,8 @@ Dra varje sanning till rätt förklaring. När alla fyra är rätt får ni koden
     <div class="slot" data-answer="card2">Lidandet beror på begär och girighet.</div>
     <div class="slot" data-answer="none">Du ska inte ljuga.</div> <!-- fel -->
     <div class="slot" data-answer="card3">Människor måste sluta önska sig det de inte har.</div>
+    <div class="slot" data-answer="none">Buddhas ord är lag.</div> <!-- fel -->
     <div class="slot" data-answer="card4">Vägen ut ur lidandet är den åttafaldiga vägen, medelvägen.</div>
-    <div class="slot" data-answer="none">Att alltid vinna spel är viktigt.</div> <!-- fel -->
     <div class="slot" data-answer="none">Rikedom ger alltid lycka.</div> <!-- fel -->
   </div>
 </div>
@@ -61,6 +61,7 @@ document.querySelectorAll('.slot').forEach(slot => {
 
       // Kontrollera om alla fyra rätta är placerade
       if([...document.querySelectorAll('.slot')].filter(s => ["card1","card2","card3","card4"].includes(s.dataset.answer)).every(s => s.classList.contains('correct'))){
+        feedback.style.color = "green";
         feedback.innerHTML = "Rätt! Du kan gå vidare.<br><a href='rum3-3.html'>Gå vidare!</a>";
       }
 
