@@ -13,7 +13,7 @@ Trädet har varit en viktig plats för buddhister att besöka i över två tusen
 <map name="tree">
   <!-- Munk -->
   <area alt="Munk" title="Munk" href="#"
-        coords="68,646,248,904" shape="rect" onclick="showText('Stör mig inte förrän du har visat kunskap om de fyra ädla sanningarna.')">
+        coords="68,646,248,904" shape="rect" onclick="showText('Du har uppvisat kunskap om de ädla sanningarna. Nästa steg är att behärska den åttafaldiga vägen')">
 
   <!-- Skylt -->
   <area alt="Skylt" title="Skylt" href="#"
@@ -48,30 +48,32 @@ document.getElementById('popup').addEventListener('click', function(e) {
 
 ---
 
-## De fyra ädla sanningarna
+## Den åttafaldiga vägen
 
-Dra varje sanning till rätt förklaring.
+Den åttafaldiga vägen är Buddhas råd om hur man ska leva för att slippa lidande och nå nirvana. De handlar om att förstå buddhismens lära och att göra, säga och tänka rätt saker.
+
 
 <div class="container">
-  <div class="cards">
-    <div class="card" draggable="true" id="card3">Sanningen om befrielsen från lidandet</div>
-    <div class="card" draggable="true" id="card7">Sanningen om meditation</div> <!-- fel -->
-    <div class="card" draggable="true" id="card1">Sanningen om lidandet</div>
-    <div class="card" draggable="true" id="card2">Sanningen om hur lidandet kom till</div>
-    <div class="card" draggable="true" id="card5">Sanningen om rikedom</div> <!-- fel -->
-    <div class="card" draggable="true" id="card4">Sanningen om den åttafaldiga vägen</div>
-    <div class="card" draggable="true" id="card6">Sanningen om Buddha</div> <!-- fel -->
-    
+  <div class="cards" id="cardsContainer">
+    <div class="card" draggable="true" id="card2">Rätt inställning</div>
+    <div class="card" draggable="true" id="card1">Rätt förståelse</div>
+    <div class="card" draggable="true" id="card8">Rätt koncentration</div>
+    <div class="card" draggable="true" id="card3">Rätt tal</div>
+    <div class="card" draggable="true" id="card6">Rätt ansträngning</div>
+    <div class="card" draggable="true" id="card5">Rätt levnadssätt</div>
+    <div class="card" draggable="true" id="card7">Rätt uppmärksamhet</div>
+    <div class="card" draggable="true" id="card4">Rätt handlingar</div>
   </div>
 
   <div class="slots">
-    <div class="slot" data-answer="card1">Allt är lidande, att födas, leva och dö.</div>
-    <div class="slot" data-answer="card2">Lidandet beror på begär och girighet.</div>
-    <div class="slot" data-answer="none">Du ska inte ljuga.</div> <!-- fel -->
-    <div class="slot" data-answer="card3">Människor måste sluta önska sig det de inte har.</div>
-    <div class="slot" data-answer="none">Buddhas ord är lag.</div> <!-- fel -->
-    <div class="slot" data-answer="card4">Vägen ut ur lidandet är den åttafaldiga vägen, medelvägen.</div>
-    <div class="slot" data-answer="none">Rikedom ger alltid lycka.</div> <!-- fel -->
+    <div class="slot" data-answer="card1">Förstå Buddhas lära.</div>
+    <div class="slot" data-answer="card2">Ha vänliga och kloka tankar.</div>
+    <div class="slot" data-answer="card3">Tala sanning och inte ljuga.</div>
+    <div class="slot" data-answer="card4">Gör bra saker och hjälp andra.</div>
+    <div class="slot" data-answer="card5">Ha ett liv och yrke som inte skadar någon.</div>
+    <div class="slot" data-answer="card6">Ansträng dig för att göra gott och undvika ont.</div>
+    <div class="slot" data-answer="card7">Var medveten om kropp, känslor och tankar.</div>
+    <div class="slot" data-answer="card8">Träna sinnet genom meditation och koncentration.</div>
   </div>
 </div>
 
@@ -100,7 +102,7 @@ document.querySelectorAll('.slot').forEach(slot => {
       // Kontrollera om alla fyra rätta är placerade
       if([...document.querySelectorAll('.slot')].filter(s => ["card1","card2","card3","card4"].includes(s.dataset.answer)).every(s => s.classList.contains('correct'))){
         feedback.style.color = "green";
-        feedback.innerHTML = "Rätt! Du kan gå vidare.<br><a href='rum3-3.html'>Gå vidare!</a>";
+        feedback.innerHTML = "Rätt! Du kan gå vidare.<br><a href='rum4.html'>Gå vidare!</a>";
       }
 
     } else {

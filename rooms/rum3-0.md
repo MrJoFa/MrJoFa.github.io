@@ -31,3 +31,24 @@ function checkAnswer() {
 }
 </script>
 
+</script>
+
+<!-- Ledtrådsruta -->
+<button onclick="toggleClue()" style="margin:10px 0;">Visa ledtråd</button>
+
+<p id="clue" style="display:none; background:#f0f0f0; padding:10px; border-radius:5px;">
+Ni ska åka till nr 4. 
+Använd 1-3 för att försöka lista ut vad symbolerna heter.  
+
+</p>
+
+<script>
+function toggleClue() {
+  var clue = document.getElementById('clue');
+  if(clue.style.display === 'none') {
+    clue.style.display = 'block';
+  } else {
+    clue.style.display = 'none';
+  }
+}
+</script>
