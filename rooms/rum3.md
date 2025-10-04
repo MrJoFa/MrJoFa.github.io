@@ -6,7 +6,7 @@ title: Buddhismen Escape Room
 # Bodh Gaya 
 Du har kommit till Bodh Gaya i norra Indien. Det var här Buddha nådde upplysningen. 
 Här finns idag ett stort tempel som heter Mahabodhitemplet. 
-Bredvid templet finns ett bodhiträd som sägs vara det träd som Buddha satt under när han nådde upplysningen.
+Bredvid templet finns ett bodhiträd som sägs härstamma från det träd som Buddha satt under när han nådde upplysningen.
 
  
 
