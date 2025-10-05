@@ -34,6 +34,18 @@ Bredvid templet finns ett bodhiträd som sägs härstamma från det träd som Bu
 
 <p id="message" style="font-weight:bold;"></p>
 
+
+
+---
+
+## Vart vill du gå härnäst?
+
+1. Prata med [munkarna](/rooms/rum5.html)  
+2. Gå till [trädet](/rooms/rum3-1.html)  
+3. Besöka <a href="#" id="templeLink">templet</a>  
+
+---
+
 <script>
 let hasWashedHands = false;
 
@@ -77,17 +89,3 @@ document.getElementById('templeLink').addEventListener('click', function(e) {
   }
 });
 </script>
-
----
-
-## Vart vill du gå härnäst?
-
-1. Prata med [munkarna](/rooms/rum5.html)  
-2. Gå till [trädet](/rooms/rum3-1.html)  
-3. Besöka <a href="#" id="templeLink">templet</a>  
-
----
-
-## Tips:
-Om du inte vet svaret kan du hitta information  
-[här](https://www.so-rummet.se/kategorier/religion/buddhismen).
