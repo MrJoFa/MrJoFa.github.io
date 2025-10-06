@@ -9,13 +9,13 @@ Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar.
 <img src="/assets/images/Buddhist_Man_Meditating.jpg" 
      usemap="#monksMap" 
      width="1067" height="800" 
-     style="width:1067px; height:800px; border-radius:10px; display:block;">
+     style="width:1067px; height:800px; border-radius:10px;">
 
 <map name="monksMap">
   <area shape="rect" coords="30,245,110,527" href="#" alt="Munk1" onclick="showMessage('... mani ... ...', ''); return false;">
-  <area shape="rect" coords="111,233,193,337" href="#" alt="Munk2" onclick="showMessage('om ... ... ...', ''); return false;">
-  <area shape="rect" coords="596,249,712,380" href="#" alt="Munk3" onclick="showMessage('... ... ... hum', ''); return false;">
-  <area shape="rect" coords="727,382,851,496" href="#" alt="Munk4" onclick="showMessage('... ... padme ...', ''); return false;">
+  <area shape="rect" coords="111,245,193,527" href="#" alt="Munk2" onclick="showMessage('om ... ... ...', ''); return false;">
+  <area shape="rect" coords="800,500,900,600" href="#" alt="Munk3" onclick="showMessage('... ... ... hum', ''); return false;">
+  <area shape="rect" coords="727,362,851,476" href="#" alt="Munk4" onclick="showMessage('... ... padme ...', ''); return false;">
   <area shape="rect" coords="271,166,456,568" href="#" alt="Munk5" id="munk5" onclick="showMessage(munk5Message, ''); return false;">
 </map>
 
@@ -29,6 +29,7 @@ Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar.
   </div>
 </div>
 
+<!-- Frågebox som kräver rätt svar -->
 <input type="text" id="answer" placeholder="Recitera ett mantra">
 <button onclick="checkAnswer()">Skicka</button>
 
@@ -51,14 +52,22 @@ function closePopup() {
     document.getElementById('popup').style.display = 'none';
 }
 
+// Klick på popup bakgrund stänger den
 document.getElementById('popup').addEventListener('click', function(e) {
     if(e.target.id === 'popup') closePopup();
 });
 
 function checkAnswer() {
-    var userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+    // Ta bort extra mellanslag och gör små bokstäver
+    var userAnswer = document.getElementById('answer').value
+                      .trim()
+                      .toLowerCase()
+                      .replace(/\s+/g, ' ');
+
     var message = document.getElementById('message');
     var nextLink = document.getElementById('nextLink');
+    
+    // Hasha användarens svar
     var userHash = btoa(userAnswer);
 
     if(userHash === correctHash) {
@@ -72,5 +81,19 @@ function checkAnswer() {
         message.textContent = "Fel svar, försök igen!";
         nextLink.style.display = 'none';
     }
+}
+</script>
+
+<!-- Ledtrådsruta -->
+<button onclick="toggleClue()" style="margin:10px 0;">Visa ledtråd</button>
+
+<p id="clue" style="display:none; background:#f0f0f0; padding:10px; border-radius:5px;">
+Lyssna på vad de andra munkarna reciterar.
+</p>
+
+<script>
+function toggleClue() {
+  var clue = document.getElementById('clue');
+  clue.style.display = (clue.style.display === 'none') ? 'block' : 'none';
 }
 </script>
