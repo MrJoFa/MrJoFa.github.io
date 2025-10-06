@@ -10,27 +10,28 @@ Det första templet i Bodh Gaya uppfördes på 200-talet f.v.t. av kejsaren Asho
 Det nuvarande templet härrör från 100-talet v.t. och har genomgått flera stora ombyggnader och restaureringar.  
 Tempelområdet är med på Unescos lista över världsarv.
 
+<!-- Bild med fast storlek -->
 <img src="/assets/images/Bodhgaya,_Bihar._Buddha_image_in_the_main_temple.jpg"
      usemap="#templeMap" alt="Mahabodhitemplet"
      width="1067" height="1200"
-     style="width:1067px; height:1200px; border-radius:10px;">
+     style="width:1067px; height:1200px; border-radius:10px; display:block; margin:auto;">
 
 <p>I ett rum intill verkar det finnas någon slags 
    <a href="#" onclick="showMessage('Kinesisk inskription från år 1033 v.t., hitförd på uppdrag av kejsar Zhenzong av Songdynastin.', '/assets/images/Bodhgaya-Mahabodhi-inscription.jpg'); return false;">
   inskription
 </a>, 
 och på en vägg i närheten syns en  
-<a href="#" onclick="showMessage('Väggmålning av Śāriputra, den siste abbaten av Mahabodhi-templet innan modern tid.', '/assets/images/mural.png'); return false;">
+<a href="#" onclick="showMessage('Väggmålning av Śāriputra, den siste abboten av Mahabodhi-templet innan modern tid.', '/assets/images/mural.png'); return false;">
   väggmålning
 </a>.
 </p>
 
-Det finns en även vacker dörr framför dig, men den är låst med ett kodlås med fyra siffror.
+Det finns även en vacker dörr framför dig, men den är låst med ett kodlås med fyra siffror.
 
 <map name="templeMap">
   <!-- Tittar upp i taket -->
   <area alt="Taket" title="Taket" href="#" 
-        coords="407,2,491,49" shape="rect" 
+        coords="480,2,580,49" shape="rect" 
         onclick="showMessage('Du tittar upp i taket och ser en märklig syn.', '/assets/images/inscription-key.jpg'); return false;">
 
   <!-- Tidning -->
@@ -40,16 +41,19 @@ Det finns en även vacker dörr framför dig, men den är låst med ett kodlås 
 
   <!-- Munken -->
   <area alt="Munken" title="Munken" href="#" 
-        coords="379,914,575,1156" shape="rect" 
+        coords="450,914,675,1156" shape="rect" 
         onclick="showMessage('Munken verkar upptagen med någon slags meditation, bäst att inte störa.', ''); return false;">
 </map>
 
 <!-- Popup-container -->
 <div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-     background:rgba(0,0,0,0.8); text-align:center; z-index:9999;">
+     background:rgba(0,0,0,0.8); text-align:center; z-index:9999; color:white;">
   <span onclick="closePopup()" 
-        style="color:white; font-size:30px; position:absolute; top:20px; right:30px; cursor:pointer;">&times;</span>
-  <img id="popupImg" src="" alt="Bild" style="max-width:90%; max-height:90%; margin-top:50px;">
+        style="font-size:30px; position:absolute; top:20px; right:30px; cursor:pointer;">&times;</span>
+  <div style="margin-top:60px;">
+    <img id="popupImg" src="" alt="Bild" style="max-width:90%; max-height:70%; border-radius:10px;">
+    <p id="popupText" style="font-size:18px; margin-top:20px;"></p>
+  </div>
 </div>
 
 <input type="text" id="answer" placeholder="Vad är koden?">
@@ -62,24 +66,22 @@ Det finns en även vacker dörr framför dig, men den är låst med ett kodlås 
 let correctHash = "NDYxNQ=="; // 4615 i Base64
 
 function showMessage(text, imgPath) {
-    const message = document.getElementById('message');
-    message.style.color = 'black';
-    message.textContent = text;
+    const popup = document.getElementById('popup');
+    const popupImg = document.getElementById('popupImg');
+    const popupText = document.getElementById('popupText');
 
-    if(imgPath) {
-        const popup = document.getElementById('popup');
-        const popupImg = document.getElementById('popupImg');
-        popupImg.src = imgPath;
-        popup.style.display = 'block';
-    }
+    popupImg.src = imgPath || '';
+    popupText.textContent = text;
+    popup.style.display = 'block';
 }
 
 function closePopup() {
     document.getElementById('popup').style.display = 'none';
 }
 
-document.getElementById('popup').addEventListener('click', function(e){
-    if(e.target.id === 'popup') closePopup();
+// Stäng popup om man klickar utanför bilden/texten
+document.getElementById('popup').addEventListener('click', function(e) {
+    if (e.target.id === 'popup') closePopup();
 });
 
 function checkAnswer() {
@@ -88,7 +90,7 @@ function checkAnswer() {
     const message = document.getElementById('message');
     const nextLink = document.getElementById('nextLink');
 
-    if(userHash === correctHash) {
+    if (userHash === correctHash) {
         message.style.color = 'green';
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
