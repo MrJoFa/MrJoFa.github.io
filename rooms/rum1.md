@@ -60,13 +60,17 @@ document.getElementById('popup').addEventListener('click', function(e) {
 <a href="rum2.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
+const correctHash = "YnVkZGhh"; 
+
 function checkAnswer() {
     var userAnswer = document.getElementById('answer').value.trim().toLowerCase();
     var message = document.getElementById('message');
     var nextLink = document.getElementById('nextLink');
 
-    // Accepterar "buddha" som korrekt svar (case-insensitive)
-    if(userAnswer === 'buddha') {
+    
+    var userHash = btoa(userAnswer);
+
+    if(userHash === correctHash) {
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
     } else {
@@ -75,6 +79,7 @@ function checkAnswer() {
     }
 }
 </script>
+
 
 <!-- Ledtrådsruta -->
 <button onclick="toggleClue()" style="margin:10px 0;">Visa ledtråd</button>

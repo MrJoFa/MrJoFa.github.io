@@ -15,13 +15,18 @@ Han tar fram en gammal karta och säger att den kan visa vägen, men du måste h
 <a href="rum3.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
+
+const correctHash = "Y3J5c3RhbCBjYXZl"; 
+
 function checkAnswer() {
     var userAnswer = document.getElementById('answer').value.trim().toLowerCase();
     var message = document.getElementById('message');
     var nextLink = document.getElementById('nextLink');
 
-    // Accepterar "tripitaka" som korrekt svar
-    if(userAnswer === 'crystal cave') {
+    // Koda användarens svar
+    var userHash = btoa(userAnswer);
+
+    if(userHash === correctHash) {
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
     } else {
@@ -31,7 +36,7 @@ function checkAnswer() {
 }
 </script>
 
-</script>
+
 
 <!-- Ledtrådsruta -->
 <button onclick="toggleClue()" style="margin:10px 0;">Visa ledtråd</button>

@@ -24,13 +24,18 @@ Hur många lärjungar sitter framför Buddha?
 <a href="rum3-2.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
+
+const correctHash = "NQ=="; 
+
 function checkAnswer() {
-    var userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+    var userAnswer = document.getElementById('answer').value.trim();
     var message = document.getElementById('message');
     var nextLink = document.getElementById('nextLink');
 
-    // Accepterar "5" som korrekt svar
-    if(userAnswer === '5') {
+    // Koda användarens svar
+    var userHash = btoa(userAnswer);
+
+    if(userHash === correctHash) {
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
     } else {
@@ -39,5 +44,6 @@ function checkAnswer() {
     }
 }
 </script>
+
 
 
