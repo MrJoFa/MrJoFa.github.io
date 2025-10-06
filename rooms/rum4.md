@@ -16,12 +16,16 @@ Tempelområdet är med på Unescos lista över världsarv.
      style="width:1067px; height:1200px; border-radius:10px;">
 
 <p>I ett rum intill verkar det finnas någon slags 
-   <a href="#" onclick="showMessage('Du ser en inskription på väggen.', '/assets/images/Bodhgaya-Mahabodhi-inscription.jpg'); return false;">
-     inskription
-   </a>.
+   <a href="#" onclick="showMessage('Kinesisk inskription från år 1033 v.t., hitförd på uppdrag av kejsar Zhenzong av Songdynastin.', '/assets/images/Bodhgaya-Mahabodhi-inscription.jpg'); return false;">
+  inskription
+</a>, 
+och på en vägg i närheten syns en  
+<a href="#" onclick="showMessage('Väggmålning av Śāriputra, den siste abbaten av Mahabodhi-templet innan modern tid.', '/assets/images/mural.png'); return false;">
+  väggmålning
+</a>.
 </p>
 
-Det finns en vacker dörr framför dig, men den är låst med ett kodlås med fyra siffror.
+Det finns en även vacker dörr framför dig, men den är låst med ett kodlås med fyra siffror.
 
 <map name="templeMap">
   <!-- Tittar upp i taket -->
