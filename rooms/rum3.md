@@ -34,8 +34,6 @@ Bredvid templet finns ett bodhiträd som sägs härstamma från det träd som Bu
 
 <p id="message" style="font-weight:bold;"></p>
 
-
-
 ---
 
 ## Vart vill du gå härnäst?
@@ -47,45 +45,48 @@ Bredvid templet finns ett bodhiträd som sägs härstamma från det träd som Bu
 ---
 
 <script>
-let hasWashedHands = false;
+window.onload = function() {
+  let hasWashedHands = false;
 
-// Visa popup-bild
-function showImage(imgPath) {
-  document.getElementById('popupImg').src = imgPath;
-  document.getElementById('popup').style.display = 'block';
-}
+  // Visa popup-bild
+  window.showImage = function(imgPath) {
+    document.getElementById('popupImg').src = imgPath;
+    document.getElementById('popup').style.display = 'block';
+  };
 
-// Stäng popup
-function closePopup() {
-  document.getElementById('popup').style.display = 'none';
-}
+  // Stäng popup
+  window.closePopup = function() {
+    document.getElementById('popup').style.display = 'none';
+  };
 
-// Klick utanför bilden stänger popupen
-document.getElementById('popup').addEventListener('click', function(e) {
-  if (e.target.id === 'popup') {
-    closePopup();
-  }
-});
+  // Klick utanför bilden stänger popupen
+  document.getElementById('popup').addEventListener('click', function(e) {
+    if (e.target.id === 'popup') {
+      closePopup();
+    }
+  });
 
-// När spelaren klickar på "brunnen"
-function washHands() {
-  hasWashedHands = true;
-  document.getElementById('message').style.color = 'green';
-  document.getElementById('message').textContent = 
-    'Du ser att det finns ett skoställ utanför templet och ställer dina skor där. Du passar även på att tvätta händerna noggrant. En nunna vid tempelingången ler nöjt mot dig för att du visar respekt för denna heliga plats.';
-}
+  // När spelaren klickar på "brunnen" (tvättar händerna)
+  window.washHands = function() {
+    hasWashedHands = true;
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').textContent =
+      'Du ser att det finns ett skoställ utanför templet och ställer dina skor där. Du passar även på att tvätta händerna noggrant. En nunna vid tempelingången ler nöjt mot dig för att du visar respekt för denna heliga plats.';
 
-// När man försöker gå in i templet
-document.getElementById('templeLink').addEventListener('click', function(e) {
-  if (!hasWashedHands) {
-    e.preventDefault(); // stoppa länken
-    document.getElementById('message').style.color = 'red';
-    document.getElementById('message').textContent = 
-      'På väg in i templet stoppas du av en bister nunna. ' +
-      'Hon tittar på dig och skakar på huvudet. Du verkar inte få komma in av någon anledning.';
-  } else {
-    // tillåt länk efter handtvätt
-    this.href = '/rooms/rum4.html';
-  }
-});
+    // Automatisk stängning av popupen efter 3 sekunder
+    setTimeout(closePopup, 3000);
+  };
+
+  // När man försöker gå in i templet
+  document.getElementById('templeLink').addEventListener('click', function(e) {
+    if (!hasWashedHands) {
+      e.preventDefault(); // stoppa länken
+      document.getElementById('message').style.color = 'red';
+      document.getElementById('message').textContent =
+        'På väg in i templet stoppas du av en bister nunna. Hon tittar på dig och skakar på huvudet. Du verkar inte få komma in av någon anledning.';
+    } else {
+      this.href = '/rooms/rum4.html';
+    }
+  });
+};
 </script>
