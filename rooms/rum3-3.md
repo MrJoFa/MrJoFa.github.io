@@ -102,7 +102,7 @@ document.querySelectorAll('.slot').forEach(slot => {
       // Kontrollera om alla fyra rätta är placerade
       if([...document.querySelectorAll('.slot')].filter(s => ["card1","card2","card3","card4"].includes(s.dataset.answer)).every(s => s.classList.contains('correct'))){
         feedback.style.color = "green";
-        feedback.innerHTML = "Rätt! Du kan gå vidare.<br><a href='rum4.html'>Gå vidare!</a>";
+        feedback.innerHTML = "Rätt! Du kan gå vidare.<br><a href='rum3-4.html'>Gå vidare!</a>";
       }
 
     } else {

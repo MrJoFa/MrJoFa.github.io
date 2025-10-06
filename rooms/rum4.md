@@ -14,7 +14,7 @@ Tempelområdet är med på Unescos lista över världsarv.
 <img src="/assets/images/Bodhgaya,_Bihar._Buddha_image_in_the_main_temple.jpg"
      usemap="#templeMap" alt="Mahabodhitemplet"
      width="1067" height="1200"
-     style="width:1067px; height:1200px; border-radius:10px; display:block;">
+     style="width:1067px; height:1200px; border-radius:10px;">
 
 <p>I ett rum intill verkar det finnas någon slags 
    <a href="#" onclick="showMessage('Kinesisk inskription från år 1033 v.t., hitförd på uppdrag av kejsar Zhenzong av Songdynastin.', '/assets/images/Bodhgaya-Mahabodhi-inscription.jpg'); return false;">
@@ -41,8 +41,7 @@ Det finns även en vacker dörr framför dig, men den är låst med ett kodlås 
 
   <!-- Munken -->
   <area alt="Munken" title="Munken" href="#" 
-        coords="450,914,675,1156" shape="rect" 
-        onclick="showMessage('Munken verkar upptagen med någon slags meditation, bäst att inte störa.', ''); return false;">
+        coords="450,914,675,1156" shape="rect">
 </map>
 
 <!-- Popup-container -->
@@ -63,7 +62,10 @@ Det finns även en vacker dörr framför dig, men den är låst med ett kodlås 
 <a href="rum4-1.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
-let correctHash = "NDYxNQ=="; // 4615 i Base64
+let correctHash = "NDYxNQ=="; 
+
+// Munken-standardmeddelande
+let munkenMessage = 'Munken verkar upptagen med någon slags meditation, bäst att inte störa.';
 
 function showMessage(text, imgPath) {
     const popup = document.getElementById('popup');
@@ -84,6 +86,12 @@ document.getElementById('popup').addEventListener('click', function(e) {
     if (e.target.id === 'popup') closePopup();
 });
 
+// Klick på Munken
+document.querySelector('area[alt="Munken"]').addEventListener('click', function(e) {
+    e.preventDefault();
+    showMessage(munkenMessage, '');
+});
+
 function checkAnswer() {
     const userAnswer = document.getElementById('answer').value.trim();
     const userHash = btoa(userAnswer);
@@ -94,6 +102,9 @@ function checkAnswer() {
         message.style.color = 'green';
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
+
+        // Ändra Munken-meddelande när koden är korrekt
+        munkenMessage = "Lägg det här på minnet: dharma1";
     } else {
         message.style.color = 'red';
         message.textContent = "Fel svar, försök igen!";
