@@ -14,7 +14,7 @@ Tempelområdet är med på Unescos lista över världsarv.
 <img src="/assets/images/Bodhgaya,_Bihar._Buddha_image_in_the_main_temple.jpg"
      usemap="#templeMap" alt="Mahabodhitemplet"
      width="1067" height="1200"
-     style="width:1067px; height:1200px; border-radius:10px; display:block; margin:auto;">
+     style="width:1067px; height:1200px; border-radius:10px; display:block;">
 
 <p>I ett rum intill verkar det finnas någon slags 
    <a href="#" onclick="showMessage('Kinesisk inskription från år 1033 v.t., hitförd på uppdrag av kejsar Zhenzong av Songdynastin.', '/assets/images/Bodhgaya-Mahabodhi-inscription.jpg'); return false;">
