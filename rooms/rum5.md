@@ -37,7 +37,7 @@ Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar.
 <a href="rum2.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
-let correctHash = "b20gbWFuaSBwYWRtZSBoaW0="; // "om mani padme hum" i Base64
+let correctAnswer = "om mani padme hum"; 
 let munk5Message = "Munken är djupt försjunken i meditation.";
 
 function showMessage(text, imgPath) {
@@ -66,11 +66,8 @@ function checkAnswer() {
 
     var message = document.getElementById('message');
     var nextLink = document.getElementById('nextLink');
-    
-    // Hasha användarens svar
-    var userHash = btoa(userAnswer);
 
-    if(userHash === correctHash) {
+    if(userAnswer === correctAnswer) {
         message.style.color = 'green';
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
