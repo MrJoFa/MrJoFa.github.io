@@ -6,7 +6,7 @@ title: Buddhismen Escape Room
 # Meditation 
 Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar. 
 
-<img src="/assets/images/buddhist_Man_Meditating.jpg" 
+<img src="/assets/images/Buddhist_Man_Meditating.jpg" 
      usemap="#monksMap" 
      width="1067" height="800" 
      style="width:1067px; height:800px; border-radius:10px; display:block;">

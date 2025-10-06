@@ -7,6 +7,8 @@ title: Buddhismen Escape Room
 
 Du har visat en stor förståelse för den buddhistiska läran och har på så sätt närmat dig nirvana.
 Har du även fångat upp några visdomsord på vägen? Addera  i så fall deras siffror och skriv in summan här.
+
+Gå tillbaka till [tempelområdet](/rooms/rum3.html)
  
  <input type="text" id="answer" placeholder="Har du nått upplysning?">
 <button onclick="checkAnswer()">Skicka</button>
@@ -28,7 +30,7 @@ function checkAnswer() {
         message.textContent = "Rätt! Du kan gå vidare.";
         nextLink.style.display = 'inline';
     } else {
-        message.textContent = "Du har helt klart förbättrat din karma genom dina flitiga studier om buddhismen. Vem vet, kanske återföds du som en munk eller nunna och har tagit ett steg närmare nirvana.";
+        message.textContent = "Du harsäkert börjat förbättra din karma genom dina flitiga studier om buddhismen. Men än har du lång väg att vandra på den åttafaldiga vägen. Ett tips är att lyssna på munkars och nunnors vishet.";
         nextLink.style.display = 'none';
     }
 }
