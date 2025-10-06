@@ -8,6 +8,17 @@ title: Buddhismen Escape Room
 Du har kommit till Bodh Gaya i norra Indien. Det var här Buddha nådde upplysningen.  
 Här finns idag ett stort tempel som heter Mahabodhitemplet.  
 Bredvid templet finns ett bodhiträd som sägs härstamma från det träd som Buddha satt under när han nådde upplysningen.
+<img src="/assets/images/Bodhgaya-Mahabodhitemple.jpg"
+     usemap="#hands" 
+     width="1067" height="800"
+     style="border-radius:10px; display:block;">
+
+<map name="hands">
+  <!-- Klickbar zon: Tvätta händer -->
+  <area shape="rect" coords="308,689,416,802" 
+        href="javascript:void(0);" 
+        onclick="alert('Klick! Du har tvättat händerna.');">
+</map>
 
 ---
 
