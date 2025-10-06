@@ -15,20 +15,28 @@ Tempelområdet är med på Unescos lista över världsarv.
      width="1067" height="1200"
      style="width:1067px; height:1200px; border-radius:10px;">
 
+<p>I ett rum intill verkar det finnas någon slags 
+   <a href="#" onclick="showMessage('Du ser en inskription på väggen.', '/assets/images/Bodhgaya-Mahabodhi-inscription.jpg'); return false;">
+     inskription
+   </a>.
+</p>
+
+Det finns en vacker dörr framför dig, men den är låst med ett kodlås med fyra siffror.
+
 <map name="templeMap">
   <!-- Tittar upp i taket -->
   <area alt="Taket" title="Taket" href="#" 
-        coords="430,1,470,46" shape="rect" 
+        coords="407,2,491,49" shape="rect" 
         onclick="showMessage('Du tittar upp i taket och ser en märklig syn.', '/assets/images/inscription-key.jpg'); return false;">
 
   <!-- Tidning -->
   <area alt="Tidning" title="Tidning" href="#" 
-        coords="28,916,363,1154" shape="rect" 
+        coords="37,933,368,1153" shape="rect" 
         onclick="showMessage('Du pratar lite med några andra besökare och de ger dig en tidning.', '/assets/images/news.png'); return false;">
 
   <!-- Munken -->
   <area alt="Munken" title="Munken" href="#" 
-        coords="373,918,577,1153" shape="rect" 
+        coords="379,914,575,1156" shape="rect" 
         onclick="showMessage('Munken verkar upptagen med någon slags meditation, bäst att inte störa.', ''); return false;">
 </map>
 
