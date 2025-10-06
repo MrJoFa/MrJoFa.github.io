@@ -34,7 +34,7 @@ Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar.
 <button onclick="checkAnswer()">Skicka</button>
 
 <p id="message"></p>
-<a href="rum2.html" id="nextLink" style="display:none;">Gå vidare!</a>
+<a href="rum3.html" id="nextLink" style="display:none;">Gå tillbaka till tempelområdet.</a>
 
 <script>
 let correctAnswer = "om mani padme hum"; 
