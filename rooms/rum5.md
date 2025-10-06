@@ -37,8 +37,8 @@ Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar.
 <a href="rum2.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
-let correctHash = "b21gbWFuaSBwYWRtZSBoaW0="; // "om mani padme hum" i Base64
-let munk5Message = "Munken är djupt försjunken i meditation, ";
+let correctHash = "b20gbWFuaSBwYWRtZSBoaW0="; // "om mani padme hum" i Base64
+let munk5Message = "Munken är djupt försjunken i meditation.";
 
 function showMessage(text, imgPath) {
     const popup = document.getElementById('popup');
