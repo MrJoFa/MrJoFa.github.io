@@ -14,8 +14,8 @@ Bredvid templet finns ett bodhiträd som sägs härstamma från det träd som Bu
 <!-- Bild med klickbar zon -->
 <img src="/assets/images/Bodhgaya-Mahabodhitemple.jpg"
      usemap="#hands" alt="Bodh Gaya"
-     width="1067" height="800"
-     style="width:100%; max-width:1067px; height:auto; border-radius:10px;">
+     width="800" height="1067"
+     style= "border-radius:10px;">
 
 <map name="hands">
   <!-- Klickbar zon: Tvätta händer -->
