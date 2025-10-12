@@ -19,7 +19,7 @@ Efter en stund blir du uttråkad. Du behöver hitta något att fördriva tiden m
 
   <!-- Stolsfack 2 -->
   <area alt="Stolsfack 2" title="Stolsfack 2" href="#"
-        coords="335,267,459,317" shape="rect" onclick="showImage('/assets/images/maze.png')">
+        coords="335,267,459,317" shape="rect" onclick="showImage('/assets/images/islam/maze.png')">
 </map>
 
 <!-- Popup-container (dold som standard) -->
