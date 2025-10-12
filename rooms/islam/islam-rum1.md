@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Buddhismen Escape Room
+title: Islam Escape Room
 ---
 
 # Resan 
@@ -55,7 +55,7 @@ document.getElementById('popup').addEventListener('click', function(e) {
 <button onclick="checkAnswer()">Skicka</button>
 
 <p id="message"></p>
-<a href="rum2.html" id="nextLink" style="display:none;">Gå vidare!</a>
+<a href="islam-rum2.html" id="nextLink" style="display:none;">Gå vidare!</a>
 
 <script>
 const correctHash = "cmFtYWRhbg=="; 

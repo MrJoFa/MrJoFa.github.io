@@ -8,7 +8,7 @@ Du har blivit inbjuden att besöka platsen där profeten Muhammed föddes och so
 Låt din resa börja! 
 
 
-### Klicka på landet där profeten Muhammed föddes .
+### Klicka på landet där profeten Muhammed föddes.
 
 <img src="/assets/images/world.gif" usemap="#worldmap" alt="Världskarta" width="1200" height="617">
 
