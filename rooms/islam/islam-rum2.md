@@ -4,7 +4,7 @@ title: Islam Escape Room
 ---
 
 # Saudiarabien 
-Du har anlänt till Saudiarabien. Mecka är en stad i Saudiarabien som är känd som profeten Muhammeds födelsestad och den heligaste platsen inom islam. Muslimer ber därför alltid vända mot Mecka oavsett var de befinner sig.
+Du har anlänt till Saudiarabien. Här ligger Mecka, som är känd som profeten Muhammeds födelsestad och den heligaste platsen inom islam. Muslimer ber alltid vända mot Mecka oavsett var de befinner sig.
  
 
 <img src="/assets/images/islam/Flag_of_Saudi_Arabia.png" alt="Saudiarabiens flagga"> 
