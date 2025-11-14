@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minesweeper Beginner</title>
+  <title>Minröj</title>
   <style>
     body {
       font-family: sans-serif;
@@ -43,7 +43,12 @@
 
   <!-- Spelets JS -->
   <script src="https://minesweeper.github.io/a70de4b14c0109772a9dc7a4d43a2657210cc7d1.js"></script>
-
+<script>
+  document.addEventListener("minesweeper:win", function(e) {
+    console.log("Event fångat!");
+    console.log(e.detail); // Här ser du all information som skickas med
+  });
+</script>
   <!-- Lyssna på vinst-event -->
   <script>
     document.addEventListener("minesweeper:win", function (e) {
