@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minesweeper Beginner</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #specialMessage {
+      display: none;
+      margin-top: 20px;
+      font-size: 22px;
+      color: red;
+      font-weight: bold;
+    }
+
+    .minesweeper-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Minesweeper - Beginner</h1>
+
+  <!-- Specialmeddelande -->
+  <div id="specialMessage"></div>
+
+  <!-- Här bäddas spelet in -->
+  <div class="minesweeper-game" data-preset="beginner"></div>
+
+  <!-- Spelets JS -->
+  <script src="https://minesweeper.github.io/a70de4b14c0109772a9dc7a4d43a2657210cc7d1.js"></script>
+
+  <!-- Lyssna på vinst-event -->
+  <script>
+    document.addEventListener("minesweeper:win", function (e) {
+      console.log("Du vann!");
+
+      // e.detail.time innehåller tiden i sekunder
+      const tid = e.detail.time;
+
+      // Sätt din gräns (exempel: 20 sekunder)
+      const gräns = 20;
+
+      if (tid <= gräns) {
+        const msgEl = document.getElementById("specialMessage");
+        msgEl.style.display = "block";
+        msgEl.innerText = "🔥 Otroligt! Du klarade det på " + tid.toFixed(1) + " sekunder!";
+      }
+    });
+  </script>
+
+</body>
+</html>
