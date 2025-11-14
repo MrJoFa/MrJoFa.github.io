@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minröj</title>
+  <title>Minesweeper</title>
   <style>
     body {
       font-family: sans-serif;
@@ -24,6 +24,7 @@
       font-size: 22px;
       color: red;
       font-weight: bold;
+      text-align: center;
     }
 
     .minesweeper-container {
@@ -33,37 +34,42 @@
 </head>
 <body>
 
-  <h1>Minesweeper - Beginner</h1>
+  <h1>Minesweeper</h1>
 
   <!-- Specialmeddelande -->
   <div id="specialMessage"></div>
 
-  <!-- Här bäddas spelet in -->
+  <!-- Spelet bäddas in -->
   <div class="minesweeper-game" data-preset="beginner"></div>
 
-  <!-- Spelets JS -->
+  <!-- Minesweeper script -->
   <script src="https://minesweeper.github.io/a70de4b14c0109772a9dc7a4d43a2657210cc7d1.js"></script>
-<script>
-  document.addEventListener("minesweeper:win", function(e) {
-    console.log("Event fångat!");
-    console.log(e.detail); // Här ser du all information som skickas med
-  });
-</script>
-  <!-- Lyssna på vinst-event -->
+
+  <!-- Timer och specialmeddelande -->
   <script>
-    document.addEventListener("minesweeper:win", function (e) {
-      console.log("Event fångat!", e.detail);
+    let startTid = Date.now(); // starttid
 
-      // e.detail.time innehåller tiden i sekunder
-      const tid = e.detail.time;
+    // Starta timer när spelet visas
+    document.querySelector(".minesweeper-game").addEventListener("click", function startTimer() {
+      startTid = Date.now();
+      // Ta bort eventlistener så starttid bara sätts första gången
+      this.removeEventListener("click", startTimer);
+    });
 
-      // Sätt din gräns (exempel: 30 sekunder)
-      const gräns = 30;
+    // Lyssna på vinst
+    document.addEventListener("minesweeper:win", function() {
+      const sluttid = Date.now();
+      const tid = (sluttid - startTid) / 1000; // tid i sekunder
 
-      if (tid && tid <= gräns) {
-        const msgEl = document.getElementById("specialMessage");
+      const gräns = 30; // tidsgräns i sekunder
+      const msgEl = document.getElementById("specialMessage");
+
+      if (tid <= gräns) {
         msgEl.style.display = "block";
-        msgEl.innerText = "🔥 Otroligt! Du klarade det på " + tid.toFixed(1) + " sekunder!";
+        msgEl.innerText = "🔥 Otroligt! Ni klarade det på " + tid.toFixed(1) + " sekunder!";
+      } else {
+        msgEl.style.display = "block";
+        msgEl.innerText = "Bra jobbat! Tiden blev " + tid.toFixed(1) + " sekunder.";
       }
     });
   </script>
