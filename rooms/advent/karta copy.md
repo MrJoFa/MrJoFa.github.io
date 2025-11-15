@@ -3,7 +3,7 @@ layout: default
 title: Världen
 ---
 
-# Vilka länder ser ni på kartan? 
+## Vilka länder ser ni på kartan? 
 
 <img src="/assets/images/advent/advent-karta.png">
 
