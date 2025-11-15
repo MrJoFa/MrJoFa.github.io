@@ -47,31 +47,48 @@
 
   <!-- Timer och specialmeddelande -->
   <script>
-    let startTid = Date.now(); // starttid
+    const msgEl = document.getElementById("specialMessage");
+    const gräns = 30; // tidsgräns i sekunder
+    let startTid = null;
 
-    // Starta timer när spelet visas
-    document.querySelector(".minesweeper-game").addEventListener("click", function startTimer() {
-      startTid = Date.now();
-      // Ta bort eventlistener så starttid bara sätts första gången
-      this.removeEventListener("click", startTimer);
-    });
+    const gameContainer = document.querySelector(".minesweeper-game");
 
-    // Lyssna på vinst
-    document.addEventListener("minesweeper:win", function() {
-      const sluttid = Date.now();
-      const tid = (sluttid - startTid) / 1000; // tid i sekunder
+    // Vänta tills spelet är infogat
+    const observer = new MutationObserver((mutations, obs) => {
+      if (gameContainer.childNodes.length > 0) {
+        obs.disconnect(); // sluta observera
 
-      const gräns = 30; // tidsgräns i sekunder
-      const msgEl = document.getElementById("specialMessage");
+        // Starta timern på första klick i spelet
+        const startTimer = () => {
+          if (!startTid) {
+            startTid = Date.now();
+          }
+          gameContainer.removeEventListener("click", startTimer);
+        };
+        gameContainer.addEventListener("click", startTimer);
 
-      if (tid <= gräns) {
-        msgEl.style.display = "block";
-        msgEl.innerText = "🔥 Otroligt! Ni klarade det på " + tid.toFixed(1) + " sekunder!";
-      } else {
-        msgEl.style.display = "block";
-        msgEl.innerText = "Bra jobbat! Tiden blev " + tid.toFixed(1) + " sekunder.";
+        // Polling efter vinst
+        const checkWin = setInterval(() => {
+          const winEl = gameContainer.querySelector(".win");
+          if (winEl) {
+            const sluttid = Date.now();
+            const tid = startTid ? (sluttid - startTid) / 1000 : 0;
+
+            if (tid <= gräns && startTid) {
+              msgEl.style.display = "block";
+              msgEl.innerText = `🔥 Otroligt! Ni klarade det på ${tid.toFixed(1)} sekunder!`;
+            } else {
+              msgEl.style.display = "block";
+              msgEl.innerText = `Bra jobbat! Tiden blev ${tid.toFixed(1)} sekunder.`;
+            }
+
+            clearInterval(checkWin);
+          }
+        }, 500);
       }
     });
+
+    observer.observe(gameContainer, { childList: true });
   </script>
 
 </body>
