@@ -54,7 +54,6 @@
         ruta.style.backgroundColor = färg;
         ruta.dataset.color = färg;
 
-        // Räkna hur många blå+röda som finns
         if (färg === "red" || färg === "blue") {
             totaltBlåRöda++;
         }
@@ -64,21 +63,28 @@
 
             const klickadFärg = this.dataset.color;
 
-            // FÖRLUST direkt om rosa eller grön klickas
+            // FÖRLUST – rosa eller grön → börjar om
             if (klickadFärg === "pink" || klickadFärg === "green") {
-                speletSlut = true;
-                resultat.textContent = "Tyvärr nu blev det fel, försök igen";
+                resultat.textContent = "Tyvärr nu blev det fel, spelet startar om...";
                 resultat.style.color = "red";
+
+                speletSlut = true;
+
+                // Starta om efter liten delay
+                setTimeout(() => {
+                    location.reload();
+                }, 1200);
+
                 return;
             }
 
-            // Om röd eller blå klickas
-            this.style.opacity = "0.4"; // markera som klickad
-            this.style.pointerEvents = "none"; // kan ej klickas igen
+            // Markera korrekt klick
+            this.style.opacity = "0.4";
+            this.style.pointerEvents = "none";
 
             klickadeRätt++;
 
-            // Kolla om spelaren klarat allt
+            // Vinst
             if (klickadeRätt === totaltBlåRöda) {
                 speletSlut = true;
                 resultat.textContent = "Titta i grön badrumslåda";
