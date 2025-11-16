@@ -1,3 +1,7 @@
 theme: null    # Vi använder egen layout istället för ett färdigt tema
 title: Välkommen till Mr JoFa
 description: Escape Rooms för mellanstadiet
+include:
+  - rooms
+  - rooms/advent
+  - rooms/islam
