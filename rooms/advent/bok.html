@@ -26,10 +26,13 @@
 
     <script>
         function kontrollera() {
-            let text = document.getElementById("inputRuta").value.toLowerCase();
+            const rättBase64 = "anVsbW9y";
+            const rättSvar = atob(rättBase64); // dekoda Base64 -> vanlig text
+
+            let användarText = document.getElementById("inputRuta").value.toLowerCase();
             let resultat = document.getElementById("resultat");
 
-            if (text === "julmor") {
+            if (användarText === rättSvar) {
                 resultat.textContent = "Rätt, snyggt jobbat!";
                 resultat.style.color = "green";
             } else {
@@ -41,3 +44,4 @@
 
 </body>
 </html>
+
