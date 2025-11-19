@@ -15,6 +15,13 @@
         color: #b30000;
     }
 
+    #timer {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #333;
+    }
+
     #game {
         display: grid;
         grid-template-columns: repeat(6, 110px);
@@ -30,13 +37,12 @@
         border-radius: 10px;
         cursor: pointer;
         overflow: hidden;
-        position: relative;
     }
 
     .card img {
         width: 100%;
         height: 100%;
-        display: none; /* Dold tills vänd */
+        display: none;
     }
 
     .flipped img,
@@ -48,13 +54,13 @@
         margin-top: 20px;
         font-size: 22px;
         font-weight: bold;
-        color: green;
     }
 </style>
 </head>
 <body>
 
 <h1>🎅 Memory – Julspel 🎄</h1>
+<div id="timer">Tid kvar: 60</div>
 <div id="game"></div>
 <div id="status"></div>
 
@@ -66,7 +72,7 @@ const christmasImages = [
     "https://picsum.photos/seed/jul3/200",
     "https://picsum.photos/seed/jul4/200",
     "https://picsum.photos/seed/jul5/200",
-    "httpsum.photos/seed/jul6/200",
+    "https://picsum.photos/seed/jul6/200",
     "https://picsum.photos/seed/jul7/200",
     "https://picsum.photos/seed/jul8/200",
     "https://picsum.photos/seed/jul9/200",
@@ -75,27 +81,28 @@ const christmasImages = [
     "https://picsum.photos/seed/jul12/200"
 ];
 
-// Dubbel upp bilder för att skapa par
+// Gör dubbla bilder
 let cards = [...christmasImages, ...christmasImages];
 
 // Blanda kort
 cards = cards.sort(() => Math.random() - 0.5);
 
 const game = document.getElementById("game");
+const statusDiv = document.getElementById("status");
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
 let foundPairs = 0;
 
-// Skapa kort i spelplanen
+// Skapa kort
 cards.forEach(src => {
     const card = document.createElement("div");
     card.classList.add("card");
 
     const img = document.createElement("img");
     img.src = src;
-
     card.appendChild(img);
+
     game.appendChild(card);
 
     card.addEventListener("click", () => flipCard(card));
@@ -129,9 +136,12 @@ function checkMatch() {
 
         resetTurn();
 
+        // Vinst om alla par hittade
         if (foundPairs === 12) {
-            document.getElementById("status").textContent = "🎉 Du hittade alla par! Bra jobbat!";
+            clearInterval(timerInterval);
+            statusDiv.textContent = "🎉 Du klarade spelet i tid! Bra jobbat!";
         }
+
     } else {
         setTimeout(() => {
             firstCard.classList.remove("flipped");
@@ -144,6 +154,23 @@ function checkMatch() {
 function resetTurn() {
     [firstCard, secondCard, lockBoard] = [null, null, false];
 }
+
+// ------------------- TIMER -------------------
+
+let timeLeft = 60;
+const timerDiv = document.getElementById("timer");
+
+const timerInterval = setInterval(() => {
+    timeLeft--;
+    timerDiv.textContent = "Tid kvar: " + timeLeft;
+
+    if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        statusDiv.textContent = "⏰ Tiden är slut!";
+        lockBoard = true; // Stoppa spelaren från att fortsätta
+    }
+}, 1000);
+
 </script>
 
 </body>
