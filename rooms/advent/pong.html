@@ -11,22 +11,36 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
+        font-family: Arial, sans-serif;
+        color: white;
     }
     canvas {
         border: 2px solid white;
+    }
+    #message {
+        position: absolute;
+        top: 40px;
+        font-size: 32px;
+        font-weight: bold;
+        display: none;
     }
 </style>
 </head>
 <body>
 
+<div id="message">Lussebulle!</div>
 <canvas id="game" width="800" height="500"></canvas>
 
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+const messageBox = document.getElementById("message");
 
 let paddleH = 100;
 let paddleW = 10;
+
+// Poäng
+let score = 0;
 
 let left = { x: 20, y: canvas.height/2 - paddleH/2, dy: 0 };
 let right = { x: canvas.width - 30, y: canvas.height/2 - paddleH/2, dy: 0 };
@@ -65,27 +79,37 @@ function update() {
     if (ball.y <= 0 || ball.y + ball.size >= canvas.height)
         ball.dy *= -1;
 
-    // vänster paddel
+    // --- Kollision med vänster paddel ---
     if (
         ball.x <= left.x + paddleW &&
         ball.y + ball.size >= left.y &&
         ball.y <= left.y + paddleH
     ) {
         ball.dx *= -1;
+        score++; // +1 poäng!
     }
 
-    // höger paddel
+    // --- Kollision med höger paddel ---
     if (
         ball.x + ball.size >= right.x &&
         ball.y + ball.size >= right.y &&
         ball.y <= right.y + paddleH
     ) {
         ball.dx *= -1;
+        score++; // +1 poäng!
     }
 
-    // reset när bollen går ut
-    if (ball.x < 0 || ball.x > canvas.width)
+    // --- Miss = reset + poäng = 0 ---
+    if (ball.x < 0 || ball.x > canvas.width) {
+        score = 0;
         resetBall();
+    }
+
+    // --- Vinst ---
+    if (score >= 40) {
+        showWinMessage();
+        return; // Stoppa spelet här
+    }
 
     draw();
     requestAnimationFrame(update);
@@ -94,7 +118,7 @@ function update() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // mitt-linje
+    // Mittlinje
     ctx.fillStyle = "gray";
     for (let i = 0; i < canvas.height; i += 30) {
         ctx.fillRect(canvas.width/2 - 2, i, 4, 20);
@@ -105,6 +129,10 @@ function draw() {
     ctx.fillRect(right.x, right.y, paddleW, paddleH);
 
     ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
+
+    // Poängtext
+    ctx.font = "30px Arial";
+    ctx.fillText("Poäng: " + score, 20, 40);
 }
 
 function resetBall() {
@@ -114,7 +142,5 @@ function resetBall() {
     ball.dy = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
 }
 
-update();
-</script>
-</body>
-</html>
+// Visa "Lussebulle"
+function s
