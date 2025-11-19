@@ -1,80 +1,120 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Pong</title>
 <style>
     body {
         margin: 0;
-        background: #000;
-        overflow: hidden;
+        background: black;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
     }
-
     canvas {
-        background: #111;
-        border: 2px solid #fff;
+        border: 2px solid white;
     }
 </style>
 </head>
 <body>
-<canvas id="gameCanvas" width="800" height="500"></canvas>
+
+<canvas id="game" width="800" height="500"></canvas>
 
 <script>
-const canvas = document.getElementById("gameCanvas");
+const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-// --- Spelobjekt ---
-const paddleWidth = 15, paddleHeight = 100;
-let leftPaddle = { x: 20, y: canvas.height/2 - paddleHeight/2, speed: 6, dy: 0 };
-let rightPaddle = { x: canvas.width-35, y: canvas.height/2 - paddleHeight/2, speed: 6, dy: 0 };
+let paddleH = 100;
+let paddleW = 10;
 
-let ball = {
-    x: canvas.width/2,
-    y: canvas.height/2,
-    size: 12,
-    speedX: 5,
-    speedY: 4
+let left = { x: 20, y: canvas.height/2 - paddleH/2, dy: 0 };
+let right = { x: canvas.width - 30, y: canvas.height/2 - paddleH/2, dy: 0 };
+
+let ball = { 
+    x: canvas.width/2, 
+    y: canvas.height/2, 
+    size: 10, 
+    dx: 5, 
+    dy: 4 
 };
 
-// --- Styrning ---
 document.addEventListener("keydown", e => {
-    if (e.key === "w") leftPaddle.dy = -leftPaddle.speed;
-    if (e.key === "s") leftPaddle.dy = leftPaddle.speed;
-    if (e.key === "ArrowUp") rightPaddle.dy = -rightPaddle.speed;
-    if (e.key === "ArrowDown") rightPaddle.dy = rightPaddle.speed;
+    if (e.key === "w") left.dy = -6;
+    if (e.key === "s") left.dy = 6;
+    if (e.key === "ArrowUp") right.dy = -6;
+    if (e.key === "ArrowDown") right.dy = 6;
 });
 
 document.addEventListener("keyup", e => {
-    if (e.key === "w" || e.key === "s") leftPaddle.dy = 0;
-    if (e.key === "ArrowUp" || e.key === "ArrowDown") rightPaddle.dy = 0;
+    if (e.key === "w" || e.key === "s") left.dy = 0;
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") right.dy = 0;
 });
 
-// --- Spelloop ---
 function update() {
 
-    // Flytta paddlar
-    leftPaddle.y += leftPaddle.dy;
-    rightPaddle.y += rightPaddle.dy;
+    left.y += left.dy;
+    right.y += right.dy;
 
-    // Begränsa paddlar inom canvas
-    leftPaddle.y = Math.max(0, Math.min(canvas.height - paddleHeight, leftPaddle.y));
-    rightPaddle.y = Math.max(0, Math.min(canvas.height - paddleHeight, rightPaddle.y));
+    left.y = Math.max(0, Math.min(canvas.height - paddleH, left.y));
+    right.y = Math.max(0, Math.min(canvas.height - paddleH, right.y));
 
-    // Flytta boll
-    ball.x += ball.speedX;
-    ball.y += ball.speedY;
+    ball.x += ball.dx;
+    ball.y += ball.dy;
 
-    // Studsa i topp/botten
-    if (ball.y <= 0 || ball.y + ball.size >= canvas.height) {
-        ball.speedY *= -1;
+    if (ball.y <= 0 || ball.y + ball.size >= canvas.height)
+        ball.dy *= -1;
+
+    // vänster paddel
+    if (
+        ball.x <= left.x + paddleW &&
+        ball.y + ball.size >= left.y &&
+        ball.y <= left.y + paddleH
+    ) {
+        ball.dx *= -1;
     }
 
-    // Kollision med vänster paddel
+    // höger paddel
     if (
-        ball.x <= leftPaddle.x + paddleWidth &&
-        ball.y + ball.size >= leftPaddle.y &&
-        ball.y <= leftPadd
+        ball.x + ball.size >= right.x &&
+        ball.y + ball.size >= right.y &&
+        ball.y <= right.y + paddleH
+    ) {
+        ball.dx *= -1;
+    }
+
+    // reset när bollen går ut
+    if (ball.x < 0 || ball.x > canvas.width)
+        resetBall();
+
+    draw();
+    requestAnimationFrame(update);
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // mitt-linje
+    ctx.fillStyle = "gray";
+    for (let i = 0; i < canvas.height; i += 30) {
+        ctx.fillRect(canvas.width/2 - 2, i, 4, 20);
+    }
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(left.x, left.y, paddleW, paddleH);
+    ctx.fillRect(right.x, right.y, paddleW, paddleH);
+
+    ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
+}
+
+function resetBall() {
+    ball.x = canvas.width/2;
+    ball.y = canvas.height/2;
+    ball.dx = -ball.dx;
+    ball.dy = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
+}
+
+update();
+</script>
+</body>
+</html>
