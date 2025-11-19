@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<title>Pong</title>
+<style>
+    body {
+        margin: 0;
+        background: #000;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    canvas {
+        background: #111;
+        border: 2px solid #fff;
+    }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+// --- Spelobjekt ---
+const paddleWidth = 15, paddleHeight = 100;
+let leftPaddle = { x: 20, y: canvas.height/2 - paddleHeight/2, speed: 6, dy: 0 };
+let rightPaddle = { x: canvas.width-35, y: canvas.height/2 - paddleHeight/2, speed: 6, dy: 0 };
+
+let ball = {
+    x: canvas.width/2,
+    y: canvas.height/2,
+    size: 12,
+    speedX: 5,
+    speedY: 4
+};
+
+// --- Styrning ---
+document.addEventListener("keydown", e => {
+    if (e.key === "w") leftPaddle.dy = -leftPaddle.speed;
+    if (e.key === "s") leftPaddle.dy = leftPaddle.speed;
+    if (e.key === "ArrowUp") rightPaddle.dy = -rightPaddle.speed;
+    if (e.key === "ArrowDown") rightPaddle.dy = rightPaddle.speed;
+});
+
+document.addEventListener("keyup", e => {
+    if (e.key === "w" || e.key === "s") leftPaddle.dy = 0;
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") rightPaddle.dy = 0;
+});
+
+// --- Spelloop ---
+function update() {
+
+    // Flytta paddlar
+    leftPaddle.y += leftPaddle.dy;
+    rightPaddle.y += rightPaddle.dy;
+
+    // Begränsa paddlar inom canvas
+    leftPaddle.y = Math.max(0, Math.min(canvas.height - paddleHeight, leftPaddle.y));
+    rightPaddle.y = Math.max(0, Math.min(canvas.height - paddleHeight, rightPaddle.y));
+
+    // Flytta boll
+    ball.x += ball.speedX;
+    ball.y += ball.speedY;
+
+    // Studsa i topp/botten
+    if (ball.y <= 0 || ball.y + ball.size >= canvas.height) {
+        ball.speedY *= -1;
+    }
+
+    // Kollision med vänster paddel
+    if (
+        ball.x <= leftPaddle.x + paddleWidth &&
+        ball.y + ball.size >= leftPaddle.y &&
+        ball.y <= leftPadd
