@@ -11,136 +11,29 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        font-family: Arial, sans-serif;
+    }
+    #msg {
+        position: absolute;
+        top: 40px;
         color: white;
+        font-size: 40px;
+        font-family: Arial, sans-serif;
+        display: none;
     }
     canvas {
         border: 2px solid white;
-    }
-    #message {
-        position: absolute;
-        top: 40px;
-        font-size: 32px;
-        font-weight: bold;
-        display: none;
+        background: black;
     }
 </style>
 </head>
 <body>
 
-<div id="message">Lussebulle!</div>
+<div id="msg">Lussebulle!</div>
 <canvas id="game" width="800" height="500"></canvas>
 
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-const messageBox = document.getElementById("message");
+const msg = document.getElementById("msg");
 
-let paddleH = 100;
-let paddleW = 10;
-
-// Poäng
-let score = 0;
-
-let left = { x: 20, y: canvas.height/2 - paddleH/2, dy: 0 };
-let right = { x: canvas.width - 30, y: canvas.height/2 - paddleH/2, dy: 0 };
-
-let ball = { 
-    x: canvas.width/2, 
-    y: canvas.height/2, 
-    size: 10, 
-    dx: 5, 
-    dy: 4 
-};
-
-document.addEventListener("keydown", e => {
-    if (e.key === "w") left.dy = -6;
-    if (e.key === "s") left.dy = 6;
-    if (e.key === "ArrowUp") right.dy = -6;
-    if (e.key === "ArrowDown") right.dy = 6;
-});
-
-document.addEventListener("keyup", e => {
-    if (e.key === "w" || e.key === "s") left.dy = 0;
-    if (e.key === "ArrowUp" || e.key === "ArrowDown") right.dy = 0;
-});
-
-function update() {
-
-    left.y += left.dy;
-    right.y += right.dy;
-
-    left.y = Math.max(0, Math.min(canvas.height - paddleH, left.y));
-    right.y = Math.max(0, Math.min(canvas.height - paddleH, right.y));
-
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-
-    if (ball.y <= 0 || ball.y + ball.size >= canvas.height)
-        ball.dy *= -1;
-
-    // --- Kollision med vänster paddel ---
-    if (
-        ball.x <= left.x + paddleW &&
-        ball.y + ball.size >= left.y &&
-        ball.y <= left.y + paddleH
-    ) {
-        ball.dx *= -1;
-        score++; // +1 poäng!
-    }
-
-    // --- Kollision med höger paddel ---
-    if (
-        ball.x + ball.size >= right.x &&
-        ball.y + ball.size >= right.y &&
-        ball.y <= right.y + paddleH
-    ) {
-        ball.dx *= -1;
-        score++; // +1 poäng!
-    }
-
-    // --- Miss = reset + poäng = 0 ---
-    if (ball.x < 0 || ball.x > canvas.width) {
-        score = 0;
-        resetBall();
-    }
-
-    // --- Vinst ---
-    if (score >= 40) {
-        showWinMessage();
-        return; // Stoppa spelet här
-    }
-
-    draw();
-    requestAnimationFrame(update);
-}
-
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Mittlinje
-    ctx.fillStyle = "gray";
-    for (let i = 0; i < canvas.height; i += 30) {
-        ctx.fillRect(canvas.width/2 - 2, i, 4, 20);
-    }
-
-    ctx.fillStyle = "white";
-    ctx.fillRect(left.x, left.y, paddleW, paddleH);
-    ctx.fillRect(right.x, right.y, paddleW, paddleH);
-
-    ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
-
-    // Poängtext
-    ctx.font = "30px Arial";
-    ctx.fillText("Poäng: " + score, 20, 40);
-}
-
-function resetBall() {
-    ball.x = canvas.width/2;
-    ball.y = canvas.height/2;
-    ball.dx = -ball.dx;
-    ball.dy = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
-}
-
-// Visa "Lussebulle"
-function s
+let
