@@ -54,6 +54,7 @@
         margin-top: 20px;
         font-size: 22px;
         font-weight: bold;
+        color: green;
     }
 </style>
 </head>
@@ -81,7 +82,7 @@ const christmasImages = [
     "https://picsum.photos/seed/jul12/200"
 ];
 
-// Gör dubbla bilder
+// Gör dubbla kort
 let cards = [...christmasImages, ...christmasImages];
 
 // Blanda kort
@@ -94,7 +95,7 @@ let secondCard = null;
 let lockBoard = false;
 let foundPairs = 0;
 
-// Skapa kort
+// Skapa korten
 cards.forEach(src => {
     const card = document.createElement("div");
     card.classList.add("card");
@@ -136,10 +137,11 @@ function checkMatch() {
 
         resetTurn();
 
-        // Vinst om alla par hittade
+        // ✔ Vinst!
         if (foundPairs === 12) {
             clearInterval(timerInterval);
-            statusDiv.textContent = "🎉 Du klarade spelet i tid! Bra jobbat!";
+            statusDiv.textContent =
+                "🎉 Du klarade spelet i tid! Koden är: SNÖGUBBE ⛄";
         }
 
     } else {
@@ -150,28 +152,3 @@ function checkMatch() {
         }, 900);
     }
 }
-
-function resetTurn() {
-    [firstCard, secondCard, lockBoard] = [null, null, false];
-}
-
-// ------------------- TIMER -------------------
-
-let timeLeft = 60;
-const timerDiv = document.getElementById("timer");
-
-const timerInterval = setInterval(() => {
-    timeLeft--;
-    timerDiv.textContent = "Tid kvar: " + timeLeft;
-
-    if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        statusDiv.textContent = "⏰ Tiden är slut!";
-        lockBoard = true; // Stoppa spelaren från att fortsätta
-    }
-}, 1000);
-
-</script>
-
-</body>
-</html>
