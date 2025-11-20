@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Ballongspelet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        #spelplan {
+            display: grid;
+            grid-template-columns: repeat(5, 80px);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ruta {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #resultat {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div id="spelplan"></div>
+
+<div id="resultat"></div>
+
+<script>
+    const färger = ["red", "blue", "green", "pink"];
+    const spelplan = document.getElementById("spelplan");
+    const resultat = document.getElementById("resultat");
+
+    let totaltBlåRöda = 0;
+    let klickadeRätt = 0;
+    let speletSlut = false;
+
+    // Skapa 20 rutor
+    for (let i = 0; i < 20; i++) {
+        let ruta = document.createElement("div");
+        let färg = färger[Math.floor(Math.random() * färger.length)];
+        ruta.classList.add("ruta");
+        ruta.style.backgroundColor = färg;
+        ruta.dataset.color = färg;
+
+        if (färg === "red" || färg === "blue") {
+            totaltBlåRöda++;
+        }
+
+        ruta.addEventListener("click", function () {
+            if (speletSlut) return;
+
+            const klickadFärg = this.dataset.color;
+
+            // FÖRLUST – rosa eller grön → börjar om
+            if (klickadFärg === "pink" || klickadFärg === "green") {
+                resultat.textContent = "Tyvärr nu blev det fel, spelet startar om...";
+                resultat.style.color = "red";
+
+                speletSlut = true;
+
+                // Starta om efter liten delay
+                setTimeout(() => {
+                    location.reload();
+                }, 1200);
+
+                return;
+            }
+
+            // Markera korrekt klick
+            this.style.opacity = "0.4";
+            this.style.pointerEvents = "none";
+
+            klickadeRätt++;
+
+            // Vinst
+            if (klickadeRätt === totaltBlåRöda) {
+                speletSlut = true;
+                resultat.textContent = "Titta i den gröna badrumslådan";
+                resultat.style.color = "green";
+            }
+        });
+
+        spelplan.appendChild(ruta);
+    }
+</script>
+
+</body>
+</html>

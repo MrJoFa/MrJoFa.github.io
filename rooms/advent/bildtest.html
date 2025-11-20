@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Rutor</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+    }
+    .box {
+        margin-bottom: 10px;
+    }
+    input {
+        padding: 6px;
+        width: 200px;
+    }
+    #resultat {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h2>Fyll i rutor</h2>
+
+<div class="box">1. <input id="ruta1" placeholder="Fyll i..."></div>
+<div class="box">2. <input id="ruta2" placeholder="Fyll i..."></div>
+<div class="box">3. <input id="ruta3" placeholder="Fyll i..."></div>
+<div class="box">4. <input id="ruta4" placeholder="Fyll i..."></div>
+<div class="box">5. <input id="ruta5" placeholder="Fyll i..."></div>
+<div class="box">6. <input id="ruta6" placeholder="Fyll i..."></div>
+
+<button onclick="kontrollera()">Kontrollera</button>
+
+<div id="resultat"></div>
+
+<script>
+function kontrollera() {
+    let svar = [
+        "Meowth",
+        "Katniss",
+        "Tjatte",
+        "Casio",
+        "Philips",
+        "Samsung"
+    ];
+
+    let fält = [];
+    for (let i = 1; i <= 6; i++) {
+        fält.push(document.getElementById("ruta" + i).value.trim());
+    }
+
+    let rätt = 0;
+    for (let i = 0; i < 6; i++) {
+        if (fält[i].toLowerCase() === svar[i].toLowerCase()) {
+            rätt++;
+        }
+    }
+
+    let ut = document.getElementById("resultat");
+
+    if (rätt === 6) {
+        ut.textContent = "Snyggt! Alla rätt – koden är Risgrynsgröt.";
+        ut.style.color = "green";
+    } else {
+        ut.textContent = "Ni fick " + rätt + " av 6 rätt.";
+        ut.style.color = "red";
+    }
+}
+</script>
+
+</body>
+</html>

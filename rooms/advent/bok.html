@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Julmor-test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        #resultat {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Skriv svaret i rutan</h2>
+
+    <input type="text" id="inputRuta" placeholder="Skriv här...">
+    <button onclick="kontrollera()">Kolla</button>
+
+    <div id="resultat"></div>
+
+    <script>
+        function kontrollera() {
+            const rättBase64 = "anVsbW9y";
+            const rättSvar = atob(rättBase64); // dekoda Base64 -> vanlig text
+
+            let användarText = document.getElementById("inputRuta").value.toLowerCase();
+            let resultat = document.getElementById("resultat");
+
+            if (användarText === rättSvar) {
+                resultat.textContent = "Rätt, snyggt jobbat!";
+                resultat.style.color = "green";
+            } else {
+                resultat.textContent = "Fel, försök igen";
+                resultat.style.color = "red";
+            }
+        }
+    </script>
+
+</body>
+</html>
+
