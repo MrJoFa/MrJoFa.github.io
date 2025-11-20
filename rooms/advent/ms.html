@@ -80,7 +80,7 @@ h1 {
 </head>
 <body>
 
-<h1>Minesweeper 9x9</h1>
+<h1>Minesweeper</h1>
 <div id="header">
   <div id="minesLeft">Mines: 10</div>
   <div id="reset">😊</div>
@@ -243,7 +243,7 @@ function endGame(won){
     if(sluttid <= gräns){
       msgEl.innerText = `🔥 Otroligt! Ni klarade det på ${sluttid.toFixed(1)} sekunder!\nLösenordet är: polkagris`;
     } else {
-      msgEl.innerText = `Bra jobbat! Tiden blev ${sluttid.toFixed(1)} sekunder.`;
+      msgEl.innerText = `Bra jobbat! Tiden blev ${sluttid.toFixed(1)} sekunder. Försök klara det snabbare för att få lösenordet`;
     }
   } else {
     msgEl.innerText = `💥 Boom! Du träffade en mina!`;

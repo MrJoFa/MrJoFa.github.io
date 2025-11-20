@@ -14,10 +14,6 @@ De första bokstäverna i ländernas namn bildar ett lösenord.
 <button onclick="checkAnswer()">Skicka</button>
 
 <p id="message"></p>
-<a href="advent2.html" id="nextLink" style="display:none;">Gå vidare!</a>
-
-
-
 
 <script>
 const correctHash = "cGVwcGFya2FrYQ=="; // Base64 för "pepparkaka"
@@ -25,16 +21,15 @@ const correctHash = "cGVwcGFya2FrYQ=="; // Base64 för "pepparkaka"
 function checkAnswer() {
     const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
     const message = document.getElementById('message');
-    const nextLink = document.getElementById('nextLink');
 
     const userHash = btoa(userAnswer);
 
-    if(userHash === correctHash) {
-        message.textContent = "Rätt! Du kan gå vidare.";
-        nextLink.style.display = 'inline-block';
+    if (userHash === correctHash) {
+        message.textContent = "Rätt! Ni har listat ut lösenordet.";
+        message.style.color = "green";
     } else {
         message.textContent = "Fel svar, försök igen!";
-        nextLink.style.display = 'none';
+        message.style.color = "red";
     }
 }
 </script>
