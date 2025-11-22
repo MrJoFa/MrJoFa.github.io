@@ -96,6 +96,8 @@ function startGame() {
       lockBoard = true;
       message.style.color = 'red';
       message.textContent = 'Tyvärr tiden är slut, försök igen!';
+      // Starta om spelet efter 2 sekunder
+      setTimeout(startGame, 2000);
     }
   }, 1000);
 }
@@ -121,7 +123,8 @@ function flipCard() {
     if (matches === symbols.length) {
       clearInterval(timer);
       message.style.color = 'green';
-      message.textContent = 'Snyggt jobbat!Koden är julblomma';
+      message.textContent = 'Snyggt jobbat! Koden är Julblomma';
+      // Spelet kan startas om om man vill, men här låter vi det stanna tills man klickar själv
     }
   } else {
     setTimeout(() => {
@@ -139,6 +142,7 @@ function resetCards() {
   lockBoard = false;
 }
 
+// Starta spelet första gången
 startGame();
 </script>
 
