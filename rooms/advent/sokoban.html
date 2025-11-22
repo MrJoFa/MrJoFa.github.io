@@ -2,119 +2,92 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sokoban – Julgransversion med hinder</title>
+<title>Sokoban – Julgran med lösbara nivåer</title>
 <style>
-body {
-    background:#222; 
-    color:white; 
-    font-family:Arial; 
-    text-align:center;
-}
-#game {
-    margin:20px auto;
-    display:grid;
-    grid-template-columns: repeat(10, 40px);
-    gap:2px;
-}
-.tile {
-    width:40px; height:40px;
-    display:flex; 
-    justify-content:center; 
-    align-items:center;
-    font-size:24px;
-}
-.wall { background:#444; }
-.player { background:#3a6; }
-.box { background:#c96; }
-.goal { background:#66f; }
-.box.goal { background:#0f0; }
+body {background:#222; color:white; font-family:Arial; text-align:center;}
+#game {margin:20px auto; display:grid; grid-template-columns: repeat(10, 40px); gap:2px;}
+.tile {width:40px; height:40px; display:flex; justify-content:center; align-items:center; font-size:24px;}
+.wall {background:#444;}
+.player {background:#3a6;}
+.box {background:#c96;}
+.goal {background:#66f;}
+.box.goal {background:#0f0;}
 </style>
 </head>
 <body>
 
 <h1>🎄 Sokoban – Julgransutmaning 🎄</h1>
 <p>Använd piltangenterna för att spela</p>
-
 <div id="game"></div>
 <h2 id="leveltext"></h2>
 
 <script>
-// ----------------------------------------------------
-// Nivåer med hinder och mål
-// # = vägg
-// P = spelare
-// B = låda
-// G = mål
-// " " = tomt
-// ----------------------------------------------------
+// ---------------- Lösbara nivåer ----------------
 let levels = [
 [
 "##########",
-"#P   #   #",
-"# B  # G #",
-"#    #   #",
-"#   B    #",
-"##########"
-],
-[
-"##########",
-"#  P  #  #",
-"# B##   G#",
-"#   B  # #",
+"#P       #",
 "#  B     #",
+"#  ###  G#",
+"#    B   #",
+"#    ### #",
+"#      G #",
 "##########"
 ],
 [
 "##########",
-"# P  ##  #",
-"# B  B G #",
-"#   ##   #",
-"#  B     #",
+"#   P    #",
+"# B  ##  #",
+"#    B G #",
+"#  ##    #",
+"#   B  G #",
 "##########"
 ],
 [
 "##########",
-"# P  ##  #",
-"# B  B G #",
-"#   ##  G#",
-"# B    B #",
+"#P   ##  #",
+"# B  B   #",
+"#  ### G #",
+"#   B  G #",
+"#      G #",
+"##########"
+],
+[
+"##########",
+"#  P  ## #",
+"# B  B  G#",
+"#  ## B  #",
+"# B   ###G#",
+"#       G #",
 "##########"
 ]
 ];
 
 let grid = [];
-let player = {x:0, y:0};
+let player = {x:0,y:0};
 let boxes = [];
 let goals = [];
 let level = 0;
 
 startLevel(level);
 
-// ----------------------------------------------------
-// Starta nivå
-// ----------------------------------------------------
 function startLevel(n){
-    grid = levels[n].map(row => row.split(''));
+    grid = levels[n].map(row=>row.split(''));
     boxes = [];
     goals = [];
-
-    for(let y=0; y<grid.length; y++){
-        for(let x=0; x<grid[y].length; x++){
+    for(let y=0;y<grid.length;y++){
+        for(let x=0;x<grid[y].length;x++){
             if(grid[y][x]=='P') player={x,y};
             if(grid[y][x]=='B') boxes.push({x,y});
             if(grid[y][x]=='G') goals.push({x,y});
         }
     }
-
-    document.getElementById("leveltext").textContent = "Nivå " + (n+1);
+    document.getElementById("leveltext").textContent="Nivå "+(n+1);
     draw();
 }
 
-// ----------------------------------------------------
-// Tangenter
-// ----------------------------------------------------
-document.addEventListener("keydown", e=>{
-    let dx=0, dy=0;
+document.addEventListener("keydown",e=>{
+    let dx=0,dy=0;
     if(e.key==="ArrowUp") dy=-1;
     if(e.key==="ArrowDown") dy=1;
     if(e.key==="ArrowLeft") dx=-1;
@@ -122,80 +95,49 @@ document.addEventListener("keydown", e=>{
     movePlayer(dx,dy);
 });
 
-// ----------------------------------------------------
-// Flytta spelare med hinder
-// ----------------------------------------------------
 function movePlayer(dx,dy){
     let nx = player.x + dx;
     let ny = player.y + dy;
-
-    if(!inside(nx,ny)) return;
-    if(grid[ny][nx]=='#') return;
-
+    if(!inside(nx,ny) || grid[ny][nx]=='#') return;
     let box = boxes.find(b=>b.x===nx && b.y===ny);
     if(box){
-        let bx = box.x + dx;
-        let by = box.y + dy;
-        if(!inside(bx,by)) return;
-        if(grid[by][bx]=='#') return;
-        if(boxes.some(b=>b.x===bx && b.y===by)) return;
-        box.x = bx;
-        box.y = by;
+        let bx=box.x+dx, by=box.y+dy;
+        if(!inside(bx,by) || grid[by][bx]=='#' || boxes.some(b=>b.x===bx&&b.y===by)) return;
+        box.x=bx; box.y=by;
     }
-
-    player.x = nx;
-    player.y = ny;
-
+    player.x=nx; player.y=ny;
     checkWin();
     draw();
 }
 
-// ----------------------------------------------------
-// Kolla om inom gräns
-// ----------------------------------------------------
-function inside(x,y){
-    return y>=0 && y<grid.length && x>=0 && x<grid[y].length;
-}
+function inside(x,y){return y>=0 && y<grid.length && x>=0 && x<grid[y].length;}
 
-// ----------------------------------------------------
-// Rita spelplan
-// ----------------------------------------------------
 function draw(){
     let div = document.getElementById("game");
-    div.innerHTML = "";
-    let html = "";
-
-    for(let y=0; y<grid.length; y++){
-        for(let x=0; x<grid[y].length; x++){
-            let cls="tile";
-            let emoji="";
+    div.innerHTML="";
+    let html="";
+    for(let y=0;y<grid.length;y++){
+        for(let x=0;x<grid[y].length;x++){
+            let cls="tile", emoji="";
             let c = grid[y][x];
-
-            if(c=='#') { cls+=" wall"; emoji="🟫"; }
-            if(player.x===x && player.y===y){ cls+=" player"; emoji="😀"; }
-            let box = boxes.find(b=>b.x===x && b.y===y);
-            if(box){ cls+=" box"; emoji="🧱"; }
-            let goal = goals.find(g=>g.x===x && g.y===y);
-            if(goal){ cls+=" goal"; if(box) emoji="💚"; else emoji="🎯"; }
-
-            html += `<div class="${cls}">${emoji}</div>`;
+            if(c=='#'){cls+=" wall"; emoji="🟫";}
+            if(player.x===x && player.y===y){cls+=" player"; emoji="😀";}
+            let box=boxes.find(b=>b.x===x && b.y===y);
+            if(box){cls+=" box"; emoji="🧱";}
+            let goal=goals.find(g=>g.x===x && g.y===y);
+            if(goal){cls+=" goal"; if(box) emoji="💚"; else emoji="🎯";}
+            html+=`<div class="${cls}">${emoji}</div>`;
         }
     }
-    div.innerHTML = html;
+    div.innerHTML=html;
 }
 
-// ----------------------------------------------------
-// Kolla om alla mål är uppfyllda
-// ----------------------------------------------------
 function checkWin(){
     let done = boxes.every(b=>goals.some(g=>g.x===b.x && g.y===b.y));
     if(done){
         level++;
-        if(level<levels.length){
-            setTimeout(()=>startLevel(level), 500);
-        } else {
-            document.getElementById("leveltext").textContent="🎉 Snyggt jobbat ni klarade det! 🎉";
-        }
+        if(level<levels.length) setTimeout(()=>startLevel(level),500);
+        else document.getElementById("leveltext").textContent="🎉 Snyggt jobbat ni klarade det! 🎉";
     }
 }
 </script>
