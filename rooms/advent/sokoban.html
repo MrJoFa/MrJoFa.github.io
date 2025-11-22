@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sokoban – Julgran med lösbara nivåer</title>
+<title>Sokoban – Julgran med 3 nivåer</title>
 <style>
 body {background:#222; color:white; font-family:Arial; text-align:center;}
 #game {margin:20px auto; display:grid; grid-template-columns: repeat(10, 40px); gap:2px;}
@@ -29,45 +29,31 @@ let levels = [
 "##########",
 "#P       #",
 "#  B     #",
-"#  ###  G#",
-"#    B   #",
-"#    ### #",
-"#      G #",
+"#  B  G  #",
+"#    B  G#",
+"#       G#",
 "##########"
-], // Nivå 1: 2 lådor, 2 mål
+], // Nivå 1: 3 lådor, 3 mål
 
 [
 "##########",
-"#   P    #",
-"# B ##   #",
+"#  P     #",
+"# B  B   #",
 "#    B G #",
-"#  ##   G#",
-"#   B    #",
-"#      G #",
+"#  ##  B #",
+"#     G G#",
 "##########"
 ], // Nivå 2: 4 lådor, 4 mål
 
 [
 "##########",
-"#P   ##  #",
+"#   P    #",
 "# B  B   #",
-"#  ### G #",
-"#   B  G #",
-"#      G #",
-"#        #",
+"#  ## B G#",
+"# B   B  #",
+"#   G   G#",
 "##########"
-], // Nivå 3: 4 lådor, 4 mål
-
-[
-"##########",
-"#  P  ## #",
-"# B  B  G#",
-"#  ## B  #",
-"# B   ##G#",
-"#   B  G #",
-"#   G    #",
-"##########"
-] // Nivå 4: 6 lådor, 6 mål
+] // Nivå 3: 5 lådor, 5 mål
 ];
 
 let grid = [];
@@ -144,7 +130,7 @@ function checkWin(){
     if(done){
         level++;
         if(level<levels.length) setTimeout(()=>startLevel(level),500);
-        else document.getElementById("leveltext").textContent="🎉 Snyggt jobbat ni klarade det! Koden är snögubbe 🎉";
+        else document.getElementById("leveltext").textContent="🎉 Snyggt jobbat ni klarade det! 🎉";
     }
 }
 </script>
