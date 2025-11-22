@@ -4,63 +4,43 @@
 <meta charset="UTF-8">
 <title>Memory – Julspel</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #f7f1e3;
-        padding: 20px;
-    }
-
-    h1 {
-        color: #b30000;
-        font-size: 40px;
-    }
-
-    #timer {
-        font-size: 26px;
-        font-weight: bold;
-        margin: 10px 0;
-        color: #333;
-    }
-
-    #game {
-        margin: 20px auto;
-        display: grid;
-        grid-template-columns: repeat(6, 120px);
-        gap: 12px;
-        width: fit-content;
-    }
-
-    .card {
-        width: 120px;
-        height: 120px;
-        background: #b30000;
-        border-radius: 10px;
-        cursor: pointer;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .card img {
-        width: 100%;
-        height: 100%;
-        display: none;
-        border-radius: 10px;
-    }
-
-    .flipped img,
-    .matched img {
-        display: block;
-    }
-
-    #status {
-        margin-top: 20px;
-        font-size: 26px;
-        font-weight: bold;
-        color: #006600;
-    }
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f7f1e3;
+    padding: 20px;
+}
+h1 { color: #b30000; font-size: 40px; }
+#timer { font-size: 26px; margin: 10px 0; color: #333; }
+#game {
+    display: grid;
+    grid-template-columns: repeat(6, 120px);
+    gap: 12px;
+    justify-content: center;
+    margin: 20px auto;
+}
+.card {
+    width: 120px;
+    height: 120px;
+    background-color: #b30000;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.card img {
+    width: 100%;
+    height: 100%;
+    display: none;
+    border-radius: 10px;
+}
+.card.flipped img,
+.card.matched img {
+    display: block;
+}
+#status { margin-top: 20px; font-size: 26px; font-weight: bold; color: #006600; }
 </style>
 </head>
 <body>
@@ -71,25 +51,40 @@
 <div id="status"></div>
 
 <script>
-// 12 julbilder (i par)
 const images = [
-    "https://picsum.photos/seed/jul1/200",
-    "https://picsum.photos/seed/jul2/200",
-    "https://picsum.photos/seed/jul3/200",
-    "https://picsum.photos/seed/jul4/200",
-    "https://picsum.photos/seed/jul5/200",
-    "https://picsum.photos/seed/jul6/200",
-    "https://picsum.photos/seed/jul7/200",
-    "https://picsum.photos/seed/jul8/200",
-    "https://picsum.photos/seed/jul9/200",
-    "https://picsum.photos/seed/jul10/200",
-    "https://picsum.photos/seed/jul11/200",
-    "https://picsum.photos/seed/jul12/200"
+  "https://picsum.photos/seed/jul1/200",
+  "https://picsum.photos/seed/jul2/200",
+  "https://picsum.photos/seed/jul3/200",
+  "https://picsum.photos/seed/jul4/200",
+  "https://picsum.photos/seed/jul5/200",
+  "https://picsum.photos/seed/jul6/200",
+  "https://picsum.photos/seed/jul7/200",
+  "https://picsum.photos/seed/jul8/200",
+  "https://picsum.photos/seed/jul9/200",
+  "https://picsum.photos/seed/jul10/200",
+  "https://picsum.photos/seed/jul11/200",
+  "https://picsum.photos/seed/jul12/200"
 ];
-
-// dubbla (24 kort)
-let cards = [...images, ...images];
-cards = cards.sort(() => Math.random() - 0.5);
+let cards = [...images, ...images].sort(() => Math.random() - 0.5);
 
 const game = document.getElementById("game");
-co
+const statusDiv = document.getElementById("status");
+
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let foundPairs = 0;
+
+// Skapa korten
+cards.forEach(src => {
+  const card = document.createElement("div");
+  card.classList.add("card");
+  const img = document.createElement("img");
+  img.src = src;
+  card.appendChild(img);
+  game.appendChild(card);
+
+  card.addEventListener("click", () => {
+    if(lockBoard || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+    card.classList.add("flipped");
+    if(
