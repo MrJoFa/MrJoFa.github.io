@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Sokoban – Julgran med 3 nivåer</title>
+<style>
+body {background:#222; color:white; font-family:Arial; text-align:center;}
+#game {margin:20px auto; display:grid; grid-template-columns: repeat(10, 40px); gap:2px;}
+.tile {width:40px; height:40px; display:flex; justify-content:center; align-items:center; font-size:24px;}
+.wall {background:#444;}
+.player {background:#3a6;}
+.box {background:#c96;}
+.goal {background:#66f;}
+.box.goal {background:#0f0;}
+</style>
+</head>
+<body>
+
+<h1>🎄 Sokoban – Julgransutmaning 🎄</h1>
+<p>Använd piltangenterna för att spela</p>
+<div id="game"></div>
+<h2 id="leveltext"></h2>
+
+<script>
+// ---------------- Lösbara nivåer ----------------
+// Antal lådor = antal mål på varje nivå
+let levels = [
+[
+"##########",
+"#P       #",
+"#  B     #",
+"#  B  G  #",
+"#    B  G#",
+"#       G#",
+"##########"
+], // Nivå 1: 3 lådor, 3 mål
+
+[
+"##########",
+"#  P     #",
+"# B  B   #",
+"#    B G #",
+"#  ##  B #",
+"#G    G G#",
+"##########"
+], // Nivå 2: 4 lådor, 4 mål
+
+[
+"##########",
+"#   P  G #",
+"# B  B   #",
+"#  ## B G#",
+"# B   B  #",
+"#  GG   G#",
+"##########"
+] // Nivå 3: 5 lådor, 5 mål
+];
+
+let grid = [];
+let player = {x:0,y:0};
+let boxes = [];
+let goals = [];
+let level = 0;
+
+startLevel(level);
+
+function startLevel(n){
+    grid = levels[n].map(row=>row.split(''));
+    boxes = [];
+    goals = [];
+    for(let y=0;y<grid.length;y++){
+        for(let x=0;x<grid[y].length;x++){
+            if(grid[y][x]=='P') player={x,y};
+            if(grid[y][x]=='B') boxes.push({x,y});
+            if(grid[y][x]=='G') goals.push({x,y});
+        }
+    }
+    document.getElementById("leveltext").textContent="Nivå "+(n+1);
+    draw();
+}
+
+document.addEventListener("keydown",e=>{
+    let dx=0,dy=0;
+    if(e.key==="ArrowUp") dy=-1;
+    if(e.key==="ArrowDown") dy=1;
+    if(e.key==="ArrowLeft") dx=-1;
+    if(e.key==="ArrowRight") dx=1;
+    movePlayer(dx,dy);
+});
+
+function movePlayer(dx,dy){
+    let nx = player.x + dx;
+    let ny = player.y + dy;
+    if(!inside(nx,ny) || grid[ny][nx]=='#') return;
+    let box = boxes.find(b=>b.x===nx && b.y===ny);
+    if(box){
+        let bx=box.x+dx, by=box.y+dy;
+        if(!inside(bx,by) || grid[by][bx]=='#' || boxes.some(b=>b.x===bx&&b.y===by)) return;
+        box.x=bx; box.y=by;
+    }
+    player.x=nx; player.y=ny;
+    checkWin();
+    draw();
+}
+
+function inside(x,y){return y>=0 && y<grid.length && x>=0 && x<grid[y].length;}
+
+function draw(){
+    let div = document.getElementById("game");
+    div.innerHTML="";
+    let html="";
+    for(let y=0;y<grid.length;y++){
+        for(let x=0;x<grid[y].length;x++){
+            let cls="tile", emoji="";
+            let c = grid[y][x];
+            if(c=='#'){cls+=" wall"; emoji="🟫";}
+            if(player.x===x && player.y===y){cls+=" player"; emoji="😀";}
+            let box=boxes.find(b=>b.x===x && b.y===y);
+            if(box){cls+=" box"; emoji="🧱";}
+            let goal=goals.find(g=>g.x===x && g.y===y);
+            if(goal){cls+=" goal"; if(box) emoji="💚"; else emoji="🎯";}
+            html+=`<div class="${cls}">${emoji}</div>`;
+        }
+    }
+    div.innerHTML=html;
+}
+
+function checkWin(){
+    let done = boxes.every(b=>goals.some(g=>g.x===b.x && g.y===b.y));
+    if(done){
+        level++;
+        if(level<levels.length) setTimeout(()=>startLevel(level),500);
+        else document.getElementById("leveltext").textContent="🎉 Snyggt jobbat ni klarade det! Koden är Snögubbe 🎉";
+    }
+}
+</script>
+
+</body>
+</html>

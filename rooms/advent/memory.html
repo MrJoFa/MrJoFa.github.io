@@ -2,153 +2,149 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Memory – Julspel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jultema Memory</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #e8f0ff;
-    }
-
-    h1 {
-        margin-top: 20px;
-        color: #b30000;
-    }
-
-    #timer {
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 10px;
-        color: #333;
-    }
-
-    #game {
-        display: grid;
-        grid-template-columns: repeat(6, 110px);
-        gap: 10px;
-        justify-content: center;
-        margin-top: 25px;
-    }
-
-    .card {
-        width: 110px;
-        height: 110px;
-        background: #b30000;
-        border-radius: 10px;
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    .card img {
-        width: 100%;
-        height: 100%;
-        display: none;
-    }
-
-    .flipped img,
-    .matched img {
-        display: block;
-    }
-
-    #status {
-        margin-top: 20px;
-        font-size: 22px;
-        font-weight: bold;
-        color: green;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    color: #b30000;
+  }
+  #timer {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  #game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 100px);
+    grid-gap: 10px;
+    justify-content: center;
+  }
+  .card {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: 2px solid #b30000;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #b30000;
+    user-select: none;
+  }
+  .flipped {
+    background-color: #ffe6e6;
+  }
 </style>
 </head>
 <body>
 
-<h1>🎅 Memory – Julspel 🎄</h1>
-<div id="timer">Tid kvar: 60</div>
-<div id="game"></div>
-<div id="status"></div>
+<h1>Jultema Memory</h1>
+<div id="timer">Tid kvar: 60 sekunder</div>
+<div id="game-board"></div>
+<div id="message" style="font-size: 24px; margin-top: 20px; color: green;"></div>
 
 <script>
-// 12 julbilder (alla i par)
-const christmasImages = [
-    "https://picsum.photos/seed/jul1/200",
-    "https://picsum.photos/seed/jul2/200",
-    "https://picsum.photos/seed/jul3/200",
-    "https://picsum.photos/seed/jul4/200",
-    "https://picsum.photos/seed/jul5/200",
-    "https://picsum.photos/seed/jul6/200",
-    "https://picsum.photos/seed/jul7/200",
-    "https://picsum.photos/seed/jul8/200",
-    "https://picsum.photos/seed/jul9/200",
-    "https://picsum.photos/seed/jul10/200",
-    "https://picsum.photos/seed/jul11/200",
-    "https://picsum.photos/seed/jul12/200"
-];
+const board = document.getElementById('game-board');
+const message = document.getElementById('message');
+const timerElement = document.getElementById('timer');
 
-// Gör dubbla kort
-let cards = [...christmasImages, ...christmasImages];
-
-// Blanda kort
-cards = cards.sort(() => Math.random() - 0.5);
-
-const game = document.getElementById("game");
-const statusDiv = document.getElementById("status");
+const symbols = ['🎄','🎁','❄️','⛄','🕯️','⭐','🧦','🍪','🛷','🔔','🦌','🌟'];
+let cardsArray = [...symbols, ...symbols]; // dubbla för par
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
-let foundPairs = 0;
+let matches = 0;
+let timeLeft = 60;
+let timer;
 
-// Skapa korten
-cards.forEach(src => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-
-    const img = document.createElement("img");
-    img.src = src;
-    card.appendChild(img);
-
-    game.appendChild(card);
-
-    card.addEventListener("click", () => flipCard(card));
-});
-
-function flipCard(card) {
-    if (lockBoard) return;
-    if (card.classList.contains("flipped") || card.classList.contains("matched")) return;
-
-    card.classList.add("flipped");
-
-    if (!firstCard) {
-        firstCard = card;
-        return;
-    }
-
-    secondCard = card;
-    checkMatch();
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
 }
 
-function checkMatch() {
-    lockBoard = true;
+function startGame() {
+  cardsArray = shuffle(cardsArray);
+  board.innerHTML = '';
+  matches = 0;
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+  message.textContent = '';
+  timeLeft = 60;
+  timerElement.textContent = `Tid kvar: ${timeLeft} sekunder`;
 
-    const img1 = firstCard.querySelector("img").src;
-    const img2 = secondCard.querySelector("img").src;
+  cardsArray.forEach((symbol, index) => {
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.dataset.symbol = symbol;
+    card.addEventListener('click', flipCard);
+    board.appendChild(card);
+  });
 
-    if (img1 === img2) {
-        firstCard.classList.add("matched");
-        secondCard.classList.add("matched");
-        foundPairs++;
-
-        resetTurn();
-
-        // ✔ Vinst!
-        if (foundPairs === 12) {
-            clearInterval(timerInterval);
-            statusDiv.textContent =
-                "🎉 Du klarade spelet i tid! Koden är: SNÖGUBBE ⛄";
-        }
-
-    } else {
-        setTimeout(() => {
-            firstCard.classList.remove("flipped");
-            secondCard.classList.remove("flipped");
-            resetTurn();
-        }, 900);
+  timer = setInterval(() => {
+    timeLeft--;
+    timerElement.textContent = `Tid kvar: ${timeLeft} sekunder`;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      lockBoard = true;
+      message.style.color = 'red';
+      message.textContent = 'Tyvärr tiden är slut, försök igen!';
+      // Starta om spelet efter 2 sekunder
+      setTimeout(startGame, 2000);
     }
+  }, 1000);
 }
+
+function flipCard() {
+  if (lockBoard) return;
+  if (this === firstCard) return;
+
+  this.textContent = this.dataset.symbol;
+  this.classList.add('flipped');
+
+  if (!firstCard) {
+    firstCard = this;
+    return;
+  }
+
+  secondCard = this;
+  lockBoard = true;
+
+  if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+    matches++;
+    resetCards();
+    if (matches === symbols.length) {
+      clearInterval(timer);
+      message.style.color = 'green';
+      message.textContent = 'Snyggt jobbat! Koden är Julblomma';
+      // Spelet kan startas om om man vill, men här låter vi det stanna tills man klickar själv
+    }
+  } else {
+    setTimeout(() => {
+      firstCard.textContent = '';
+      secondCard.textContent = '';
+      firstCard.classList.remove('flipped');
+      secondCard.classList.remove('flipped');
+      resetCards();
+    }, 1000);
+  }
+}
+
+function resetCards() {
+  [firstCard, secondCard] = [null, null];
+  lockBoard = false;
+}
+
+// Starta spelet första gången
+startGame();
+</script>
+
+</body>
+</html>

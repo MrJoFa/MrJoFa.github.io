@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Julpiano – Blink lilla stjärna</title>
+<style>
+  body {
+    background: #222;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  h1 { color: gold; }
+  canvas {
+    border: 2px solid #900;
+    margin-top: 20px;
+    background: #111;
+  }
+  #message {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: gold;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎄 Julpiano – Blink lilla stjärna</h1>
+<p>Klicka tangenterna i rätt ordning!</p>
+<canvas id="pianoCanvas" width="600" height="200"></canvas>
+<div id="message"></div>
+
+<script>
+// ================================
+// Canvas setup
+// ================================
+const canvas = document.getElementById('pianoCanvas');
+const ctx = canvas.getContext('2d');
+
+const whiteKeys = ["C4","D4","E4","F4","G4","A4","B4","C5"];
+const keyWidth = 70;
+const keyHeight = 200;
+let playerSequence = [];
+
+const song = ["C4","C4","G4","G4","A4","A4","G4","F4","F4","E4","E4","D4","D4","C4"];
+
+// Frekvenser
+const freqs = {C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392.00,A4:440.00,B4:493.88,C5:523.25};
+
+// ================================
+// Rita tangenter
+// ================================
+function drawKeys() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  whiteKeys.forEach((note, i) => {
+    ctx.fillStyle = "white";
+    ctx.fillRect(i*keyWidth,0,keyWidth,keyHeight);
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(i*keyWidth,0,keyWidth,keyHeight);
+    ctx.fillStyle = "black";
+    ctx.font = "16px Arial";
+    ctx.fillText(note, i*keyWidth + 20, keyHeight - 10);
+  });
+}
+
+drawKeys();
+
+// ================================
+// Spela ton
+// ================================
+function playTone(freq, duration=0.5){
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = audioCtx.createOscillator();
+  oscillator.type = "sine";
+  oscillator.frequency.value = freq;
+  oscillator.connect(audioCtx.destination);
+  oscillator.start();
+  oscillator.stop(audioCtx.currentTime + duration);
+}
+
+// ================================
+// Klick-hantering
+// ================================
+canvas.addEventListener("click", (e)=>{
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const index = Math.floor(x / keyWidth);
+  const note = whiteKeys[index];
+  playTone(freqs[note]);
+
+  playerSequence.push(note);
+  const i = playerSequence.length-1;
+
+  if(note !== song[i]){
+    playerSequence = [];
+    document.getElementById("message").textContent = "Fel! Börja om 🎵";
+    return;
+  }
+
+  if(playerSequence.length === song.length){
+    document.getElementById("message").textContent = "Snyggt jobbat! Koden är Julstjärna! 🎄";
+    playerSequence = [];
+  } else {
+    document.getElementById("message").textContent = "";
+  }
+});
+</script>
+
+</body>
+</html>
