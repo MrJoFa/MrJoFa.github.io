@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Julpiano – Blinka lilla stjärna</title>
+<style>
+    body {
+        background: #222;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    h1 { color: gold; }
+    #piano { margin-top: 20px; }
+    .key {
+        display: inline-block;
+        width: 60px;
+        height: 200px;
+        margin: 2px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background: white;
+        cursor: pointer;
+        position: relative;
+    }
+    .key.black {
+        width: 40px;
+        height: 120px;
+        background: black;
+        position: absolute;
+        margin-left: -20px;
+        z-index: 2;
+    }
+    #message {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        color: gold;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎄 Julpiano – Blinka lilla stjärna</h1>
+<p>Klicka tangenterna i rätt ordning!</p>
+<div id="piano"></div>
+<div id="message"></div>
+
+<script>
+// ================================
+// Setup piano
+// ================================
+const notes = [
+    {note:"C4", key:"C"}, {note:"D4", key:"D"}, {note:"E4", key:"E"},
+    {note:"F4", key:"F"}, {note:"G4", key:"G"}, {note:"A4", key:"A"}, {note:"B4", key:"B"}, {note:"C5",
