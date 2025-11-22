@@ -2,154 +2,191 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Snake – Två Ormar</title>
+<title>Snake – Chromebook Version</title>
 <style>
     body {
-        background:#222;
-        color:white;
-        text-align:center;
-        font-family:Arial, sans-serif;
+        background: #222;
+        color: white;
+        text-align: center;
+        font-family: Arial, sans-serif;
     }
     canvas {
-        background:#000;
-        border:4px solid #900;
-        margin-top:20px;
+        background: #000;
+        border: 4px solid #900;
+        margin-top: 20px;
     }
 </style>
 </head>
 <body>
 
-<h1>🐍 Snake – Två Spelare</h1>
+<h1>🐍🐍 Snake – Två Spelare (Chromebook-version)</h1>
 <p>Spelare 1: WASD • Spelare 2: Piltangenter</p>
 <canvas id="game" width="600" height="400"></canvas>
 
 <script>
+// ================================
+// CANVAS
+// ================================
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
 const grid = 20;
-let food;
 
-// FÖRENKLADE ORMAR (dessa kommer ALLTID synas)
+// ================================
+// ORMAR
+// ================================
 let snake1 = {
-    body: [{x:5,y:5},{x:4,y:5},{x:3,y:5}],
+    body: [{x: 5, y: 5}, {x:4, y:5}, {x:3, y:5}],
     dx: 1, dy: 0,
     color: "lime"
 };
 
 let snake2 = {
-    body: [{x:20,y:10},{x:21,y:10},{x:22,y:10}],
+    body: [{x: 25, y: 10}, {x:26, y:10}, {x:27, y:10}],
     dx: -1, dy: 0,
     color: "cyan"
 };
 
-let timeLeft = 60;
-let timerStarted = false;
+let food = spawnFood();
+let lastUpdate = 0;
+let speed = 120; // ms per move
 
+let startTime = null;
+let timeLeft = 60;
+let timerRunning = false;
+
+// ================================
+// SPAWNA MAT
+// ================================
 function spawnFood() {
-    food = {
-        x: Math.floor(Math.random()* (canvas.width/grid)),
-        y: Math.floor(Math.random()* (canvas.height/grid))
+    return {
+        x: Math.floor(Math.random() * (canvas.width / grid)),
+        y: Math.floor(Math.random() * (canvas.height / grid))
     };
 }
 
-spawnFood();
-
-// =============== STYRNING ===============
+// ================================
+// STYRNING
+// ================================
 document.addEventListener("keydown", e => {
-
     // Spelare 1
-    if (e.key === "w") { snake1.dx=0; snake1.dy=-1; startTimer(); }
-    if (e.key === "s") { snake1.dx=0; snake1.dy=1; startTimer(); }
-    if (e.key === "a") { snake1.dx=-1; snake1.dy=0; startTimer(); }
-    if (e.key === "d") { snake1.dx=1; snake1.dy=0; startTimer(); }
+    if (e.key === "w") { snake1.dx = 0; snake1.dy = -1; startTimer(); }
+    if (e.key === "s") { snake1.dx = 0; snake1.dy = 1; startTimer(); }
+    if (e.key === "a") { snake1.dx = -1; snake1.dy = 0; startTimer(); }
+    if (e.key === "d") { snake1.dx = 1; snake1.dy = 0; startTimer(); }
 
     // Spelare 2
-    if (e.key === "ArrowUp") { snake2.dx=0; snake2.dy=-1; startTimer(); }
-    if (e.key === "ArrowDown") { snake2.dx=0; snake2.dy=1; startTimer(); }
-    if (e.key === "ArrowLeft") { snake2.dx=-1; snake2.dy=0; startTimer(); }
-    if (e.key === "ArrowRight") { snake2.dx=1; snake2.dy=0; startTimer(); }
+    if (e.key === "ArrowUp") { snake2.dx = 0; snake2.dy = -1; startTimer(); }
+    if (e.key === "ArrowDown") { snake2.dx = 0; snake2.dy = 1; startTimer(); }
+    if (e.key === "ArrowLeft") { snake2.dx = -1; snake2.dy = 0; startTimer(); }
+    if (e.key === "ArrowRight") { snake2.dx = 1; snake2.dy = 0; startTimer(); }
 });
 
-// =============== TIMER ===============
+// ================================
+// TIMER MED requestAnimationFrame
+// ================================
 function startTimer() {
-    if (timerStarted) return;
-    timerStarted = true;
-
-    const t = setInterval(() => {
-        timeLeft--;
-        if (timeLeft <= 0) {
-            clearInterval(t);
-            clearInterval(loop);
-            alert("🎅 Grattis! Ni klarade spelet!");
-        }
-    }, 1000);
+    if (timerRunning) return;
+    timerRunning = true;
+    startTime = performance.now();
 }
 
-// =============== SPELLOOP ===============
-function update() {
-    moveSnake(snake1);
-    moveSnake(snake2);
+function updateTimer(timestamp) {
+    if (!timerRunning) return;
 
-    if (hitWall(snake1) || hitWall(snake2)) {
-        alert("Krasch! Startar om...");
-        location.reload();
+    let elapsed = (timestamp - startTime) / 1000;
+    let remaining = 60 - elapsed;
+
+    if (remaining <= 0) {
+        alert("🎅 Grattis! Ni klarade spelet!");
+        document.location.reload();
     }
 
-    if (eatFood(snake1) || eatFood(snake2)) spawnFood();
-
-    draw();
+    timeLeft = Math.max(0, Math.floor(remaining));
 }
 
+// ================================
+// SNAKE LOGIK
+// ================================
 function moveSnake(snake) {
-    let head = {
-        x: snake.body[0].x + snake.dx,
-        y: snake.body[0].y + snake.dy
-    };
+    let head = { x: snake.body[0].x + snake.dx,
+                 y: snake.body[0].y + snake.dy };
+
     snake.body.unshift(head);
     snake.body.pop();
 }
 
 function hitWall(snake) {
-    const h = snake.body[0];
-    return h.x<0 || h.x>=canvas.width/grid || h.y<0 || h.y>=canvas.height/grid;
+    let h = snake.body[0];
+    return (
+        h.x < 0 || 
+        h.x >= canvas.width / grid ||
+        h.y < 0 ||
+        h.y >= canvas.height / grid
+    );
 }
 
 function eatFood(snake) {
-    const h = snake.body[0];
+    let h = snake.body[0];
     if (h.x === food.x && h.y === food.y) {
-        snake.body.push({...snake.body[snake.body.length-1]});
-        return true;
+        snake.body.push({...snake.body[snake.body.length - 1]});
+        food = spawnFood();
     }
-    return false;
 }
 
-// =============== RITA ===============
+// ================================
+// RITA
+// ================================
 function drawSnake(snake) {
     ctx.fillStyle = snake.color;
-    snake.body.forEach(p=>{
-        ctx.fillRect(p.x*grid,p.y*grid,grid,grid);
+    snake.body.forEach(p => {
+        ctx.fillRect(p.x * grid, p.y * grid, grid, grid);
     });
 }
 
 function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // mat
     ctx.fillStyle = "red";
-    ctx.fillRect(food.x*grid, food.y*grid, grid, grid);
+    ctx.fillRect(food.x * grid, food.y * grid, grid, grid);
 
-    // ormarna
     drawSnake(snake1);
     drawSnake(snake2);
 
-    // tid
     ctx.fillStyle = "white";
     ctx.font = "18px Arial";
-    ctx.fillText("Tid kvar: "+timeLeft+"s", 10, 20);
+    ctx.fillText("Tid kvar: " + timeLeft + "s", 10, 20);
 }
 
-let loop = setInterval(update, 120);
+// ================================
+// SPELLOOP (Chromebook-vänlig)
+// ================================
+function gameLoop(timestamp) {
+
+    updateTimer(timestamp);
+
+    if (timestamp - lastUpdate > speed) {
+        moveSnake(snake1);
+        moveSnake(snake2);
+
+        if (hitWall(snake1) || hitWall(snake2)) {
+            alert("💥 Krasch! Startar om...");
+            document.location.reload();
+        }
+
+        eatFood(snake1);
+        eatFood(snake2);
+
+        lastUpdate = timestamp;
+    }
+
+    draw();
+    requestAnimationFrame(gameLoop);
+}
+
+requestAnimationFrame(gameLoop);
+
 </script>
 
 </body>
