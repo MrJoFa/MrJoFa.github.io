@@ -2,67 +2,57 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Snake – Två Ormar</title>
+<title>Snake – Chromebook Version</title>
 <style>
     body {
-        background:#222;
-        color:white;
-        text-align:center;
-        font-family:Arial, sans-serif;
+        background: #222;
+        color: white;
+        text-align: center;
+        font-family: Arial, sans-serif;
     }
     canvas {
-        background:#000;
-        border:4px solid #900;
-        margin-top:20px;
+        background: #000;
+        border: 4px solid #900;
+        margin-top: 20px;
     }
 </style>
 </head>
 <body>
 
-<h1>🐍 Snake – Två Spelare</h1>
+<h1>🐍🐍 Snake – Två Spelare (Chromebook-version)</h1>
 <p>Spelare 1: WASD • Spelare 2: Piltangenter</p>
 <canvas id="game" width="600" height="400"></canvas>
 
 <script>
+// ================================
+// CANVAS
+// ================================
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
 const grid = 20;
-let food;
 
-// FÖRENKLADE ORMAR (dessa kommer ALLTID synas)
+// ================================
+// ORMAR
+// ================================
 let snake1 = {
-    body: [{x:5,y:5},{x:4,y:5},{x:3,y:5}],
+    body: [{x: 5, y: 5}, {x:4, y:5}, {x:3, y:5}],
     dx: 1, dy: 0,
     color: "lime"
 };
 
 let snake2 = {
-    body: [{x:20,y:10},{x:21,y:10},{x:22,y:10}],
+    body: [{x: 25, y: 10}, {x:26, y:10}, {x:27, y:10}],
     dx: -1, dy: 0,
     color: "cyan"
 };
 
+let food = spawnFood();
+let lastUpdate = 0;
+let speed = 120; // ms per move
+
+let startTime = null;
 let timeLeft = 60;
-let timerStarted = false;
+let timerRunning = false;
 
-function spawnFood() {
-    food = {
-        x: Math.floor(Math.random()* (canvas.width/grid)),
-        y: Math.floor(Math.random()* (canvas.height/grid))
-    };
-}
-
-spawnFood();
-
-// =============== STYRNING ===============
-document.addEventListener("keydown", e => {
-
-    // Spelare 1
-    if (e.key === "w") { snake1.dx=0; snake1.dy=-1; startTimer(); }
-    if (e.key === "s") { snake1.dx=0; snake1.dy=1; startTimer(); }
-    if (e.key === "a") { snake1.dx=-1; snake1.dy=0; startTimer(); }
-    if (e.key === "d") { snake1.dx=1; snake1.dy=0; startTimer(); }
-
-    // Spelare 2
-    if (e.key === "ArrowUp") {
+// =================
