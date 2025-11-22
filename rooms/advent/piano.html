@@ -2,38 +2,41 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Julpiano – Blinka lilla stjärna</title>
+<title>Julpiano – Blink lilla stjärna</title>
 <style>
-    body {
-        background: #222;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-    }
-    h1 { color: gold; }
-    #piano { 
-        margin-top: 20px; 
-        display: flex; 
-        justify-content: center; 
-        align-items: flex-end;
-    }
-    .key {
-        width: 60px;
-        height: 200px;
-        margin: 2px;
-        background: white;
-        border: 1px solid #555;
-        border-radius: 5px;
-        cursor: pointer;
-        position: relative;
-        display: inline-flex;
-        justify-content: center;
-        align-items: flex-end;
-        font-weight: bold;
-        color: black;
-        user-select: none;
-    }
-    .key.black {
-        width: 40px;
-        height: 120px;
-        bac
+  body {
+    background: #222;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  h1 { color: gold; }
+  canvas {
+    border: 2px solid #900;
+    margin-top: 20px;
+    background: #111;
+  }
+  #message {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: gold;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎄 Julpiano – Blink lilla stjärna</h1>
+<p>Klicka tangenterna i rätt ordning!</p>
+<canvas id="pianoCanvas" width="600" height="200"></canvas>
+<div id="message"></div>
+
+<script>
+// ================================
+// Canvas setup
+// ================================
+const canvas = document.getElementById('pianoCanvas');
+const ctx = canvas.getContext('2d');
+
+const whiteKeys = ["C4","D4","E4","F4","G4","A4","B4","C5"];
+const key
