@@ -37,31 +37,22 @@
         background: #b30000;
         border-radius: 10px;
         cursor: pointer;
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 0.4s;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .flipped {
-        transform: rotateY(180deg);
-    }
-
-    .face, .back {
-        position: absolute;
+    .card img {
         width: 100%;
         height: 100%;
+        display: none;
         border-radius: 10px;
-        backface-visibility: hidden;
     }
 
-    .back {
-        background: #b30000 url("https://i.imgur.com/UO8v0OO.png") center/70px no-repeat;
-    }
-
-    .face {
-        transform: rotateY(180deg);
-        background-size: cover;
-        background-position: center;
+    .flipped img,
+    .matched img {
+        display: block;
     }
 
     #status {
@@ -74,4 +65,31 @@
 </head>
 <body>
 
-<h1>🎅 Memory – Julspel
+<h1>🎅 Memory – Julspel 🎄</h1>
+<div id="timer">Tid kvar: 60</div>
+<div id="game"></div>
+<div id="status"></div>
+
+<script>
+// 12 julbilder (i par)
+const images = [
+    "https://picsum.photos/seed/jul1/200",
+    "https://picsum.photos/seed/jul2/200",
+    "https://picsum.photos/seed/jul3/200",
+    "https://picsum.photos/seed/jul4/200",
+    "https://picsum.photos/seed/jul5/200",
+    "https://picsum.photos/seed/jul6/200",
+    "https://picsum.photos/seed/jul7/200",
+    "https://picsum.photos/seed/jul8/200",
+    "https://picsum.photos/seed/jul9/200",
+    "https://picsum.photos/seed/jul10/200",
+    "https://picsum.photos/seed/jul11/200",
+    "https://picsum.photos/seed/jul12/200"
+];
+
+// dubbla (24 kort)
+let cards = [...images, ...images];
+cards = cards.sort(() => Math.random() - 0.5);
+
+const game = document.getElementById("game");
+co
