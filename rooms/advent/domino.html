@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Domino Master</title>
+<style>
+    body {
+        background:#222;
+        color:white;
+        font-family: Arial, sans-serif;
+        text-align:center;
+    }
+    #gameCanvas {
+        background:#111;
+        border:4px solid #900;
+        margin-top:20px;
+    }
+    .btn {
+        background:#900;
+        color:white;
+        border:none;
+        padding:10px 20px;
+        margin:5px;
+        font-size:16px;
+        cursor:pointer;
+    }
+</style>
+</head>
+<body>
+
+<h1>Domino Master – Digital + Fysisk</h1>
+<p>Bygg din fysiska domino-bana och klicka på brickorna digitalt när de faller.</p>
+
+<canvas id="gameCanvas" width="600" height="400"></canvas>
+<br>
+<button class="btn" onclick="resetGame()">Starta Om</button>
+<p id="score">Poäng: 0</p>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let dominoes = [];
+let score = 0;
+
+// Skapa digitala domino-brickor
+function createDominoes() {
+    dominoes = [];
+    let x = 50;
+    let y = 50;
+    for(let i=0; i<10; i++) {
+        dominoes.push({x:x, y:y, w:40, h:80, fallen:false});
+        x += 50; // placera bredvid
+    }
+}
+
+// Rita domino-brickor
+function drawDominoes() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    dominoes.forEach(d => {
+        ctx.fillStyle = d.fallen ? "grey" : "yellow";
+        ctx.fillRect(d.x,d.y,d.w,d.h);
+    });
+}
+
+// Kolla klick
+canvas.addEventListener("click", function(e){
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    dominoes.forEach(d => {
+        if(!d.fallen &&
+           mx >= d.x && mx <= d.x + d.w &&
+           my >= d.y && my <= d.y + d.h) {
+            d.fallen = true;
+            score++;
+            document.getElementById("score").textContent = "Poäng: "+score;
+            drawDominoes();
+        }
+    });
+});
+
+function resetGame() {
+    score = 0;
+    document.getElementById("score").textContent = "Poäng: 0";
+    createDominoes();
+    drawDominoes();
+}
+
+// Starta
+resetGame();
+</script>
+
+</body>
+</html>
