@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Wordle – Hemligt ord</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 30px;
+    }
+    .row {
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+    .cell {
+        width: 50px;
+        height: 50px;
+        border: 2px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background: #fff;
+    }
+    #message {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    #retryBtn {
+        display: none;
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<h2>Wordle – Gissa ordet!</h2>
+
+<div id="grid"></div>
+
+<input type="text" id="guess" maxlength="5" placeholder="Skriv ett 5-bokstavsord">
+<button onclick="submitGuess()">Gissa</button>
+
+<p id="message"></p>
+<button id="retryBtn" onclick="location.reload()">Försök igen</button>
+
+<script>
+window.onload = function () {
+
+    const encodedSolution = "UEFLRVQ="; // Base64 för "PAKET"
+    const solution = atob(encodedSolution);
+
+    const maxRows = 6;
+    let currentRow = 0;
+
+    const grid = document.getElementById("grid");
+
+    // Aktivera Enter/Retur
+    document.getElementById("guess").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            submitGuess();
+        }
+    });
+
+    // Skapa rutnät
+    for (let i = 0; i < maxRows; i++) {
+        let row = document.createElement("div");
+        row.className = "row";
+        for (let j = 0; j < 5; j++) {
+            let cell = document.createElement("div");
+            cell.className = "cell";
+            cell.id = `cell-${i}-${j}`;
+            row.appendChild(cell);
+        }
+        grid.appendChild(row);
+    }
+
+    window.submitGuess = function () {
+        if (currentRow >= maxRows) return;
+
+        let guess = document.getElementById("guess").value.toUpperCase().trim();
+        if (guess.length !== 5) {
+            alert("Ordet måste vara 5 bokstäver!");
+            return;
+        }
+
+        // Räkna bokstäver i lösningen
+        let letterCounts = {};
+        for (let c of solution) {
+            letterCounts[c] = (letterCounts[c] || 0) + 1;
+        }
+
+        let colors = Array(5).fill("gray");
+
+        // Gröna först
+        for (let i = 0; i < 5; i++) {
+            if (guess[i] === solution[i]) {
+                colors[i] = "green";
+                letterCounts[guess[i]]--;
+            }
+        }
+
+        // Gula sen
+        for (let i = 0; i < 5; i++) {
+            if (colors[i] === "green") continue;
+            if (letterCounts[guess[i]] > 0) {
+                colors[i] = "gold";
+                letterCounts[guess[i]]--;
+            }
+        }
+
+        // Fyll i rutorna
+        for (let i = 0; i < 5; i++) {
+            const cell = document.getElementById(`cell-${currentRow}-${i}`);
+            cell.textContent = guess[i];
+
+            if (colors[i] === "green") cell.style.background = "lightgreen";
+            else if (colors[i] === "gold") cell.style.background = "gold";
+            else cell.style.background = "#999";
+        }
+
+        // Rätt ord
+       if (guess === solution) {
+    const decodedWord = solution.toLowerCase(); 
+    document.getElementById("message").textContent = "Snyggt jobbat! Lösenordet är " + decodedWord;
+    document.getElementById("retryBtn").style.display = "inline-block";
+    return;
+}
+
+        currentRow++;
+        document.getElementById("guess").value = "";
+
+        // Slut på försök
+        if (currentRow === maxRows) {
+            document.getElementById("message").textContent = "Slut på försök!";
+            document.getElementById("retryBtn").style.display = "inline-block";
+        }
+    }
+}
+</script>
+
+</body>
+</html>
