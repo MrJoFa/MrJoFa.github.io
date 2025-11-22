@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Sokoban – Julgransversion</title>
+<style>
+    body {
+        background:#222; 
+        color:white; 
+        font-family:Arial; 
+        text-align:center;
+    }
+    #game {
+        margin:20px auto;
+        display:grid;
+        grid-template-columns: repeat(10, 40px);
+        gap:2px;
+    }
+    .tile {
+        width:40px; height:40px;
+        display:flex; 
+        justify-content:center; 
+        align-items:center;
+        font-size:24px;
+    }
+    .wall { background:#444; }
+    .player { background:#3a6; }
+    .box { background:#c96; }
+    .goal { background:#66f; }
+    .box.goal { background:#0f0; }
+</style>
+</head>
+<body>
+
+<h1>🎄 Sokoban – Julgransutmaning 🎄</h1>
+<p>Använd piltangenterna för att spela</p>
+
+<div id="game"></div>
+<h2 id="leveltext"></h2>
+
+<script>
+/* ----------------------------------------------------
+   JULGRANSSPELET – nivåer
+---------------------------------------------------- */
+
+let levels = [
+    { boxes:3 },
+    { boxes:4 },
+    { boxes:5 },
+    { boxes:6 }
+];
+
+let gridSize = 10;
+let player = {x:1,y:1};
+let boxes = [];
+let goals = [];
+let level = 0;
+
+// Startar första nivån:
+startLevel(level);
+
+
+// ----------------------------------------------------
+// Skapar nivå
+// ----------------------------------------------------
+function startLevel(n){
+    document.getElementById("leveltext").textContent = "Nivå med " + levels[n].boxes + " stenar";
+    boxes = [];
+    goals = [];
+
+    // Placera gubben
+    player = {x:1, y:1};
+
+    // Skapa mål
+    for(let i=0; i<levels[n].boxes; i++){
+        goals.push({x:7, y:2+i});
+    }
+
+    // Skapa lådor
+    for(let i=0; i<levels[n].boxes; i++){
+        boxes.push({x:3, y:2+i});
+    }
+
+    draw();
+}
+
+
+// ----------------------------------------------------
+// Tangenter
+// ----------------------------------------------------
+document.addEventListener("keydown", e=>{
+    let dx=0, dy=0;
+    if(e.key==="ArrowUp") dy=-1;
+    if(e.key==="ArrowDown") dy=1;
+    if(e.key==="ArrowLeft") dx=-1;
+    if(e.key==="ArrowRight") dx=1;
+
+    movePlayer(dx,dy);
+});
+
+
+// ----------------------------------------------------
+// Flytta spelaren
+// ----------------------------------------------------
+function movePlayer(dx,dy){
+    let nx = player.x + dx;
+    let ny = player.y + dy;
+
+    // Kolla låda
+    let box = boxes.find(b=>b.x===nx && b.y===ny);
+    if(box){
+        let bx = box.x + dx;
+        let by = box.y + dy;
+
+        // Kolla om lådan kan flyttas
+        if(!boxes.some(b=>b.x===bx && b.y===by) && inside(bx,by)){
+            box.x = bx;
+            box.y = by;
+        } else {
+            return; // kan ej knuffa lådan
+        }
+    }
+
+    // Flytta spelare
+    if(inside(nx,ny)){
+        player.x = nx;
+        player.y = ny;
+    }
+
+    checkWin();
+    draw();
+}
+
+
+// ----------------------------------------------------
+// Kolla om koordinat är inne på planen
+// ----------------------------------------------------
+function inside(x,y){
+    return x>=0 && x<gridSize && y>=0 && y<gridSize;
+}
+
+
+// ----------------------------------------------------
+// Rita spelplanen
+// ----------------------------------------------------
+function draw(){
+    let div = document.getElementById("game");
+    div.innerHTML = "";
+    let html = "";
+
+    for(let y=0; y<gridSize; y++){
+        for(let x=0; x<gridSize; x++){
+            let cls = "tile";
+            let emoji = "";
+
+            if(player.x===x && player.y===y){
+                cls+=" player"; emoji="😀";
+            }
+
+            let box = boxes.find(b=>b.x===x && b.y===y);
+            if(box){
+                cls+=" box"; emoji="🧱";
+            }
+
+            let goal = goals.find(g=>g.x===x && g.y===y);
+            if(goal){
+                cls+=" goal"; 
+                if(box) emoji="💚";
+                else emoji="🎯";
+            }
+
+            html += `<div class="${cls}">${emoji}</div>`;
+        }
+    }
+
+    div.innerHTML = html;
+}
+
+
+// ----------------------------------------------------
+// Kolla nivåklar
+// ----------------------------------------------------
+function checkWin(){
+    let done = boxes.every(b => goals.some(g=>g.x===b.x && g.y===b.y));
+    if(done){
+        level++;
+        if(level < levels.length){
+            setTimeout(()=>startLevel(level), 500);
+        } else {
+            document.getElementById("leveltext").textContent =
+                "🎉 Snyggt jobbat ni klarade det! 🎉";
+        }
+    }
+}
+
+</script>
+
+</body>
+</html>
