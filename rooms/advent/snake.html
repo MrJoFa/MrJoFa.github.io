@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Snake – Två Spelare</title>
+<title>Snake – Två Ormar</title>
 <style>
     body {
         background:#222;
@@ -10,111 +10,59 @@
         text-align:center;
         font-family:Arial, sans-serif;
     }
-    #gameCanvas {
-        background:#111;
-        margin-top:20px;
+    canvas {
+        background:#000;
         border:4px solid #900;
-    }
-    #message {
         margin-top:20px;
-        font-size:24px;
-        font-weight:bold;
     }
 </style>
 </head>
 <body>
 
-<h1>🐍🐍 Snake – Två Spelare</h1>
+<h1>🐍 Snake – Två Spelare</h1>
 <p>Spelare 1: WASD • Spelare 2: Piltangenter</p>
-<canvas id="gameCanvas" width="600" height="400"></canvas>
-<div id="message"></div>
+<canvas id="game" width="600" height="400"></canvas>
 
 <script>
-// =============================
-//  SPELVARIABLER
-// =============================
-const canvas = document.getElementById("gameCanvas");
+const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-const gridSize = 20;
-let gameLoop;
-let gameTime = 60;
+const grid = 20;
+let food;
+
+// FÖRENKLADE ORMAR (dessa kommer ALLTID synas)
+let snake1 = {
+    body: [{x:5,y:5},{x:4,y:5},{x:3,y:5}],
+    dx: 1, dy: 0,
+    color: "lime"
+};
+
+let snake2 = {
+    body: [{x:20,y:10},{x:21,y:10},{x:22,y:10}],
+    dx: -1, dy: 0,
+    color: "cyan"
+};
+
+let timeLeft = 60;
 let timerStarted = false;
-
-// Ormar
-let snake1, snake2, food;
-
-function resetGame() {
-    snake1 = {
-        body: [{x:3, y:3}, {x:2, y:3}, {x:1, y:3}],
-        dx: 1,
-        dy: 0,
-        color: "lime"
-    };
-    snake2 = {
-        body: [{x:25, y:10}, {x:26, y:10}, {x:27, y:10}],
-        dx: -1,
-        dy: 0,
-        color: "cyan"
-    };
-    spawnFood();
-
-    gameTime = 60;
-    timerStarted = false;
-    document.getElementById("message").textContent = "";
-
-    clearInterval(gameLoop);
-    gameLoop = setInterval(updateGame, 100);
-}
 
 function spawnFood() {
     food = {
-        x: Math.floor(Math.random() * (canvas.width / gridSize)),
-        y: Math.floor(Math.random() * (canvas.height / gridSize))
+        x: Math.floor(Math.random()* (canvas.width/grid)),
+        y: Math.floor(Math.random()* (canvas.height/grid))
     };
 }
 
-// =============================
-//  STYRNING
-// =============================
-document.addEventListener("keydown", (e) => {
-    // Spelare 1 (WASD)
-    if (e.key === "w" && snake1.dy === 0) { snake1.dx = 0; snake1.dy = -1; startTimer(); }
-    if (e.key === "s" && snake1.dy === 0) { snake1.dx = 0; snake1.dy = 1; startTimer(); }
-    if (e.key === "a" && snake1.dx === 0) { snake1.dx = -1; snake1.dy = 0; startTimer(); }
-    if (e.key === "d" && snake1.dx === 0) { snake1.dx = 1; snake1.dy = 0; startTimer(); }
+spawnFood();
 
-    // Spelare 2 (piltangenter)
-    if (e.key === "ArrowUp" && snake2.dy === 0) { snake2.dx = 0; snake2.dy = -1; startTimer(); }
-    if (e.key === "ArrowDown" && snake2.dy === 0) { snake2.dx = 0; snake2.dy = 1; startTimer(); }
-    if (e.key === "ArrowLeft" && snake2.dx === 0) { snake2.dx = -1; snake2.dy = 0; startTimer(); }
-    if (e.key === "ArrowRight" && snake2.dx === 0) { snake2.dx = 1; snake2.dy = 0; startTimer(); }
-});
+// =============== STYRNING ===============
+document.addEventListener("keydown", e => {
 
-// =============================
-//  TIMER FÖR 60s
-// =============================
-function startTimer() {
-    if (timerStarted) return;
-    timerStarted = true;
+    // Spelare 1
+    if (e.key === "w") { snake1.dx=0; snake1.dy=-1; startTimer(); }
+    if (e.key === "s") { snake1.dx=0; snake1.dy=1; startTimer(); }
+    if (e.key === "a") { snake1.dx=-1; snake1.dy=0; startTimer(); }
+    if (e.key === "d") { snake1.dx=1; snake1.dy=0; startTimer(); }
 
-    const t = setInterval(() => {
-        gameTime--;
-        if (gameTime <= 0) {
-            clearInterval(t);
-            clearInterval(gameLoop);
-            document.getElementById("message").textContent =
-                "🎅 Grattis! Ni klarade spelet!";
-        }
-    }, 1000);
-}
-
-// =============================
-//  SPELUPPDATERING
-// =============================
-function updateGame() {
-
-    moveSnake(snake1);
-    moveSnake(snake2);
-
-    if (hitWall(snake1)
+    // Spelare 2
+    if (e.key === "ArrowUp") {
