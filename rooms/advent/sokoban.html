@@ -22,7 +22,8 @@ body {background:#222; color:white; font-family:Arial; text-align:center;}
 <h2 id="leveltext"></h2>
 
 <script>
-// ---------------- Lösbara nivåer med synliga mål ----------------
+// ---------------- Lösbara nivåer ----------------
+// Antal lådor = antal mål på varje nivå
 let levels = [
 [
 "##########",
@@ -33,17 +34,19 @@ let levels = [
 "#    ### #",
 "#      G #",
 "##########"
-],
+], // Nivå 1: 2 lådor, 2 mål
+
 [
 "##########",
 "#   P    #",
 "# B ##   #",
 "#    B G #",
 "#  ##   G#",
-"#   B  G #",
+"#   B    #",
 "#      G #",
 "##########"
-],
+], // Nivå 2: 4 lådor, 4 mål
+
 [
 "##########",
 "#P   ##  #",
@@ -51,8 +54,10 @@ let levels = [
 "#  ### G #",
 "#   B  G #",
 "#      G #",
+"#        #",
 "##########"
-],
+], // Nivå 3: 4 lådor, 4 mål
+
 [
 "##########",
 "#  P  ## #",
@@ -62,7 +67,7 @@ let levels = [
 "#   B  G #",
 "#   G    #",
 "##########"
-]
+] // Nivå 4: 6 lådor, 6 mål
 ];
 
 let grid = [];
