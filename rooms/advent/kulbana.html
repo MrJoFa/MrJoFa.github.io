@@ -26,7 +26,7 @@
 <div class="box">
     <label for="pwd">Ange lösenord:</label><br>
     <input type="password" id="pwd" placeholder="Skriv här"><br><br>
-    <button onclick="checkPassword()">Logga in</button>
+    <button onclick="checkPassword()">Konstrollera ordet</button>
 
     <div id="message" class="msg"></div>
 </div>
@@ -38,7 +38,7 @@ function checkPassword() {
 
     if (input === "julbock") {
         message.style.color = "green";
-        message.textContent = "Rätt lösenord!";
+        message.textContent = "Snyggt jobbat! Nu får ni ta 1 vanlijfudge och 1 rocky road var.";
     } else {
         message.style.color = "red";
         message.textContent = "Fel lösenord, försök igen.";
