@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flaggor</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f5f5f5;
+        text-align: center;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fragebox {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    input[type="text"] {
+        padding: 5px 10px;
+        font-size: 16px;
+    }
+    button {
+        padding: 5px 15px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    #message {
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+</style>
+</head>
+<body>
+
+<img src="/assets/images/advent/flaggor-inverted.png" alt="Flaggor">
+
+<div class="fragebox">
+    <input type="text" id="answer" placeholder="Vad är lösenordet?">
+    <button onclick="checkAnswer()">Skicka</button>
+</div>
+
+<p id="message"></p>
+
+<script>
+const correctHash = "bHVja2E="; // Base64 för "lucka"
+
+function checkAnswer() {
+    const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+    const message = document.getElementById('message');
+
+    const userHash = btoa(userAnswer);
+
+    if (userHash === correctHash) {
+        message.textContent = "Rätt! Ni har listat ut lösenordet.";
+        message.style.color = "green";
+    } else {
+        message.textContent = "Fel svar, försök igen!";
+        message.style.color = "red";
+    }
+}
+
+// Lägg till Enter-tangent funktion
+document.getElementById('answer').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        checkAnswer();
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sveriges kungar - Drag & Drop</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f5f5f5;
+    }
+    h1 {
+        text-align: center;
+    }
+    .kungen-lista {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    .kungen {
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        text-align: center;
+        width: 150px;
+        cursor: grab;
+    }
+    .kungen img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        display: block;
+        user-drag: none;
+        pointer-events: none;
+    }
+    .kungen-name {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 1.1em;
+        font-weight: bold;
+        text-align: center;
+        color: green;
+    }
+</style>
+</head>
+<body>
+<h1>Sveriges kungar</h1>
+
+<div class="kungen-lista" id="kungenLista">
+    <div class="kungen" draggable="true" data-order="1">
+        <img src="../../assets/images/advent/kungar/Gustav_Vasa.png" alt="Gustav Vasa">
+        <div class="kungen-name">Gustav Vasa</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="2">
+        <img src="../../assets/images/advent/kungar/Erik_XIV.png" alt="Erik XIV">
+        <div class="kungen-name">Erik XIV</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="3">
+        <img src="../../assets/images/advent/kungar/Johan_III.png" alt="Johan III">
+        <div class="kungen-name">Johan III</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="4">
+        <img src="../../assets/images/advent/kungar/Sigismund.png" alt="Sigismund">
+        <div class="kungen-name">Sigismund</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="5">
+        <img src="../../assets/images/advent/kungar/Karl_IX.png" alt="Karl IX">
+        <div class="kungen-name">Karl IX</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="6">
+        <img src="../../assets/images/advent/kungar/Gustav_II_Adolf.png" alt="Gustav II Adolf">
+        <div class="kungen-name">Gustav II Adolf</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="7">
+        <img src="../../assets/images/advent/kungar/Kristina.png" alt="Kristina">
+        <div class="kungen-name">Kristina</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="8">
+        <img src="../../assets/images/advent/kungar/Karl_X_Gustav.png" alt="Karl X Gustav">
+        <div class="kungen-name">Karl X Gustav</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="9">
+        <img src="../../assets/images/advent/kungar/Karl_XI.png" alt="Karl XI">
+        <div class="kungen-name">Karl XI</div>
+    </div>
+    <div class="kungen" draggable="true" data-order="10">
+        <img src="../../assets/images/advent/kungar/Karl_XII.png" alt="Karl XII">
+        <div class="kungen-name">Karl XII</div>
+    </div>
+</div>
+
+<button id="kontrolleraBtn" style="display:block; margin:30px auto;">Kontrollera ordning</button>
+<div id="result"></div>
+
+<script>
+// --- Slumpa startordningen ---
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+const lista = document.getElementById('kungenLista');
+const items = Array.from(lista.children);
+shuffle(items);
+items.forEach(item => lista.appendChild(item));
+
+// --- Drag & Drop ---
+let dragSrcEl = null;
+lista.addEventListener('dragstart', function(e){
+    dragSrcEl = e.target;
+    e.dataTransfer.effectAllowed = 'move';
+});
+lista.addEventListener('dragover', function(e){
+    e.preventDefault();
+});
+lista.addEventListener('drop', function(e){
+    e.preventDefault();
+    if(e.target.closest('.kungen') && dragSrcEl !== e.target.closest('.kungen')){
+        const target = e.target.closest('.kungen');
+        lista.insertBefore(dragSrcEl, target.nextSibling);
+    }
+});
+
+// --- Kontrollera ordning ---
+document.getElementById('kontrolleraBtn').addEventListener('click', function(){
+    const barn = lista.querySelectorAll('.kungen');
+    let korrekt = true;
+    barn.forEach((kungen, index)=>{
+        if(parseInt(kungen.dataset.order) !== index + 1){
+            korrekt = false;
+        }
+    });
+    const resultDiv = document.getElementById('result');
+   if(korrekt){
+    const base64 = "w7Zuc2tlbGlzdGE="; // kan även genereras med btoa(unescape(encodeURIComponent("önskelista")))
+    const losenord = decodeURIComponent(escape(atob(base64)));
+    resultDiv.textContent = `Rätt ordning!`;
+    resultDiv.style.color = "green";
+}else {
+        resultDiv.textContent = "Fel ordning, försök igen.";
+        resultDiv.style.color = "red";
+    }
+});
+</script>
+</body>
+</html>

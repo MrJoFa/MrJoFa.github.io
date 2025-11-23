@@ -16,7 +16,7 @@ De första bokstäverna i ländernas namn bildar ett lösenord.
 <p id="message"></p>
 
 <script>
-const correctHash = "cGVwcGFya2FrYQ=="; // Base64 för "pepparkaka"
+const correctHash = "cGVwcGFya2FrYQ=="; 
 
 function checkAnswer() {
     const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
