@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<img src="/assets/images/advent/hus.jpg" usemap="#map1" alt=""style="width:100%; height:auto;">
+<map name="map1">
+  <area shape="rect" coords="611,435,665,556" href="hall.html" alt="door">
+  <area shape="rect" coords="830,585,870,630" href="#" alt="pot">
+</map>
+</body>
+</html>
+
+<script>
+function resizeMap(){
+  const imgs=document.querySelectorAll('img[usemap]');
+  imgs.forEach(img=>{
+    const map=document.querySelector('map[name="'+img.useMap.slice(1)+'"]');
+    if(!map) return;
+    const scaleX=img.clientWidth/img.naturalWidth;
+    const scaleY=img.clientHeight/img.naturalHeight;
+    map.querySelectorAll('area').forEach(area=>{
+      if(!area.dataset.original) area.dataset.original=area.coords;
+      const orig=area.dataset.original.split(',').map(Number);
+      const scaled=orig.map((v,i)=>(i%2===0)?Math.round(v*scaleX):Math.round(v*scaleY));
+      area.coords=scaled.join(',');
+    });
+  });
+}
+window.addEventListener('load',resizeMap);
+window.addEventListener('resize',resizeMap);
+</script>`;
