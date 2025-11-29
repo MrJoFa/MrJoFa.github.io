@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Lösenordsruta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .box {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .msg {
+            margin-top: 10px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <label for="pwd">Ange lösenord:</label><br>
+    <input type="password" id="pwd" placeholder="Skriv här"><br><br>
+    <button onclick="checkPassword()">Konstrollera ordet</button>
+
+    <div id="message" class="msg"></div>
+</div>
+
+<script>
+function checkPassword() {
+    const input = document.getElementById("pwd").value;
+    const message = document.getElementById("message");
+
+    if (input === "julbock") {
+        message.style.color = "green";
+        message.textContent = "Snyggt jobbat! Nu får ni ta 1 vanlijfudge och 1 rocky road var.";
+    } else {
+        message.style.color = "red";
+        message.textContent = "Fel lösenord, försök igen.";
+    }
+}
+</script>
+
+</body>
+</html>
