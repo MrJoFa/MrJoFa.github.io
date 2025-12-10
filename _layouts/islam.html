@@ -2,65 +2,49 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>{{ page.title }} | Escape Room</title>
+  <title>{{ page.title }} | Islam Escape Room</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: 'Trebuchet MS', Arial, sans-serif;
-      background: radial-gradient(circle at center, #1a1a2e, #000);
-      color: #e0e0e0;
+      font-family: "Georgia", serif;
+      background: #fdf6e3; /* mjuk bakgrund */
+      color: #333;
+      line-height: 1.6;
       display: flex;
       justify-content: center;
-      align-items: center;
+      padding: 2rem;
     }
 
     .room {
+      max-width: 1000px;
       width: 100%;
-      max-width: 900px;
-      min-height: 90vh;
-      background: rgba(20, 20, 40, 0.95);
-      border: 2px solid #3fffd8;
-      border-radius: 20px;
-      box-shadow: 0 0 40px rgba(63, 255, 216, 0.15);
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       padding: 2rem;
       box-sizing: border-box;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .room::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        45deg,
-        rgba(63,255,216,0.03),
-        rgba(63,255,216,0.03) 2px,
-        transparent 2px,
-        transparent 6px
-      );
-      pointer-events: none;
     }
 
     h1 {
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: #6b4226; /* mörkbrun */
       text-align: center;
       margin-top: 0;
       font-size: 2.2rem;
-      letter-spacing: 1px;
-      color: #3fffd8;
-      text-shadow: 0 0 10px rgba(63,255,216,0.4);
     }
 
-    .content {
-      position: relative;
-      z-index: 1;
+    .content img {
+      max-width: 100%;
+      height: auto; /* bevarar proportioner */
+      display: block;
+      margin: 1rem auto;
+      border-radius: 10px;
     }
 
     a {
-      color: #3fffd8;
+      color: #a0522d; /* brunaktig länk */
       text-decoration: none;
       font-weight: bold;
     }
@@ -70,42 +54,34 @@
 
     .hint-box {
       margin-top: 2rem;
-      padding: 1.2rem;
-      border-radius: 12px;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(63,255,216,0.3);
+      padding: 1rem 1.5rem;
+      background: #fff8e7;
+      border-left: 4px solid #a0522d;
+      border-radius: 8px;
     }
 
-    .hint-title {
-      font-weight: bold;
-      color: #ffd166;
-      margin-bottom: 0.5rem;
+    .hint-box strong {
+      color: #a0522d;
     }
 
-    .progress {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 0.9rem;
-      opacity: 0.8;
-      color: #aaa;
+    /* Anpassning av map-area klick */
+    area {
+      cursor: pointer;
     }
   </style>
 </head>
-
 <body>
   <div class="room">
-
-    <div class="progress">
-      {{ page.progress }}
-    </div>
-
     <h1>{{ page.title }}</h1>
-
     <div class="content">
       {{ content }}
     </div>
-
   </div>
+
+  <script>
+    function showPopup(text, title = "Ledtråd") {
+      alert(title + "\n\n" + text);
+    }
+  </script>
 </body>
 </html>
