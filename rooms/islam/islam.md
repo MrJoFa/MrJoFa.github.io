@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: islam
 title: Islam Escape Room
 ---
 

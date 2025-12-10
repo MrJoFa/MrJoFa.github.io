@@ -1,9 +1,9 @@
 ---
-layout: default
-title: Islam Escape Room
+layout: islam
+title: Resan
 ---
 
-# Resan 
+
 Du sitter på flyget på väg till Saudiarabien och försöker slappna av. 
 
 Efter en stund blir du uttråkad. Du behöver hitta något att fördriva tiden med tills du är framme. 
