@@ -16,3 +16,4 @@ Du hoppar in i en taxi och chauffören frågar dig vart du vill åka.
 2. Jag vill till [nirvana!](/rooms/rum2-2.html)
 3. Följ efter den där [bilen!](/rooms/rum2-1.html) 
 
+islam-rum3.html
