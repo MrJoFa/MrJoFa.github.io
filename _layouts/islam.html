@@ -6,22 +6,101 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body { margin: 0; font-family: Georgia, serif; background: #fdf6e3; color: #333; line-height: 1.6; display: flex; justify-content: center; padding: 2rem; }
-    .room { max-width: 1000px; width: 100%; background: #fff; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 2rem; box-sizing: border-box; }
-    h1 { font-family: Palatino Linotype, Book Antiqua, Palatino, serif; color: #6b4226; text-align: center; margin-top: 0; font-size: 2.2rem; }
-    .content img { max-width: 100%; height: auto; display: block; margin: 1rem auto; border-radius: 10px; }
-    a { color: #a0522d; text-decoration: none; font-weight: bold; }
-    a:hover { text-decoration: underline; }
-    .hint-box { margin-top: 2rem; padding: 1rem 1.5rem; background: #fff8e7; border-left: 4px solid #a0522d; border-radius: 8px; }
+    body {
+      margin: 0;
+      background: #fdf6e3;
+      font-family: Georgia, serif;
+      color: #333;
+      line-height: 1.6;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+    }
 
-    #game-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; font-family: Georgia, serif; }
-    .game-popup-box { background: #fdf6e3; color: #333; padding: 25px 35px; border-radius: 12px; max-width: 400px; text-align: center; border: 2px solid #a0522d; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-    .game-popup-box h3 { margin-top: 0; font-size: 22px; color: #a0522d; }
-    .game-popup-box p { font-size: 18px; line-height: 1.4; }
-    .game-popup-box button { margin-top: 20px; padding: 12px 24px; background: #d9b382; color: #000; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; }
-    .game-popup-box button:hover { background: #c69b6d; }
+    .room {
+      width: 100%;
+      max-width: 1000px;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #6b4226;
+      font-size: 2.2rem;
+      margin-top: 0;
+      font-family: "Palatino Linotype", serif;
+    }
+
+    .content img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+      border-radius: 10px;
+    }
+
+    a {
+      color: #a0522d;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    .hint-box {
+      margin-top: 2rem;
+      padding: 1rem 1.5rem;
+      background: #fff8e7;
+      border-left: 4px solid #a0522d;
+      border-radius: 8px;
+    }
+
+    /* Popup */
+    #game-popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      font-family: Georgia, serif;
+    }
+
+    .game-popup-box {
+      background: #fdf6e3;
+      color: #333;
+      padding: 25px 35px;
+      border-radius: 12px;
+      max-width: 400px;
+      text-align: center;
+      border: 2px solid #a0522d;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .game-popup-box h3 {
+      margin: 0 0 10px;
+      color: #a0522d;
+    }
+
+    .game-popup-box button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #d9b382;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .game-popup-box button:hover {
+      background: #c69b6d;
+    }
   </style>
 </head>
+
 <body>
   <div class="room">
     <h1>{{ page.title }}</h1>
@@ -30,6 +109,7 @@
     </div>
   </div>
 
+  <!-- Popup -->
   <div id="game-popup">
     <div class="game-popup-box">
       <h3 id="game-popup-title">Meddelande</h3>
@@ -38,18 +118,38 @@
     </div>
   </div>
 
+  <!-- Image map resizer -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/image-map-resizer/1.0.10/js/imageMapResizer.min.js"></script>
-  <script>
-    imageMapResize();
 
-    function showPopup(text, title = "Ledtråd") {
-      document.getElementById("game-popup-title").innerText = title;
-      document.getElementById("game-popup-text").innerText = text;
-      document.getElementById("game-popup").style.display = "flex";
+  <script>
+  // Popup-funktioner
+  function showPopup(text, title = "Ledtråd") {
+    document.getElementById("game-popup-title").innerText = title;
+    document.getElementById("game-popup-text").innerText = text;
+    document.getElementById("game-popup").style.display = "flex";
+  }
+  function closePopup() {
+    document.getElementById("game-popup").style.display = "none";
+  }
+
+  // Gör image map responsiv
+  document.addEventListener('DOMContentLoaded', function () {
+    const img = document.getElementById('world-map-img');
+    if (!img) return;
+
+    function init() {
+      try { imageMapResize(); } catch(e) {}
     }
-    function closePopup() {
-      document.getElementById("game-popup").style.display = "none";
-    }
+
+    if (img.complete) init();
+    else img.addEventListener('load', init);
+
+    window.addEventListener('resize', () => {
+      clearTimeout(window._imr);
+      window._imr = setTimeout(init, 150);
+    });
+  });
   </script>
+
 </body>
 </html>
