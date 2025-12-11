@@ -1,6 +1,6 @@
 ---
 layout: islam
-title: Rum 1 – Var föddes profeten Muhammed?
+title: Islam Escape room 
 ---
 
 # Välkommen!
