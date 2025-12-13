@@ -144,7 +144,7 @@ document.getElementById('kontrolleraBtn').addEventListener('click', function(){
    if(korrekt){
     const base64 = "w7Zuc2tlbGlzdGE="; // kan även genereras med btoa(unescape(encodeURIComponent("önskelista")))
     const losenord = decodeURIComponent(escape(atob(base64)));
-    resultDiv.textContent = `Rätt ordning! Lösenordet är ${losenord}`;
+    resultDiv.textContent = `Rätt ordning! Ni får en skumtomte som belöning. Lösenordet är ${losenord}`;
     resultDiv.style.color = "green";
 }else {
         resultDiv.textContent = "Fel ordning, försök igen.";
