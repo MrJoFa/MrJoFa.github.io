@@ -7,20 +7,41 @@ title: Pokémon
 
 <img src="/assets/images/advent/pokemon.jpg">
 
-Hitta följande information från era Pokémonkort: 
+Hitta Pokémonkorten tillsammans och addera sedan deras HP. 
+Vad blir summan?
 
-Addera min HP
-
-Subtrahera skadan på min basattack 
-
-Multiplicera med mitt pokédexnummer  
-
-Det sista kortet gömmer sig bakom en tavla någonstans i huset. Ni behöver inte ta ner tavlan utan titta bara försiktigt i kanterna.
-Addera kortets HP.
-
-Vad blir svaret?
+<img src="/assets/images/advent/p1.jpg">
+<img src="/assets/images/advent/p2.jpg">
+<img src="/assets/images/advent/p3.jpg">
+<img src="/assets/images/advent/p4.jpg">
+<img src="/assets/images/advent/p5.jpg">
 
 
+<br>
 
+<div>
+  <input type="text" id="answer" placeholder="Vad blir summan?">
+  <button onclick="checkAnswer()">Skicka</button>
+</div>
 
+<p id="message"></p>
+
+<script>
+const correctHash = "NjMw"; 
+
+function checkAnswer() {
+    const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+    const message = document.getElementById('message');
+
+    const userHash = btoa(userAnswer);
+
+    if (userHash === correctHash) {
+        message.textContent = "Rätt! Bra jobbat. Ni får välja varsin godis från pappas julklappar.";
+        message.style.color = "green";
+    } else {
+        message.textContent = "Fel svar, försök igen!";
+        message.style.color = "red";
+    }
+}
+</script>
 
