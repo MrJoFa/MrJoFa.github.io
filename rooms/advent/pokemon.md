@@ -36,7 +36,7 @@ function checkAnswer() {
     const userHash = btoa(userAnswer);
 
     if (userHash === correctHash) {
-        message.textContent = "Rätt! Bra jobbat. Ni får välja varsin godis från pappas julklappar.";
+        message.textContent = "Rätt! Bra jobbat. Lösenodet är: marsipan. Ni får också välja varsin godis från pappas julklappar.";
         message.style.color = "green";
     } else {
         message.textContent = "Fel svar, försök igen!";
