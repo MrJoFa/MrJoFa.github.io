@@ -1,5 +1,7 @@
-# Moské – en rundtur för dig
-
+---
+layout: page
+title: "Moské – en rundtur för dig"
+---
 Följ med in i en moské och upplev hur det ser ut när människor ber och förbereder sig. Tänk dig att du går in genom dörren och får se allt på nära håll!
 
 ---
@@ -38,12 +40,10 @@ Innan du ber gör du **wudu**, en religiös tvättning. Den kan göras hemma ell
 ![Bönehallen i moskén](https://mrjofa.github.io/assets/images/islam/prayer-hall.webp)  
 *Bönehallen där muslimer samlas för att be.*
 
-Nu går du in i huvudbönehallen. Den är stor och öppen så att alla kan stå sida vid sida. Det visar att alla människor är lika inför Gud.  
-
-Bönehallen är alltid riktad mot **Kaba i Mekka**. När muslimer ber vänder de sig dit, var de än bor i världen.
+Nu går du in i huvudbönehallen. Den är stor och öppen så att alla kan stå sida vid sida. Det visar att alla människor är lika inför Gud. I många moskéer sitter eller står män och kvinnor på olika platser under bönen, men alla deltar på samma sätt i bönen.  
 
 <div class="fact" style="background-color:#F0FFE5; padding:10px; border-left:5px solid #7AC943;">
-<strong>Uppgift:</strong> Titta på bilden och försök hitta var mihrab skulle sitta.
+<strong>Tänk på:</strong> Bönehallen är alltid riktad mot **Kaba i Mekka**. När muslimer ber vänder de sig dit, var de än bor i världen.
 </div>
 
 ---
