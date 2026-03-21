@@ -23,30 +23,16 @@ div[id^="question"] {
 }
 /* ===== Virtuell moskérundtur ===== */
 
-.mosque-tour {
-  max-width: 850px;
-  margin: 40px auto;
-  padding: 0 20px;
-  line-height: 1.7;
+.tip {
+  background-color: #FFF4E5;
+  padding: 10px;
+  border-left: 5px solid #FFA500;
+  margin: 10px 0;
 }
 
-.mosque-tour h2 {
-  margin-top: 50px;
-}
-
-.mosque-tour figure {
-  margin: 30px auto;
-  text-align: center;
-}
-
-.mosque-tour img {
-  width: 100%;
-  max-width: 700px;
-  border-radius: 6px;
-}
-
-.mosque-tour figcaption {
-  font-size: 0.9rem;
-  color: #555;
-  margin-top: 8px;
+.fact {
+  background-color: #F0FFE5;
+  padding: 10px;
+  border-left: 5px solid #7AC943;
+  margin: 10px 0;
 }
