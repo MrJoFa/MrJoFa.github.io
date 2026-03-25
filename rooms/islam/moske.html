@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moské – en rundtur för dig</title>
     <style>
+        .tour-img { width: 100%; height: 400px; object-fit: cover; }
+        .quiz-btn { padding: 10px; margin: 5px; cursor: pointer; }
         body { 
             font-family: 'Segoe UI', sans-serif; 
             line-height: 1.6; 
@@ -50,24 +52,25 @@
 <body>
 
     <h1>Moské – en rundtur för dig</h1>
-    <p>Följ med in i en moské och upplev hur det ser ut. Tänk dig att du går in genom dörren!</p>
+    <p>Följ med in i en moské och upplev hur det ser ut.</p>
 
     <hr>
 
     <h3>Skor</h3>
     <img src="https://mrjofa.github.io/assets/images/islam/skor-utanfor-moske-islam.jpg" class="tour-img">
+    <p>Alla tar av sig skorna innan de går in i moskén.</p>
     <div class="tip"><strong>Tänk på att…</strong> Innan man ber måste man vara ren. Därför tar du av dig skorna.</div>
 
     <hr>
 
     <h3>Wudu (religiös tvättning)</h3>
     <img src="https://mrjofa.github.io/assets/images/islam/ablution.webp" class="tour-img">
-    
+    <p>Innan du ber gör du <strong>wudu</strong>, en religiös tvättning. Den hjälper dig att känna dig ren och redo att be.</p>
     <div id="wudu-game">
         <p><strong>Uppdrag:</strong> Klicka på stegen i rätt ordning för att göra wudu!</p>
         <div id="buttons-container">
             <button class="step-btn" onclick="checkStep(this, 3)">Tvätta ansiktet och armarna</button>
-            <button class="step-btn" onclick="checkStep(this, 1)">1. Tvätta händerna</button>
+            <button class="step-btn" onclick="checkStep(this, 1)">Tvätta händerna</button>
             <button class="step-btn" onclick="checkStep(this, 6)">Tvätta fötterna</button>
             <button class="step-btn" onclick="checkStep(this, 2)">Skölj mun och näsa</button>
             <button class="step-btn" onclick="checkStep(this, 5)">Rengör öronen</button>
@@ -82,14 +85,15 @@
 
     <h3>Bönehallen</h3>
     <img src="https://mrjofa.github.io/assets/images/islam/prayer-hall.webp" class="tour-img">
-    <p>Hallen är stor och öppen. Det visar att alla människor är lika inför Gud.</p>
-    <div class="fact"><strong>Visste du?</strong> Bönehallen är alltid riktad mot <strong>Kaba i Mekka</strong>.</div>
+    <p>Nu går du in i bönehallen. Den är stor och öppen så att alla kan stå sida vid sida. Det visar att alla människor är lika inför Gud.</p>
+    <div class="fact"><strong>Visste du?</strong> I många moskéer sitter eller står män och kvinnor på olika platser under bönen, men alla deltar på samma sätt i bönen.</div>
 
     <hr>
 
     <h3>Mihrab</h3>
     <img src="https://mrjofa.github.io/assets/images/islam/mihrab.webp" class="tour-img">
     <p>I väggen finns en liten inbuktning som kallas <strong>mihrab</strong>. Den visar åt vilket håll du ska vända dig när du ber.</p>
+<div class="fact"><strong>Visste du?</strong> När muslimer ber vänder de sig mot <strong>Kaba i Mekka</strong>, var de än bor i världen.</div>
 
     <hr>
 
@@ -101,23 +105,55 @@
 
     <h3>Kvällsbön</h3>
     <img src="https://mrjofa.github.io/assets/images/islam/interior-moske-islam-muslimer.jpg" class="tour-img">
-    <p>Kvällsbönen kallas <strong>’isha’</strong>. Männen står på rad, alla vända mot Mekka.</p>
+    <p>I moskén ber muslimer flera gånger om dagen. Kvällsbönen kallas <strong>’isha’</strong>. Männen står på rad, alla vända mot Mekka.</p>
 
     <hr>
 
     <h3>Kaba</h3>
     <img src="https://mrjofa.github.io/assets/images/islam/kaba.webp" class="tour-img">
-    <p><strong>Kaba</strong> är en rätblocksformad byggnad i Mekka som är väldigt helig.</p>
+    <p><strong>Kaba</strong> är en rätblocksformad byggnad i Mekka. Den är väldigt helig för muslimer och alla vänder sig mot den när de ber.</p>
 
     <hr>
 
     <h3>Dekorationer och gemenskap</h3>
     <img src="https://mrjofa.github.io/assets/images/islam/ceiling.webp" class="tour-img">
-    <p>I moskén finns vackra mönster, men inga bilder på Allah eller Muhammed.</p>
+    <p>I moskén finns vackra mönster och text, men inga bilder på Allah eller Muhammed. Oftast finns inte heller bilder på människor eller djur.  
+Moskén är inte bara en plats för bön – det är också en plats där människor träffas, lär sig saker och har aktiviteter tillsammans.
+<div class="fact"><strong>Visste du?</strong> Ordet moské kommer från arabiskan och betyder ungefär "plats för bön”.</div>
 
+</p>
+<hr>
+<div id="quiz-container" style="background-color: #f0f7ff; padding: 25px; border-radius: 15px; border: 2px solid #007bff;">
+    <h2 style="text-align: center; margin-top: 0;">Moské-Quiz: Vad minns du?</h2>
+    
+    <div class="quiz-question" style="margin-bottom: 20px;">
+        <p><strong>1. Vad kallas den lilla nischen i väggen som visar vägen mot Mekka?</strong></p>
+        <button class="quiz-btn" onclick="checkQuiz(this, false)">Minbar</button>
+        <button class="quiz-btn" onclick="checkQuiz(this, true)">Mihrab</button>
+        <button class="quiz-btn" onclick="checkQuiz(this, false)">Kaba</button>
+    </div>
+
+    <div class="quiz-question" style="margin-bottom: 20px;">
+        <p><strong>2. Varför tar man av sig skorna innan man går in?</strong></p>
+        <button class="quiz-btn" onclick="checkQuiz(this, false)">För att mattan är dyr</button>
+        <button class="quiz-btn" onclick="checkQuiz(this, true)">För att visa respekt och vara ren</button>
+        <button class="quiz-btn" onclick="checkQuiz(this, false)">Det är bara en gammal tradition</button>
+    </div>
+
+    <div class="quiz-question">
+        <p><strong>3. Vad finns oftast INTE som dekoration i en moské?</strong></p>
+        <button class="quiz-btn" onclick="checkQuiz(this, false)">Vackra mönster</button>
+        <button class="quiz-btn" onclick="checkQuiz(this, false)">Arabisk skrift</button>
+        <button class="quiz-btn" onclick="checkQuiz(this, true)">Bilder på människor</button>
+    </div>
+    
+    <p id="quiz-feedback" style="text-align: center; font-weight: bold; margin-top: 20px; min-height: 1.5em;"></p>
+</div>
     <hr>
 
     <h3>Avslutning</h3>
+    <p>Nu har du fått följa med in i en moské. Du har sett hur man tar av sig skorna, gör wudu, ber i bönehallen, tittar på mihrab och minbar, och sett de vackra mönstren.  
+Moskén är både en plats för bön och gemenskap.</p>
     <div class="tip"><strong>Uppgift:</strong> Vad tyckte du var mest spännande med besöket?</div>
 
     <script>
@@ -149,4 +185,21 @@
             }, 500);
         }
     }
+    function checkQuiz(btn, isCorrect) {
+    const feedback = document.getElementById('quiz-feedback');
+    const siblings = btn.parentNode.querySelectorAll('.quiz-btn');
+    
+    // Inaktivera alla knappar för just den här frågan efter klick
+    siblings.forEach(s => s.disabled = true);
+
+    if (isCorrect) {
+        btn.classList.add('quiz-correct');
+        feedback.innerText = "Helt rätt! Bra jobbat!";
+        feedback.style.color = "green";
+    } else {
+        btn.classList.add('quiz-wrong');
+        feedback.innerText = "Inte riktigt, men nu vet du till nästa gång!";
+        feedback.style.color = "#dc3545";
+    }
+}
 </script>
