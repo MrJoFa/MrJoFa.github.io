@@ -201,19 +201,36 @@ Moskén är både en plats för bön och gemenskap.</p>
     }
     function checkQuiz(btn, isCorrect) {
     const feedback = document.getElementById('quiz-feedback');
-    const siblings = btn.parentNode.querySelectorAll('.quiz-btn');
-    
-    // Inaktivera alla knappar för just den här frågan efter klick
-    siblings.forEach(s => s.disabled = true);
+    const parent = btn.parentNode;
+    const allButtonsInQuestion = parent.querySelectorAll('.quiz-btn');
 
     if (isCorrect) {
+        // RÄTT SVAR
         btn.classList.add('quiz-correct');
-        feedback.innerText = "Helt rätt! Bra jobbat!";
-        feedback.style.color = "green";
+        btn.classList.remove('quiz-wrong'); // Ta bort rött om de klickat fel innan
+        feedback.innerText = "Helt rätt! Bra jobbat! 🎉";
+        feedback.style.color = "#28a745";
+        
+        // LÅS knappar först när man svarat RÄTT
+        allButtonsInQuestion.forEach(b => {
+            b.disabled = true; 
+            if (!b.classList.contains('quiz-correct')) {
+                b.style.opacity = "0.5";
+            }
+        });
     } else {
+        // FEL SVAR
         btn.classList.add('quiz-wrong');
-        feedback.innerText = "Inte riktigt, försök igen!";
+        feedback.innerText = "Inte riktigt rätt, testa igen! 🤔";
         feedback.style.color = "#dc3545";
+        
+        // VIKTIGT: Se till att knappen INTE blir disabled
+        btn.disabled = false; 
+
+        // Ta bort den röda färgen efter en kort stund så de ser att de kan klicka igen
+        setTimeout(() => {
+            btn.classList.remove('quiz-wrong');
+        }, 800);
     }
 }
 </script>
