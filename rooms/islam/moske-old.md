@@ -1,7 +1,4 @@
----
-layout: page
-title: Moské
-## "Moské – en rundtur för dig"
+**"Moské – en rundtur för dig"**
 ---
 Följ med in i en moské och upplev hur det ser ut när människor ber och förbereder sig. Tänk dig att du går in genom dörren och får se allt på nära håll!
 
