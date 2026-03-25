@@ -6,85 +6,65 @@
     <title>Moské – en rundtur för dig</title>
     <style>
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             line-height: 1.6; 
             max-width: 800px; 
             margin: auto; 
             padding: 20px; 
-            color: #333; 
-            background-color: #fcfcfc;
+            background-color: #f9f9f9;
         }
         
-        /* Gör alla bilder lika stora och snygga */
+        /* Bildinställningar */
         .tour-img { 
             width: 100%; 
-            height: 450px; /* Justera höjden här om du vill */
+            height: 400px; 
             object-fit: cover; 
-            border-radius: 12px;
-            display: block;
-            margin: 25px 0 10px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        h1 { color: #2c3e50; text-align: center; }
-        h3 { color: #2c3e50; margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        hr { border: 0; height: 1px; background: #eee; margin: 40px 0; }
+        /* Boxar */
+        .tip { background-color: #FFF4E5; border-left: 5px solid #FFA500; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .fact { background-color: #F0FFE5; border-left: 5px solid #7AC943; padding: 15px; margin: 20px 0; border-radius: 5px; }
 
-        /* Styling för boxar */
-        .tip, .fact { padding: 15px; margin: 20px 0; border-radius: 8px; }
-        .tip { background-color: #FFF4E5; border-left: 5px solid #FFA500; }
-        .fact { background-color: #F0FFE5; border-left: 5px solid #7AC943; }
-
-        /* Wudu-spelet */
+        /* Wudu-spelet styling */
         #wudu-game { 
-            background: #eef9ff; 
-            padding: 25px; 
-            border: 2px dashed #00AEEF; 
-            border-radius: 15px; 
+            background: #e1f5fe; 
+            padding: 20px; 
+            border: 2px solid #00AEEF; 
+            border-radius: 10px; 
             margin: 20px 0;
         }
-        .game-instr { margin-bottom: 15px; font-weight: bold; color: #007ca8; }
-        .step-btn { 
+          .step-btn { 
             display: block; width: 100%; padding: 12px; margin: 8px 0; 
-            background: white; border: 1px solid #abdcf0; cursor: pointer; text-align: left;
-            border-radius: 8px; font-size: 1rem; transition: 0.3s;
+            background: white; border: 1px solid #ccc; cursor: pointer; 
+            border-radius: 5px; font-size: 1rem; transition: 0.2s;
         }
-        .step-btn:hover { background-color: #f0faff; border-color: #00AEEF; }
-        .step-btn.correct { background-color: #d4edda; border-color: #28a745; cursor: default; color: #155724; }
-        .step-btn.wrong { background-color: #f8d7da; border-color: #dc3545; animation: shake 0.3s; }
-        #game-message { font-weight: bold; margin-top: 15px; min-height: 1.5em; text-align: center; }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
+        .step-btn:hover { background-color: #f0f0f0; }
+        .step-btn.correct { background-color: #d4edda !important; border-color: #28a745; cursor: default; }
+        .step-btn.wrong { background-color: #f8d7da; border-color: #dc3545; }
+        #game-message { font-weight: bold; text-align: center; margin-top: 10px; min-height: 1.5em; }
     </style>
 </head>
 <body>
 
     <h1>Moské – en rundtur för dig</h1>
-    <p style="text-align: center; font-size: 1.1em;">Följ med in i en moské och upplev hur det ser ut när människor ber och förbereder sig. Tänk dig att du går in genom dörren och får se allt på nära håll!</p>
+    <p>Följ med in i en moské och upplev hur det ser ut. Tänk dig att du går in genom dörren!</p>
 
     <hr>
 
     <h3>Skor</h3>
-    <img src="https://mrjofa.github.io/assets/images/islam/skor-utanfor-moske-islam.jpg" alt="Skor utanför moské" class="tour-img">
-    <p><em>Alla tar av sig skorna innan de går in i moskén.</em></p>
-    <div class="tip">
-        <strong>Tänk på att…</strong> Innan man ber måste man vara ren. Därför tar du av dig skorna.
-    </div>
+    <img src="https://mrjofa.github.io/assets/images/islam/skor-utanfor-moske-islam.jpg" class="tour-img">
+    <div class="tip"><strong>Tänk på att…</strong> Innan man ber måste man vara ren. Därför tar du av dig skorna.</div>
 
     <hr>
 
     <h3>Wudu (religiös tvättning)</h3>
-    <img src="https://mrjofa.github.io/assets/images/islam/ablution.webp" alt="Wudu" class="tour-img">
-    <p>Innan du ber gör du <strong>wudu</strong>, en religiös tvättning. Den hjälper dig att känna dig ren och redo att be. </p>
-
+    <img src="https://mrjofa.github.io/assets/images/islam/ablution.webp" class="tour-img">
+    
     <div id="wudu-game">
-        <div class="game-instr">Uppdrag: Klicka på stegen i rätt ordning för att göra wudu!</div>
+        <p><strong>Uppdrag:</strong> Klicka på stegen i rätt ordning för att göra wudu!</p>
         <div id="buttons-container">
             <button class="step-btn" onclick="checkStep(this, 3)">Tvätta ansiktet och armarna</button>
             <button class="step-btn" onclick="checkStep(this, 1)">1. Tvätta händerna</button>
@@ -95,34 +75,78 @@
         </div>
         <p id="game-message"></p>
     </div>
-
-    <div class="tip">
-        <strong>Tips:</strong> Ordningen är viktig, så gör stegen i rätt följd.
-    </div>
-
+<div class="tip">
+    <strong>Tips:</strong> Ordningen är viktig, så gör stegen i rätt följd.
+</div>
     <hr>
 
     <h3>Bönehallen</h3>
-    <img src="https://mrjofa.github.io/assets/images/islam/prayer-hall.webp" alt="Bönehallen i moskén" class="tour-img">
-    <p>Nu går du in i huvudbönehallen. Den är stor och öppen så att alla kan stå sida vid sida. Det visar att alla människor är lika inför Gud. I många moskéer sitter eller står män och kvinnor på olika platser under bönen, men alla deltar på samma sätt i bönen.</p>
-
-    <div class="fact">
-        <strong>Tänk på:</strong> Bönehallen är alltid riktad mot <strong>Kaba i Mekka</strong>. När muslimer ber vänder de sig dit, var de än bor i världen.
-    </div>
+    <img src="https://mrjofa.github.io/assets/images/islam/prayer-hall.webp" class="tour-img">
+    <p>Hallen är stor och öppen. Det visar att alla människor är lika inför Gud.</p>
+    <div class="fact"><strong>Visste du?</strong> Bönehallen är alltid riktad mot <strong>Kaba i Mekka</strong>.</div>
 
     <hr>
 
     <h3>Mihrab</h3>
-    <img src="https://mrjofa.github.io/assets/images/islam/mihrab.webp" alt="Mihrab i moskén" class="tour-img">
+    <img src="https://mrjofa.github.io/assets/images/islam/mihrab.webp" class="tour-img">
     <p>I väggen finns en liten inbuktning som kallas <strong>mihrab</strong>. Den visar åt vilket håll du ska vända dig när du ber.</p>
 
     <hr>
 
     <h3>Minbar</h3>
-    <img src="https://mrjofa.github.io/assets/images/islam/minbar.webp" alt="Minbar i moskén" class="tour-img">
-    <p>Bredvid mihrab står <strong>minbar</strong>, predikstolen. Där står imamen och håller sin predikan under fredagsbönen.</p>
+    <img src="https://mrjofa.github.io/assets/images/islam/minbar.webp" class="tour-img">
+    <p>Bredvid mihrab står <strong>minbar</strong>, predikstolen. Där står imamen och håller sin predikan.</p>
 
     <hr>
 
     <h3>Kvällsbön</h3>
-    <img src="https://mrjofa.github.io/assets/images/islam/interior-moske-islam-muslimer.jpg" alt="Män som ber kvällsbön
+    <img src="https://mrjofa.github.io/assets/images/islam/interior-moske-islam-muslimer.jpg" class="tour-img">
+    <p>Kvällsbönen kallas <strong>’isha’</strong>. Männen står på rad, alla vända mot Mekka.</p>
+
+    <hr>
+
+    <h3>Kaba</h3>
+    <img src="https://mrjofa.github.io/assets/images/islam/kaba.webp" class="tour-img">
+    <p><strong>Kaba</strong> är en rätblocksformad byggnad i Mekka som är väldigt helig.</p>
+
+    <hr>
+
+    <h3>Dekorationer och gemenskap</h3>
+    <img src="https://mrjofa.github.io/assets/images/islam/ceiling.webp" class="tour-img">
+    <p>I moskén finns vackra mönster, men inga bilder på Allah eller Muhammed.</p>
+
+    <hr>
+
+    <h3>Avslutning</h3>
+    <div class="tip"><strong>Uppgift:</strong> Vad tyckte du var mest spännande med besöket?</div>
+
+    <script>
+    let currentStep = 1;
+
+    function checkStep(btn, stepOrder) {
+        const message = document.getElementById('game-message');
+        
+        if (stepOrder === currentStep) {
+            // Rätt knapp!
+            btn.classList.add('correct');
+            btn.disabled = true;
+            currentStep++;
+            message.innerText = "Snyggt! Gå vidare.";
+            message.style.color = "green";
+
+            if (currentStep > 6) {
+                message.innerText = "Bra jobbat! Du har gjort hela wudu i rätt ordning! ✨";
+            }
+        } else {
+            // Fel knapp!
+            btn.classList.add('wrong');
+            message.innerText = "Hoppsan! Börja med steg 1 och ta dem i ordning.";
+            message.style.color = "red";
+            
+            // Ta bort röd färg efter en halv sekund så de kan försöka igen
+            setTimeout(() => {
+                btn.classList.remove('wrong');
+            }, 500);
+        }
+    }
+</script>
