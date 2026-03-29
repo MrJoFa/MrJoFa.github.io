@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz med Google Sheets CSV</title>
+  <style>
+    body { font-family: Arial; max-width: 700px; margin: auto; padding: 20px; }
+    .question { font-size: 22px; margin-bottom: 15px; }
+    .answers button { display: block; margin: 6px 0; padding: 10px; width: 100%; }
+    .correct { background-color: #a5d6a7; }
+    .wrong { background-color: #ef9a9a; }
+    .hidden { display: none; }
+    .topbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px; }
+    .pill { padding:6px 10px; border:1px solid #ccc; border-radius:999px; }
+  </style>
+</head>
+<body>
+
+<h1>Quiz</h1>
+<div class="topbar">
+  <select id="quizSelect"></select>
+  <button onclick="loadSelectedQuiz()">Starta Quiz</button>
+  <button onclick="setMode('mc')">Flervalsläge</button>
+  <button onclick="setMode('sr')">Självskattning</button>
+  <button onclick="retryWrong()">Träna fel</button>
+  <span class="pill" id="modeLabel">Läge: Flervalsläge</span>
+</div>
+
+<div id="quiz" class="hidden">
+  <div class="question" id="question"></div>
+  <div class="answers" id="answers"></div>
+  <button id="next" class="hidden">Nästa fråga</button>
+</div>
+
+<div id="result" class="hidden">
+  <h2>Resultat</h2>
+  <p id="score"></p>
+  <p id="wrongCount"></p>
+  <button onclick="startQuiz()">Spela igen</button>
+</div>
+
+<script>
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+let shuffledQuestions = [];
+let wrongQuestions = [];
+let mode = 'mc';
+
+const quizSets = [
+  {name: 'Religion', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7PypEMwf07wuli7hRgPE6GXFctyjsmCCqg-h6rwG1EwjNloDkNliF1uqZYhX0CUFWugf-MmPIrPUr/pub?output=csv'},
+  {name: 'Historia', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7PypEMwf07wuli7hRgPE6GXFctyjsmCCqg-h6rwG1EwjNloDkNliF1uqZYhX0CUFWugf-MmPIrPUr/pub?output=csv'}
+];
+
+function populateDropdown() {
+  const select = document.getElementById('quizSelect');
+  quizSets.forEach(set => {
+    const option = document.createElement('option');
+    option.value = set.url;
+    option.textContent = set.name;
+    select.appendChild(option);
+  });
+}
+
+function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('modeLabel').textContent = 'Läge: ' + (m === 'mc' ? 'Flervalsläge' : 'Självskattning');
+  startQuiz();
+}
+
+function loadSelectedQuiz() {
+  const csvUrl = document.getElementById('quizSelect').value;
+  fetch(csvUrl)
+    .then(r => r.text())
+    .then(csvText => {
+      const rows = csvText.trim().split('\n').map(r => r.split(','));
+      questions = rows.map(r => r.slice(0,5)); // Fråga + 4 svar
+      startQuiz();
+    })
+    .catch(err => {
+      alert('Kunde inte ladda frågorna från Google Sheets CSV.');
+      console.error(err);
+    });
+}
+
+function startQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  wrongQuestions = [];
+  shuffledQuestions = shuffle([...questions]);
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = shuffledQuestions[currentQuestion];
+  document.getElementById('question').textContent = q[0];
+  const answersDiv = document.getElementById('answers');
+  answersDiv.innerHTML = '';
+
+  if (mode === 'mc') {
+    const answers = shuffle(q.slice(1));
+    answers.forEach(a => {
+      const btn = document.createElement('button');
+      btn.textContent = a;
+      btn.onclick = () => checkAnswer(btn, a, q[1]);
+      answersDiv.appendChild(btn);
+    });
+  } else {
+    const reveal = document.createElement('button');
+    reveal.textContent = 'Visa svar';
+    reveal.onclick = () => {
+      reveal.remove();
+      const ans = document.createElement('div');
+      ans.style.margin = '10px 0';
+      ans.innerHTML = '<b>Rätt svar:</b> ' + q[1];
+      answersDiv.appendChild(ans);
+
+      const rightBtn = document.createElement('button');
+      rightBtn.textContent = 'Jag hade rätt';
+      rightBtn.onclick = () => selfGrade(true);
+
+      const wrongBtn = document.createElement('button');
+      wrongBtn.textContent = 'Jag hade fel';
+      wrongBtn.onclick = () => selfGrade(false);
+
+      answersDiv.appendChild(rightBtn);
+      answersDiv.appendChild(wrongBtn);
+    };
+    answersDiv.appendChild(reveal);
+  }
+}
+
+function checkAnswer(button, answer, correct) {
+  const buttons = document.querySelectorAll('.answers button');
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === correct) btn.classList.add('correct');
+    else if (btn === button) btn.classList.add('wrong');
+  });
+
+  if (answer === correct) score++;
+  else wrongQuestions.push(shuffledQuestions[currentQuestion]);
+
+  document.getElementById('next').classList.remove('hidden');
+}
+
+function selfGrade(wasCorrect) {
+  if (wasCorrect) score++;
+  else wrongQuestions.push(shuffledQuestions[currentQuestion]);
+  document.getElementById('next').classList.remove('hidden');
+}
+
+document.getElementById('next').onclick = () => {
+  currentQuestion++;
+  document.getElementById('next').classList.add('hidden');
+  if (currentQuestion < shuffledQuestions.length) showQuestion();
+  else showResult();
+};
+
+function showResult() {
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('score').textContent = `Du fick ${score} av ${shuffledQuestions.length} rätt!`;
+  document.getElementById('wrongCount').textContent = `Fel: ${wrongQuestions.length}`;
+}
+
+function retryWrong() {
+  if (wrongQuestions.length === 0) {
+    alert('Inga fel att träna!');
+    return;
+  }
+  currentQuestion = 0;
+  score = 0;
+  shuffledQuestions = shuffle([...wrongQuestions]);
+  wrongQuestions = [];
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  showQuestion();
+}
+
+populateDropdown();
+</script>
+
+</body>
+</html>
