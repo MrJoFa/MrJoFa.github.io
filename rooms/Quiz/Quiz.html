@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz med Google Sheets CSV</title>
+  <title>Quiz med CSV (PapaParse)</title>
   <style>
     body { font-family: Arial; max-width: 700px; margin: auto; padding: 20px; }
     .question { font-size: 22px; margin-bottom: 15px; }
@@ -13,6 +13,7 @@
     .topbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px; }
     .pill { padding:6px 10px; border:1px solid #ccc; border-radius:999px; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
@@ -72,17 +73,18 @@ function setMode(m) {
 
 function loadSelectedQuiz() {
   const csvUrl = document.getElementById('quizSelect').value;
-  fetch(csvUrl)
-    .then(r => r.text())
-    .then(csvText => {
-      const rows = csvText.trim().split('\n').map(r => r.split(','));
-      questions = rows.map(r => r.slice(0,5)); // Fråga + 4 svar
+  Papa.parse(csvUrl, {
+    download: true,
+    header: false,
+    complete: function(results) {
+      questions = results.data.map(r => r.slice(0,5)); // Fråga + 4 svar
       startQuiz();
-    })
-    .catch(err => {
+    },
+    error: function(err) {
       alert('Kunde inte ladda frågorna från Google Sheets CSV.');
       console.error(err);
-    });
+    }
+  });
 }
 
 function startQuiz() {
