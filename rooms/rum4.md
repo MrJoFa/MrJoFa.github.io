@@ -31,7 +31,7 @@ Det finns även en vacker dörr framför dig, men den är låst med ett kodlås 
 <map name="templeMap">
   <!-- Tittar upp i taket -->
   <area alt="Taket" title="Taket" href="#" 
-        coords="480,2,580,49" shape="rect" 
+        coords="380,2,580,49" shape="rect" 
         onclick="showMessage('Du tittar upp i taket och ser en märklig syn.', '/assets/images/inscription-key.jpg'); return false;">
 
   <!-- Tidning -->
@@ -72,7 +72,14 @@ function showMessage(text, imgPath) {
     const popupImg = document.getElementById('popupImg');
     const popupText = document.getElementById('popupText');
 
-    popupImg.src = imgPath || '';
+    if (imgPath) {
+        popupImg.src = imgPath;
+        popupImg.style.display = 'inline-block';
+    } else {
+        popupImg.removeAttribute('src');
+        popupImg.style.display = 'none';
+    }
+
     popupText.textContent = text;
     popup.style.display = 'block';
 }
