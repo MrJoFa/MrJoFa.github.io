@@ -2,162 +2,270 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Förhör dig själv!</title>
   <style>
-    body { font-family: Arial; max-width:700px; margin:auto; padding:20px; }
-    .question { font-size:22px; margin-bottom:15px; }
-    .answers button { display:block; margin:6px 0; padding:10px; width:100%; }
-    .correct { background-color:#a5d6a7; }
-    .wrong { background-color:#ef9a9a; }
-    .hidden { display:none; }
-    .topbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px; }
-    .pill { padding:6px 10px; border:1px solid #ccc; border-radius:999px; }
+    :root { --bg:#f5f6f8; --card:#fff; --text:#243247; --muted:#66758a; --blue:#2563eb; --blue-dark:#1d4ed8; --border:#e1e7ef; --green:#dcfce7; --red:#fee2e2; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial,Helvetica,sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+    .container { width:min(760px,calc(100% - 32px)); margin:36px auto 70px; }
+    h1 { margin:0 0 8px; font-size:clamp(26px,5vw,36px); letter-spacing:-.5px; }
+    .subtitle { color:var(--muted); margin:0 0 24px; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:clamp(18px,4vw,30px); box-shadow:0 8px 28px rgba(30,45,70,.05); margin-bottom:20px; }
+    .controls { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    select,button { font:inherit; border-radius:10px; min-height:44px; }
+    select { flex:1 1 230px; min-width:0; padding:10px 12px; background:white; color:var(--text); border:1px solid #cbd5e1; }
+    button { padding:10px 16px; cursor:pointer; border:1px solid var(--border); background:#fff; color:var(--text); transition:background .15s,border-color .15s; }
+    button:hover:not(:disabled) { background:#eff6ff; border-color:#93c5fd; }
+    button:focus-visible,select:focus-visible { outline:3px solid #93c5fd; outline-offset:2px; }
+    button:disabled { cursor:default; opacity:.85; }
+    .primary { background:var(--blue); border-color:var(--blue); color:white; font-weight:bold; }
+    .primary:hover:not(:disabled) { background:var(--blue-dark); border-color:var(--blue-dark); }
+    .mode-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; align-items:center; }
+    .mode-row button.active { background:#dbeafe; border-color:#93c5fd; color:#1e40af; font-weight:bold; }
+    .pill { display:inline-block; background:#edf2f8; border-radius:999px; padding:7px 12px; font-size:14px; color:#475569; }
+    .progress-head { display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--muted); font-size:14px; margin-bottom:10px; }
+    .progress-track { background:#e8edf5; border-radius:99px; height:9px; overflow:hidden; margin-bottom:25px; }
+    .progress-fill { background:var(--blue); height:100%; width:0; transition:width .2s; }
+    .question { font-size:clamp(20px,4vw,25px); font-weight:bold; margin-bottom:22px; overflow-wrap:anywhere; }
+    .answers { display:grid; gap:10px; }
+    .answers button { display:block; width:100%; text-align:left; padding:14px 16px; min-height:54px; background:#f9fbfe; border:1px solid #dce4ee; overflow-wrap:anywhere; }
+    .answers button:hover:not(:disabled) { background:#eff6ff; }
+    .answers button.correct { background:var(--green); border-color:#4ade80; color:#14532d; }
+    .answers button.wrong { background:var(--red); border-color:#f87171; color:#7f1d1d; }
+    .answers button:disabled:not(.correct):not(.wrong) { opacity:.65; }
+    .answer-reveal { background:#f1f5f9; border-radius:10px; padding:14px 16px; margin:6px 0; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .next-row { display:flex; justify-content:flex-end; margin-top:22px; }
+    .result-number { font-size:clamp(24px,5vw,34px); font-weight:bold; margin:12px 0; }
+    .muted { color:var(--muted); }
+    .hidden { display:none !important; }
+    @media(max-width:520px) { .container { margin-top:20px; } .controls>.primary { width:100%; } .mode-row button { flex:1 1 140px; } }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body>
+  <main class="container">
+    <h1>Förhör dig själv!</h1>
+    <p class="subtitle">Välj ett ämne och testa dina kunskaper.</p>
 
-<h1>Förhör dig själv!</h1>
-<div class="topbar">
-  <select id="quizSelect"></select>
-  <button onclick="loadSelectedQuiz()">Starta Quiz</button>
-  <button onclick="setMode('mc')">Flervalsläge</button>
-  <button onclick="setMode('sr')">Självskattning</button>
-  <button onclick="retryWrong()">Träna fel</button>
-  <span class="pill" id="modeLabel">Läge: Flervalsläge</span>
-</div>
+    <section class="card" aria-label="Quizinställningar">
+      <div class="controls">
+        <select id="quizSelect" aria-label="Välj ämne"><option value="">Laddar ämnen…</option></select>
+        <button class="primary" id="startSelected">Starta quiz</button>
+      </div>
+      <div class="mode-row">
+        <button id="mcMode" class="active" aria-pressed="true">Flervalsläge</button>
+        <button id="srMode" aria-pressed="false">Självskattning</button>
+        <button id="retryBtn">Träna fel</button>
+      </div>
+      <div style="margin-top:14px"><span class="pill" id="modeLabel">Läge: Flervalsläge</span></div>
+    </section>
 
-<div id="quiz" class="hidden">
-  <div class="question" id="question"></div>
-  <div class="answers" id="answers"></div>
-  <button id="next" class="hidden">Nästa fråga</button>
-</div>
+    <section id="quiz" class="card hidden" aria-label="Frågor">
+      <div class="progress-head"><span id="progressText">Fråga 1 av 1</span><span id="progressPercent"></span></div>
+      <div class="progress-track" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+      <div class="next-row"><button class="primary hidden" id="next">Nästa fråga</button></div>
+    </section>
 
-<div id="result" class="hidden">
-  <h2>Resultat</h2>
-  <p id="score"></p>
-  <p id="wrongCount"></p>
-  <button onclick="startQuiz()">Spela igen</button>
-</div>
+    <section id="result" class="card hidden" aria-live="polite">
+      <h2>Resultat</h2>
+      <p id="score" class="result-number"></p>
+      <p id="wrongCount" class="muted"></p>
+      <button class="primary" id="playAgain">Spela igen</button>
+    </section>
+    <p id="status" class="muted" role="status"></p>
+  </main>
 
-<script>
-let questions = [];
-let currentQuestion = 0;
-let score = 0;
-let shuffledQuestions = [];
-let wrongQuestions = [];
-let mode = 'mc';
-let subjects = []; // Från index.csv
+  <script>
+    const indexUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7PypEMwf07wuli7hRgPE6GXFctyjsmCCqg-h6rwG1EwjNloDkNliF1uqZYhX0CUFWugf-MmPIrPUr/pub?gid=2127633237&single=true&output=csv';
+    let questions = [];
+    let currentQuestion = 0;
+    let score = 0;
+    let shuffledQuestions = [];
+    let wrongQuestions = [];
+    let mode = 'mc';
+    let answered = false;
+    let loading = false;
 
-// Hämta index.csv dynamiskt
-function loadIndex() {
-  const indexUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7PypEMwf07wuli7hRgPE6GXFctyjsmCCqg-h6rwG1EwjNloDkNliF1uqZYhX0CUFWugf-MmPIrPUr/pub?gid=2127633237&single=true&output=csv'; // Ändra till din index CSV
-  Papa.parse(indexUrl, {
-    download: true,
-    header: true,
-    complete: function(results) {
-      subjects = results.data;
-      populateDropdown();
-    },
-    error: function(err) { console.error(err); alert('Kunde inte ladda index CSV'); }
-  });
-}
-
-// Bygg dropdown dynamiskt
-function populateDropdown() {
-  const select = document.getElementById('quizSelect');
-  subjects.forEach(sub => {
-    const option = document.createElement('option');
-    option.value = sub['CSV-länk'];
-    option.textContent = sub['Ämne'];
-    select.appendChild(option);
-  });
-}
-
-function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
-
-function setMode(m) {
-  mode = m;
-  document.getElementById('modeLabel').textContent = 'Läge: ' + (m==='mc'?'Flervalsläge':'Självskattning');
-  startQuiz();
-}
-
-function loadSelectedQuiz() {
-  const csvUrl = document.getElementById('quizSelect').value;
-  Papa.parse(csvUrl, {
-    download: true,
-    header: false,
-    complete: function(results) {
-      questions = results.data.map(r => r.slice(0,5));
-      startQuiz();
-    },
-    error: function(err) { console.error(err); alert('Kunde inte ladda frågorna'); }
-  });
-}
-
-function startQuiz() {
-  currentQuestion = 0; score = 0; wrongQuestions = [];
-  shuffledQuestions = shuffle([...questions]);
-  document.getElementById('result').classList.add('hidden');
-  document.getElementById('quiz').classList.remove('hidden');
-  showQuestion();
-}
-
-function showQuestion() {
-  const q = shuffledQuestions[currentQuestion];
-  document.getElementById('question').textContent = q[0];
-  const answersDiv = document.getElementById('answers'); answersDiv.innerHTML = '';
-
-  if(mode==='mc'){
-    const answers = shuffle(q.slice(1));
-    answers.forEach(a=>{
-      const btn = document.createElement('button');
-      btn.textContent=a;
-      btn.onclick=()=>checkAnswer(btn,a,q[1]);
-      answersDiv.appendChild(btn);
-    });
-  } else {
-    const reveal = document.createElement('button'); reveal.textContent='Visa svar';
-    reveal.onclick = ()=>{
-      reveal.remove();
-      const ans = document.createElement('div'); ans.style.margin='10px 0';
-      ans.innerHTML='<b>Rätt svar:</b> '+q[1]; answersDiv.appendChild(ans);
-      const rightBtn=document.createElement('button'); rightBtn.textContent='Jag hade rätt'; rightBtn.onclick=()=>selfGrade(true);
-      const wrongBtn=document.createElement('button'); wrongBtn.textContent='Jag hade fel'; wrongBtn.onclick=()=>selfGrade(false);
-      answersDiv.appendChild(rightBtn); answersDiv.appendChild(wrongBtn);
+    const $ = id => document.getElementById(id);
+    const shuffle = arr => {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
     };
-    answersDiv.appendChild(reveal);
-  }
-}
+    const setStatus = message => { $('status').textContent = message; };
 
-function checkAnswer(button,answer,correct){
-  const buttons=document.querySelectorAll('.answers button');
-  buttons.forEach(btn=>{btn.disabled=true; if(btn.textContent===correct) btn.classList.add('correct'); else if(btn===button) btn.classList.add('wrong');});
-  if(answer===correct) score++; else wrongQuestions.push(shuffledQuestions[currentQuestion]);
-  document.getElementById('next').classList.remove('hidden');
-}
+    function loadIndex() {
+      Papa.parse(indexUrl, {
+        download:true, header:true, skipEmptyLines:'greedy',
+        complete: ({data}) => {
+          const select = $('quizSelect');
+          select.replaceChildren();
+          data.filter(row => row['CSV-länk']?.trim() && row['Ämne']?.trim()).forEach(row => {
+            const option = document.createElement('option');
+            option.value = row['CSV-länk'].trim();
+            option.textContent = row['Ämne'].trim();
+            select.appendChild(option);
+          });
+          if (!select.options.length) setStatus('Inga ämnen hittades i indexfilen.');
+        },
+        error: err => { console.error(err); setStatus('Kunde inte ladda ämneslistan.'); }
+      });
+    }
 
-function selfGrade(wasCorrect){ if(wasCorrect) score++; else wrongQuestions.push(shuffledQuestions[currentQuestion]); document.getElementById('next').classList.remove('hidden'); }
+    function setMode(newMode) {
+      mode = newMode;
+      $('modeLabel').textContent = 'Läge: ' + (mode === 'mc' ? 'Flervalsläge' : 'Självskattning');
+      $('mcMode').classList.toggle('active', mode === 'mc');
+      $('srMode').classList.toggle('active', mode === 'sr');
+      $('mcMode').setAttribute('aria-pressed', String(mode === 'mc'));
+      $('srMode').setAttribute('aria-pressed', String(mode === 'sr'));
+      if (questions.length) startQuiz();
+    }
 
-document.getElementById('next').onclick = ()=>{
-  currentQuestion++; document.getElementById('next').classList.add('hidden');
-  if(currentQuestion<shuffledQuestions.length) showQuestion(); else showResult();
-}
+    function loadSelectedQuiz() {
+      const csvUrl = $('quizSelect').value;
+      if (!csvUrl || loading) return;
+      loading = true;
+      $('startSelected').disabled = true;
+      setStatus('Laddar frågor…');
+      Papa.parse(csvUrl, {
+        download:true, header:false, skipEmptyLines:'greedy',
+        complete: ({data}) => {
+          loading = false;
+          $('startSelected').disabled = false;
+          questions = data.map(row => row.slice(0,5).map(value => String(value ?? '').trim()))
+            .filter(row => row[0] && row[1] && (mode === 'sr' || row.slice(1).filter(Boolean).length >= 2));
+          // Om CSV-filen innehåller en rubrikrad kan den behöva tas bort här.
+          if (!questions.length) {
+            $('quiz').classList.add('hidden');
+            $('result').classList.add('hidden');
+            setStatus('Inga giltiga frågor hittades i filen.');
+            return;
+          }
+          setStatus('');
+          startQuiz();
+        },
+        error: err => {
+          console.error(err);
+          loading = false;
+          $('startSelected').disabled = false;
+          setStatus('Kunde inte ladda frågorna.');
+        }
+      });
+    }
 
-function showResult(){
-  document.getElementById('quiz').classList.add('hidden'); document.getElementById('result').classList.remove('hidden');
-  document.getElementById('score').textContent=`Du fick ${score} av ${shuffledQuestions.length} rätt!`;
-  document.getElementById('wrongCount').textContent=`Fel: ${wrongQuestions.length}`;
-}
+    function startQuiz() {
+      if (!questions.length) { setStatus('Välj och starta ett quiz först.'); return; }
+      currentQuestion = 0;
+      score = 0;
+      wrongQuestions = [];
+      shuffledQuestions = shuffle(questions);
+      $('result').classList.add('hidden');
+      $('quiz').classList.remove('hidden');
+      setStatus('');
+      showQuestion();
+    }
 
-function retryWrong(){
-  if(wrongQuestions.length===0){alert('Inga fel att träna!'); return;}
-  currentQuestion=0; score=0; shuffledQuestions=shuffle([...wrongQuestions]); wrongQuestions=[];
-  document.getElementById('result').classList.add('hidden'); document.getElementById('quiz').classList.remove('hidden'); showQuestion();
-}
+    function showQuestion() {
+      answered = false;
+      $('next').classList.add('hidden');
+      const q = shuffledQuestions[currentQuestion];
+      $('question').textContent = q[0];
+      const answersDiv = $('answers');
+      answersDiv.replaceChildren();
+      const total = shuffledQuestions.length;
+      $('progressText').textContent = `Fråga ${currentQuestion + 1} av ${total}`;
+      $('progressPercent').textContent = `${currentQuestion} klara`;
+      $('progressFill').style.width = `${100 * currentQuestion / total}%`;
 
-loadIndex();
-</script>
+      if (mode === 'mc') {
+        const options = shuffle([...new Set(q.slice(1).filter(Boolean))]);
+        options.forEach(answer => {
+          const button = document.createElement('button');
+          button.textContent = answer;
+          button.addEventListener('click', () => checkAnswer(button, answer, q[1]));
+          answersDiv.appendChild(button);
+        });
+      } else {
+        const reveal = document.createElement('button');
+        reveal.textContent = 'Visa svar';
+        reveal.addEventListener('click', () => {
+          reveal.remove();
+          const ans = document.createElement('div');
+          ans.className = 'answer-reveal';
+          const strong = document.createElement('strong');
+          strong.textContent = 'Rätt svar: ';
+          ans.append(strong, document.createTextNode(q[1]));
+          answersDiv.appendChild(ans);
+          for (const [label, correct] of [['Jag hade rätt', true], ['Jag hade fel', false]]) {
+            const btn = document.createElement('button');
+            btn.textContent = label;
+            btn.addEventListener('click', () => selfGrade(correct));
+            answersDiv.appendChild(btn);
+          }
+        }, {once:true});
+        answersDiv.appendChild(reveal);
+      }
+    }
 
+    function completeAnswer(wasCorrect) {
+      if (answered) return false;
+      answered = true;
+      if (wasCorrect) score++;
+      else wrongQuestions.push(shuffledQuestions[currentQuestion]);
+      $('answers').querySelectorAll('button').forEach(btn => btn.disabled = true);
+      $('next').textContent = currentQuestion === shuffledQuestions.length - 1 ? 'Visa resultat' : 'Nästa fråga';
+      $('next').classList.remove('hidden');
+      return true;
+    }
+
+    function checkAnswer(button, answer, correct) {
+      if (!completeAnswer(answer === correct)) return;
+      $('answers').querySelectorAll('button').forEach(btn => {
+        if (btn.textContent === correct) btn.classList.add('correct');
+        else if (btn === button) btn.classList.add('wrong');
+      });
+    }
+
+    function selfGrade(wasCorrect) { completeAnswer(wasCorrect); }
+
+    function showResult() {
+      $('quiz').classList.add('hidden');
+      $('result').classList.remove('hidden');
+      $('score').textContent = `Du fick ${score} av ${shuffledQuestions.length} rätt!`;
+      $('wrongCount').textContent = `Fel: ${wrongQuestions.length}`;
+    }
+
+    function retryWrong() {
+      if (!wrongQuestions.length) { setStatus('Det finns inga fel att träna på ännu.'); return; }
+      shuffledQuestions = shuffle(wrongQuestions);
+      wrongQuestions = [];
+      currentQuestion = 0;
+      score = 0;
+      $('result').classList.add('hidden');
+      $('quiz').classList.remove('hidden');
+      setStatus('');
+      showQuestion();
+    }
+
+    $('startSelected').addEventListener('click', loadSelectedQuiz);
+    $('mcMode').addEventListener('click', () => setMode('mc'));
+    $('srMode').addEventListener('click', () => setMode('sr'));
+    $('retryBtn').addEventListener('click', retryWrong);
+    $('playAgain').addEventListener('click', startQuiz);
+    $('next').addEventListener('click', () => {
+      if (!answered) return;
+      currentQuestion++;
+      if (currentQuestion < shuffledQuestions.length) showQuestion();
+      else showResult();
+    });
+    loadIndex();
+  </script>
 </body>
 </html>
