@@ -1,20 +1,275 @@
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>{{ page.title }}</title>
-  <link rel="stylesheet" href="/assets/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }}</title>
+
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; line-height: 1.5; }
-    h1 { color: #2c3e50; font-size: 2rem; margin-bottom: 1rem; }
-    h2 { color: #34495e; margin-top: 2rem; }
-    a { color: #2980b9; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    :root {
+      --background: #eae4d6;
+      --paper: #faf7ef;
+      --green: #254b3e;
+      --green-light: #356a55;
+      --gold: #b38a43;
+      --text: #292d29;
+      --border: #d6c8ac;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    /* Sidhuvud */
+
+    .site-header {
+      background: var(--green);
+      color: white;
+      padding: 32px 20px;
+      text-align: center;
+      border-bottom: 5px solid var(--gold);
+    }
+
+    .site-header h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(1.8rem, 5vw, 2.7rem);
+      font-weight: normal;
+      line-height: 1.3;
+      margin: 0;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #e4d2a8;
+    }
+
+    /* Huvudinnehåll */
+
+    .room-container {
+      width: min(1300px, calc(100% - 32px));
+      margin: 35px auto;
+      padding: clamp(16px, 3vw, 35px);
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(40, 35, 20, 0.09);
+      overflow-wrap: break-word;
+    }
+
+    /* Rubriker */
+
+    .room-container h1,
+    .room-container h2,
+    .room-container h3 {
+      font-family: Georgia, serif;
+      color: var(--green);
+      line-height: 1.3;
+    }
+
+    .room-container h1 {
+      font-size: 2rem;
+    }
+
+    .room-container h2 {
+      margin-top: 1.8rem;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Text och länkar */
+
+    p {
+      margin: 1rem 0;
+    }
+
+    a {
+      color: var(--green-light);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Bilder och klickbara kartor */
+
+    .room-container img {
+      max-width: 100%;
+      height: auto;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    /* Knappar */
+
+    button,
+    .button,
+    input[type="submit"] {
+      background: var(--green);
+      color: white;
+      border: 1px solid var(--gold);
+      border-radius: 7px;
+      padding: 12px 22px;
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition:
+        background 0.2s,
+        transform 0.2s;
+    }
+
+    button:hover,
+    .button:hover,
+    input[type="submit"]:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Inmatningsfält */
+
+    input:not([type="submit"]),
+    select,
+    textarea {
+      max-width: 100%;
+      padding: 10px;
+      border: 1px solid #c9bfae;
+      border-radius: 6px;
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      background: white;
+      color: var(--text);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* Ledtrådar */
+
+    .clue {
+      background: #f0e8d4;
+      border-left: 4px solid var(--gold);
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    /* Kodblock */
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+      padding: 15px;
+      background: #eee8da;
+      border-radius: 6px;
+    }
+
+    /* Sidfot */
+
+    .site-footer {
+      text-align: center;
+      padding: 15px 20px 35px;
+      color: #686b61;
+      font-size: 0.85rem;
+    }
+
+    /* Mobilanpassning */
+
+    @media (max-width: 600px) {
+      .site-header {
+        padding: 25px 15px;
+      }
+
+      .room-container {
+        width: calc(100% - 20px);
+        margin: 18px auto;
+        padding: 18px;
+      }
+
+      .room-container h1 {
+        font-size: 1.7rem;
+      }
+
+      .subtitle {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+      }
+
+      button {
+        max-width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      button {
+        transition: none;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <h1>{{ page.title }}</h1>
-  {{ content }}
+
+  <header class="site-header">
+    <h1>{{ page.title }}</h1>
+    <p class="subtitle">Buddhismens mysterier</p>
+  </header>
+
+  <main class="room-container">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    Buddhismens mysterier
+  </footer>
+
+  <!-- Responsiva klickbara bildkartor -->
+  <script src="https://cdn.jsdelivr.net/npm/image-map-resizer@1.0.10/js/imageMapResizer.min.js"></script>
+
+  <script>
+    function initializeImageMaps() {
+      if (typeof imageMapResize === 'function') {
+        imageMapResize();
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener(
+        'DOMContentLoaded',
+        initializeImageMaps
+      );
+    } else {
+      initializeImageMaps();
+    }
+  </script>
+
 </body>
 </html>
