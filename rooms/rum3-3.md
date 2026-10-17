@@ -115,14 +115,66 @@ document.querySelectorAll('.slot').forEach(slot => {
 });
 </script>
 
+
 <style>
-.container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-.cards, .slots { display: flex; flex-direction: column; gap: 10px; margin: 10px; width: 250px; }
-.card, .slot { padding: 10px; border: 2px solid #4a7c59; border-radius: 5px; background: #fff; cursor: grab; text-align: center; }
-.slot { min-height: 60px; display: flex; align-items: center; justify-content: center; background: #e0f2f1; }
-.correct { background-color: #c8e6c9 !important; border-color: #2e7d32 !important; }
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.cards, .slots {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px;
+}
+
+.cards {
+  width: 250px;
+}
+
+.slots {
+  width: 350px;
+}
+
+.card, .slot {
+  box-sizing: border-box;
+  height: 80px;
+  padding: 10px;
+  border: 2px solid #4a7c59;
+  border-radius: 5px;
+  background: #fff;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  cursor: grab;
+}
+
+.slot {
+  background: #e0f2f1;
+}
+
+.correct {
+  background-color: #c8e6c9 !important;
+  border-color: #2e7d32 !important;
+}
+
 @media (max-width: 600px) {
-  .container { flex-direction: column; align-items: center; }
-  .cards, .slots { width: 90%; }
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cards, .slots {
+    width: 90%;
+  }
 }
 </style>
+

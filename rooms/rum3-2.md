@@ -13,7 +13,7 @@ Trädet har varit en viktig plats för buddhister att besöka i över två tusen
 <map name="tree">
   <!-- Munk -->
   <area alt="Munk" title="Munk" href="#"
-        coords="68,646,248,904" shape="rect" onclick="showText('Stör mig inte förrän du har visat kunskap om de fyra ädla sanningarna.')">
+        coords="68,646,248,904" shape="rect" onclick="showText('Stör mig inte förrän du har visat kunskap om den åttafaldiga vägen')">
 
   <!-- Skylt -->
   <area alt="Skylt" title="Skylt" href="#"
