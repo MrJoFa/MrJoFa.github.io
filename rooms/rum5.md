@@ -14,7 +14,7 @@ Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar.
 <map name="monksMap">
   <area shape="rect" coords="30,245,110,527" href="#" alt="Munk1" onclick="showMessage('... mani ... ...', ''); return false;">
   <area shape="rect" coords="111,245,193,527" href="#" alt="Munk2" onclick="showMessage('om ... ... ...', ''); return false;">
-  <area shape="rect" coords="800,500,900,600" href="#" alt="Munk3" onclick="showMessage('... ... ... hum', ''); return false;">
+  <area shape="rect" coords="620,245,710,380" href="#" alt="Munk3" onclick="showMessage('... ... ... hum', ''); return false;">
   <area shape="rect" coords="727,362,851,476" href="#" alt="Munk4" onclick="showMessage('... ... padme ...', ''); return false;">
   <area shape="rect" coords="271,166,456,568" href="#" alt="Munk5" id="munk5" onclick="showMessage(munk5Message, ''); return false;">
 </map>
