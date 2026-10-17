@@ -99,8 +99,9 @@ document.querySelectorAll('.slot').forEach(slot => {
       slot.classList.add('correct');
       card.style.opacity = '0.5';  // Kortet markeras men syns fortfarande
 
-      // Kontrollera om alla fyra rätta är placerade
-      if([...document.querySelectorAll('.slot')].filter(s => ["card1","card2","card3","card4"].includes(s.dataset.answer)).every(s => s.classList.contains('correct'))){
+      // Kontrollera om alla åtta kort är rätt  placerade
+      if ([...document.querySelectorAll('.slot')]
+    .every(s => s.classList.contains('correct'))) {
         feedback.style.color = "green";
         feedback.innerHTML = "Rätt! Du kan gå vidare.<br><a href='rum3-4.html'>Gå vidare!</a>";
       }
