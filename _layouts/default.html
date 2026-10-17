@@ -130,9 +130,7 @@
       font-family: Arial, sans-serif;
       font-size: 1rem;
       cursor: pointer;
-      transition:
-        background 0.2s,
-        transform 0.2s;
+      transition: background 0.2s, transform 0.2s;
     }
 
     button:hover,
@@ -192,6 +190,49 @@
       border-radius: 6px;
     }
 
+    /* Egna popup-fönster */
+
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 30, 25, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    .popup-box {
+      width: min(420px, 100%);
+      background: var(--paper);
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .popup-box h2 {
+      font-family: Georgia, serif;
+      color: var(--green);
+      margin: 0 0 15px;
+      font-size: 1.6rem;
+    }
+
+    .popup-box p {
+      margin: 0 0 25px;
+      white-space: pre-line;
+    }
+
+    .popup-box button {
+      min-width: 130px;
+    }
+
     /* Sidfot */
 
     .site-footer {
@@ -226,6 +267,10 @@
       button {
         max-width: 100%;
       }
+
+      .popup-box {
+        padding: 22px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -251,10 +296,29 @@
     Buddhismens mysterier
   </footer>
 
+  <!-- Gemensamt popup-fönster -->
+  <div
+    id="customPopup"
+    class="popup-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="popupTitle"
+    aria-describedby="popupMessage"
+  >
+    <div class="popup-box">
+      <h2 id="popupTitle">Ett meddelande</h2>
+      <p id="popupMessage"></p>
+      <button id="popupClose" type="button">
+        Fortsätt
+      </button>
+    </div>
+  </div>
+
   <!-- Responsiva klickbara bildkartor -->
   <script src="https://cdn.jsdelivr.net/npm/image-map-resizer@1.0.10/js/imageMapResizer.min.js"></script>
 
   <script>
+    // Anpassa koordinater till bildens storlek
     function initializeImageMaps() {
       if (typeof imageMapResize === 'function') {
         imageMapResize();
@@ -269,6 +333,83 @@
     } else {
       initializeImageMaps();
     }
+
+    // Eget popup-system
+    (function () {
+      const originalAlert = window.alert;
+      let previousFocus = null;
+      const messageQueue = [];
+
+      function showNextMessage() {
+        const popup = document.getElementById('customPopup');
+        const message = document.getElementById('popupMessage');
+        const closeButton = document.getElementById('popupClose');
+
+        if (!popup || !message || !closeButton) {
+          return;
+        }
+
+        if (messageQueue.length === 0) {
+          popup.classList.remove('active');
+          document.body.style.overflow = '';
+
+          if (previousFocus &&
+              typeof previousFocus.focus === 'function') {
+            previousFocus.focus();
+          }
+          previousFocus = null;
+          return;
+        }
+
+        if (!popup.classList.contains('active')) {
+          previousFocus = document.activeElement;
+        }
+
+        message.textContent = messageQueue.shift();
+        popup.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        closeButton.focus();
+      }
+
+      window.alert = function (text) {
+        const popup = document.getElementById('customPopup');
+
+        if (!popup) {
+          originalAlert(String(text));
+          return;
+        }
+
+        messageQueue.push(String(text));
+
+        if (!popup.classList.contains('active')) {
+          showNextMessage();
+        }
+      };
+
+      function closePopup() {
+        showNextMessage();
+      }
+
+      document.getElementById('popupClose')
+        .addEventListener('click', closePopup);
+
+      document.addEventListener('keydown', function (event) {
+        const popup = document.getElementById('customPopup');
+
+        if (!popup.classList.contains('active')) {
+          return;
+        }
+
+        if (event.key === 'Escape') {
+          closePopup();
+        }
+
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          document.getElementById('popupClose').focus();
+        }
+      });
+    })();
   </script>
 
 </body>
