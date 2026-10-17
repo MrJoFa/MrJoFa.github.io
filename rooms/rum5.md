@@ -6,10 +6,10 @@ title: Buddhismen Escape Room
 # Meditation 
 Du pratar lite med munkarna och de erbjuder dig att delta när de mediterar. 
 
-<img src="/assets/images/Buddhist_Man_Meditating.jpg" 
-     usemap="#monksMap" 
-     width="1067" height="800" 
-     style="width:1067px; height:800px; border-radius:10px;">
+<img src="/assets/images/Buddhist_Man_Meditating.jpg"
+     usemap="#monksMap"
+     width="1067" height="800"
+     style="max-width:100%; height:auto; border-radius:10px;">
 
 <map name="monksMap">
   <area shape="rect" coords="30,245,110,527" href="#" alt="Munk1" onclick="showMessage('... mani ... ...', ''); return false;">
