@@ -78,39 +78,97 @@ Dra varje sanning till rätt förklaring.
 <p id="feedback" style="margin-top:20px; font-weight:bold; color:green;"></p>
 
 <script>
+
 const feedback = document.getElementById('feedback');
+let feedbackTimeout;
+let completed = false;
+
+const correctCards = ['card1', 'card2', 'card3', 'card4'];
 
 document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('dragstart', e => e.dataTransfer.setData('text', card.id));
+  card.addEventListener('dragstart', e => {
+    if (completed || card.dataset.used === 'true') {
+      e.preventDefault();
+      return;
+    }
+
+    e.dataTransfer.setData('text', card.id);
+  });
 });
 
 document.querySelectorAll('.slot').forEach(slot => {
-  slot.addEventListener('dragover', e => e.preventDefault());
+  slot.addEventListener('dragover', e => {
+    if (!completed && !slot.classList.contains('correct')) {
+      e.preventDefault();
+    }
+  });
+
   slot.addEventListener('drop', e => {
     e.preventDefault();
+
+    if (completed || slot.classList.contains('correct')) {
+      return;
+    }
+
     const cardId = e.dataTransfer.getData('text');
     const card = document.getElementById(cardId);
 
-    if(slot.dataset.answer === cardId){
-      // Koppla kortet visuellt med förklaringen
-      slot.innerHTML = `<strong>${card.textContent}</strong> - ${slot.textContent}`;
+    if (!card || card.dataset.used === 'true') {
+      return;
+    }
+
+    if (slot.dataset.answer === cardId) {
+      clearTimeout(feedbackTimeout);
+
+      const explanation = slot.textContent;
+
+      slot.textContent = '';
+      const strong = document.createElement('strong');
+      strong.textContent = card.textContent;
+
+      slot.appendChild(strong);
+      slot.appendChild(
+        document.createTextNode(' - ' + explanation)
+      );
+
       slot.classList.add('correct');
-      card.style.opacity = '0.5';  // Kortet markeras men syns fortfarande
+      card.dataset.used = 'true';
+      card.style.opacity = '0.5';
+      card.style.cursor = 'default';
 
-      // Kontrollera om alla fyra rätta är placerade
-      if([...document.querySelectorAll('.slot')].filter(s => ["card1","card2","card3","card4"].includes(s.dataset.answer)).every(s => s.classList.contains('correct'))){
-        feedback.style.color = "green";
-        feedback.innerHTML = "Rätt! Du kan gå vidare.<br><a href='rum3-3.html'>Gå vidare!</a>";
+      const allCorrect = correctCards.every(id => {
+        const correctSlot = document.querySelector(
+          `.slot[data-answer="${id}"]`
+        );
+
+        return correctSlot &&
+          correctSlot.classList.contains('correct');
+      });
+
+      if (allCorrect) {
+        completed = true;
+        clearTimeout(feedbackTimeout);
+
+        feedback.style.color = 'green';
+        feedback.innerHTML =
+          "Rätt! Du kan gå vidare.<br>" +
+          "<a href='rum3-3.html'>Gå vidare!</a>";
       }
-
     } else {
-      feedback.textContent = "Fel kort, försök igen!";
-      feedback.style.color = "red";
-      // Ta bort meddelandet efter 2 sekunder om det inte fixas
-      setTimeout(() => { feedback.textContent = ""; }, 2000);
+      clearTimeout(feedbackTimeout);
+
+      feedback.textContent = 'Fel kort, försök igen!';
+      feedback.style.color = 'red';
+
+      feedbackTimeout = setTimeout(() => {
+        if (!completed) {
+          feedback.textContent = '';
+        }
+      }, 2000);
     }
   });
 });
+
 </script>
 
 <style>
