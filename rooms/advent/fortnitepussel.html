@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Julens Skjutpussel</title>
+  <title>Julens Skjutpussel (3x3)</title>
   <style>
     :root {
       --width: min(92vw, 680px);
-      --grid: 4;
+      --grid: 3;
       --gap: 4px;
     }
 
@@ -127,7 +127,7 @@
   <div class="win-banner" id="status"></div>
 
   <script>
-    const GRID = 4;
+    const GRID = 3;
     const GAP_PX = 4;
     const TOTAL = GRID * GRID;
     const EMPTY = TOTAL - 1;
@@ -234,7 +234,7 @@
       checkWin();
     }
 
-    function shuffleBoard(steps = 120) {
+    function shuffleBoard(steps = 60) {
       tiles = Array.from({ length: TOTAL }, (_, i) => i);
       let emptyPos = EMPTY;
       let prevEmpty = -1;
@@ -245,6 +245,12 @@
         [tiles[emptyPos], tiles[nextPos]] = [tiles[nextPos], tiles[emptyPos]];
         prevEmpty = emptyPos;
         emptyPos = nextPos;
+      }
+
+      // Säkerställ att pusslet inte råkade hamna färdiglöst direkt
+      if (tiles.every((val, idx) => val === idx)) {
+        shuffleBoard(steps + 1);
+        return;
       }
 
       moves = 0;
