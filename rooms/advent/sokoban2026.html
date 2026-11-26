@@ -14,6 +14,7 @@ body {
   padding: 12px;
 }
 h1 { color: #b51f32; }
+
 #game {
   display: grid;
   grid-template-columns: repeat(15, min(6vw, 39px));
@@ -33,6 +34,7 @@ h1 { color: #b51f32; }
   box-sizing: border-box;
 }
 .wall { background: #286044; }
+
 .controls {
   display: grid;
   grid-template-columns: repeat(3, 60px);
@@ -64,9 +66,9 @@ button {
 <body>
 
 <h1>🎅 Tomtens stora juläventyr 🎄</h1>
-<p>Tomten har tappat bort sina fem julklappar!</p>
-<p>Hjälp honom att flytta alla 🎁 till de fem 🧦.</p>
-<p>Se upp för träden och planera dina drag noga!</p>
+<p>Hjälp tomten att flytta alla fem julklappar 🎁</p>
+<p>Placera dem på de fem julstrumporna 🧦!</p>
+<p>Akta dig för träden och planera dina drag noga.</p>
 
 <div id="game"></div>
 
@@ -88,49 +90,51 @@ button {
 <script>
 const level = [
 "###############",
-"#.....#.......#",
 "#.............#",
-"#..B..#..B....#",
-"#.....#.......#",
-"#.##.....##...#",
-"#......B......#",
-"#...##...##...#",
+"#..#.....#....#",
 "#.............#",
-"#B....#....B..#",
+"#..#.....#....#",
 "#.............#",
 "#.....#.......#",
+"#.....#.......#",
+"#.............#",
+"#..#.....#....#",
+"#.............#",
+"#.............#",
 "###############"
 ];
 
-// Exakt fem mål
+const startBoxes = [
+ {x:4,y:3},
+ {x:10,y:3},
+ {x:7,y:5},
+ {x:4,y:9},
+ {x:10,y:9}
+];
+
 const goals = [
-  [2,2],
-  [12,2],
-  [7,8],
-  [2,11],
-  [12,11]
+ [2,1],
+ [12,1],
+ [2,11],
+ [7,11],
+ [12,11]
 ];
 
 let walls = [];
 let boxes = [];
 let player = {x:7,y:1};
 let finished = false;
-let moves = 0;
 
 function resetGame() {
   walls = [];
-  boxes = [];
+  boxes = startBoxes.map(b => ({...b}));
   player = {x:7,y:1};
   finished = false;
-  moves = 0;
 
   for(let y=0;y<level.length;y++) {
     for(let x=0;x<level[y].length;x++) {
       if(level[y][x] === "#")
         walls.push({x,y});
-
-      if(level[y][x] === "B")
-        boxes.push({x,y});
     }
   }
 
@@ -171,8 +175,6 @@ function move(dx,dy) {
   }
 
   player = {x:nx,y:ny};
-  moves++;
-
   draw();
   checkWin();
 }
@@ -212,7 +214,7 @@ function checkWin() {
   if(completed === 5 && boxes.length === 5) {
     finished = true;
     document.getElementById("message").textContent =
-      "🎉 Bra jobbat Leo! Bokstaven är I.";
+      "🎉 Snyggt jobbat Leo! Dagens bokstav är T.";
   }
 }
 
