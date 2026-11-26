@@ -186,7 +186,7 @@ function checkWin() {
 
   if(done) {
     document.getElementById("message").textContent =
-      "🎉 Bra jobbat Leo! Bokstaven är I.";
+      "🎉 Bra jobbat Leo! Bokstaven är T.";
   }
 }
 
