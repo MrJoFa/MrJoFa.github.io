@@ -4,53 +4,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tomtens svåra juluppdrag</title>
+<title>Tomtens stora juläventyr</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #e7f2e8;
-  color: #234a32;
+  background: #e8f3e9;
+  color: #234b34;
   padding: 12px;
 }
 h1 { color: #b51f32; }
 #game {
   display: grid;
-  grid-template-columns: repeat(11, min(7.7vw, 42px));
+  grid-template-columns: repeat(15, min(6vw, 39px));
   gap: 2px;
   justify-content: center;
   margin: 20px auto;
 }
 .cell {
-  width: min(7.7vw, 42px);
-  height: min(7.7vw, 42px);
+  width: min(6vw, 39px);
+  height: min(6vw, 39px);
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f5f8f2;
-  border-radius: 5px;
-  font-size: min(6vw, 25px);
+  border-radius: 4px;
+  font-size: min(5vw, 23px);
+  box-sizing: border-box;
 }
-.wall { background: #285d3c; }
+.wall { background: #286044; }
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 6px;
+  justify-content: center;
+  margin: 18px;
+}
 button {
   background: #b51f32;
   color: white;
   border: none;
   border-radius: 9px;
-  padding: 13px;
-  font-size: 23px;
+  padding: 12px;
+  font-size: 22px;
   cursor: pointer;
 }
-.controls {
-  display: grid;
-  grid-template-columns: repeat(3, 62px);
-  gap: 6px;
-  justify-content: center;
-  margin: 18px;
-}
 .reset {
-  font-size: 16px;
   background: #315d43;
+  font-size: 16px;
 }
 #message {
   font-size: 22px;
@@ -62,10 +63,10 @@ button {
 </head>
 <body>
 
-<h1>🎅 Tomtens svåra juluppdrag 🎄</h1>
+<h1>🎅 Tomtens stora juläventyr 🎄</h1>
 <p>Tomten har tappat bort sina fem julklappar!</p>
-<p>Flytta alla 🎁 till de fem 🧦.</p>
-<p>Akta dig för väggarna och tänk flera steg framåt!</p>
+<p>Hjälp honom att flytta alla 🎁 till de fem 🧦.</p>
+<p>Se upp för träden och planera dina drag noga!</p>
 
 <div id="game"></div>
 
@@ -78,47 +79,57 @@ button {
   <button onclick="move(1,0)">➡️</button>
 </div>
 
-<button class="reset" onclick="resetGame()">🔄 Börja om</button>
+<button class="reset" onclick="resetGame()">
+  🔄 Börja om
+</button>
 
 <div id="message"></div>
 
 <script>
-const layout = [
-"###########",
-"#.........#",
-"#.B.B.B.B.#",
-"#.........#",
-"#..#...#..#",
-"#..#...#..#",
-"#.........#",
-"#.G.G.G.G.#",
-"#.........#",
-"#..G.G....#",
-"###########"
+const level = [
+"###############",
+"#.....#.......#",
+"#.............#",
+"#..B..#..B....#",
+"#.....#.......#",
+"#.##.....##...#",
+"#......B......#",
+"#...##...##...#",
+"#.............#",
+"#B....#....B..#",
+"#.............#",
+"#.....#.......#",
+"###############"
 ];
 
-// Fem mål och fem julklappar
+// Exakt fem mål
 const goals = [
- [1,7],[3,7],[5,7],[7,7],[4,9]
+  [2,2],
+  [12,2],
+  [7,8],
+  [2,11],
+  [12,11]
 ];
 
 let walls = [];
 let boxes = [];
-let player;
+let player = {x:7,y:1};
 let finished = false;
+let moves = 0;
 
 function resetGame() {
   walls = [];
   boxes = [];
-  player = {x:5,y:1};
+  player = {x:7,y:1};
   finished = false;
+  moves = 0;
 
-  for(let y=0;y<layout.length;y++) {
-    for(let x=0;x<layout[y].length;x++) {
-      if(layout[y][x] === "#")
+  for(let y=0;y<level.length;y++) {
+    for(let x=0;x<level[y].length;x++) {
+      if(level[y][x] === "#")
         walls.push({x,y});
 
-      if(layout[y][x] === "B")
+      if(level[y][x] === "B")
         boxes.push({x,y});
     }
   }
@@ -160,6 +171,7 @@ function move(dx,dy) {
   }
 
   player = {x:nx,y:ny};
+  moves++;
 
   draw();
   checkWin();
@@ -169,8 +181,8 @@ function draw() {
   const game = document.getElementById("game");
   game.innerHTML = "";
 
-  for(let y=0;y<layout.length;y++) {
-    for(let x=0;x<layout[y].length;x++) {
+  for(let y=0;y<level.length;y++) {
+    for(let x=0;x<level[y].length;x++) {
       const cell = document.createElement("div");
       cell.className = "cell";
 
