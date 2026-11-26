@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>Bokstavsutmaning</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #edf2fa;
+  padding: 40px 20px;
+}
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 350px;
+  margin: auto;
+  box-shadow: 0 3px 12px #ccd3df;
+}
+h1 { color: #263b65; }
+input {
+  width: 100px;
+  height: 75px;
+  font-size: 40px;
+  text-align: center;
+  border: 2px solid #536783;
+  border-radius: 10px;
+  margin: 20px;
+}
+button {
+  padding: 12px 25px;
+  background: #263b65;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+#result {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 25px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔤 Bokstavsutmaning</h1>
+  <p>Skriv in rätt bokstav i rutan!</p>
+
+  <input id="letter" type="text"
+         maxlength="1" autocomplete="off">
+
+  <br>
+  <button onclick="checkLetter()">Kontrollera</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+function checkLetter() {
+  const answer = document
+    .getElementById("letter")
+    .value.trim().toUpperCase();
+
+  const result = document.getElementById("result");
+
+  if (answer === "O") {
+    result.textContent = "🎉 Rätt bokstav Led!";
+    result.style.color = "#16834a";
+  } else {
+    result.textContent = "Fel bokstav stäm av igen.";
+    result.style.color = "#d13b3b";
+  }
+}
+</script>
+
+</body>
+</html>
