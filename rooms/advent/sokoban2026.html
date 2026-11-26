@@ -4,64 +4,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sokoban – Leo</title>
+<title>Tomtens juluppdrag</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #eaf3e8;
-  padding: 20px;
+  background: #e4f1e8;
+  padding: 15px;
+  color: #244b35;
 }
-h1 { color: #315b3b; }
+h1 { color: #b51f32; }
+p { font-size: 16px; }
 #game {
   display: grid;
-  grid-template-columns: repeat(9, 42px);
-  gap: 3px;
+  grid-template-columns: repeat(11, min(7.5vw, 43px));
+  gap: 2px;
   justify-content: center;
-  margin: 25px auto;
+  margin: 20px auto;
 }
 .cell {
-  width: 42px;
-  height: 42px;
-  border-radius: 6px;
+  width: min(7.5vw, 43px);
+  height: min(7.5vw, 43px);
+  background: #f5f8f2;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 25px;
-  background: #d7edce;
+  font-size: min(6vw, 27px);
+  box-sizing: border-box;
 }
-.wall { background: #607b61; }
-.goal { background: #f8dca0; }
-.player { background: #b7d9fa; }
+.wall {
+  background: #276344;
+}
 .controls {
   display: grid;
-  grid-template-columns: repeat(3, 60px);
-  gap: 6px;
+  grid-template-columns: repeat(3, 65px);
+  gap: 7px;
   justify-content: center;
   margin: 20px;
 }
 button {
-  padding: 12px;
-  font-size: 22px;
-  border: none;
-  border-radius: 8px;
-  background: #47764b;
+  background: #b51f32;
   color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 13px;
+  font-size: 23px;
   cursor: pointer;
 }
+.reset {
+  font-size: 16px;
+  background: #315d43;
+}
 #message {
-  font-size: 23px;
+  font-size: 22px;
   font-weight: bold;
   color: #16834a;
-  margin: 20px;
+  margin: 20px auto;
+  max-width: 400px;
 }
 </style>
 </head>
 <body>
 
-<h1>🐦 Sokoban – Leos fågeläventyr</h1>
-<p>Flytta alla 5 fåglar till varsitt bo!</p>
-<p>Du kan använda piltangenterna eller knapparna.</p>
+<h1>🎅 Tomtens juluppdrag 🎄</h1>
+
+<p>Tomten har tappat bort sina julklappar!</p>
+<p>Hjälp honom att skjuta alla 5 julklappar
+till julstrumporna 🧦.</p>
+<p>Var försiktig! Du kan inte dra tillbaka en julklapp.</p>
 
 <div id="game"></div>
 
@@ -74,44 +85,46 @@ button {
   <button onclick="move(1,0)">➡️</button>
 </div>
 
-<button onclick="resetGame()" style="font-size:16px">
-  Börja om
+<button class="reset" onclick="resetGame()">
+  🔄 Börja om
 </button>
 
 <div id="message"></div>
 
 <script>
-const originalMap = [
-"#########",
-"#.......#",
-"#..B.G..#",
-"#.B...G.#",
-"#...P...#",
-"#.G.B.B.#",
-"#.......#",
-"#..G.G..#",
-"#########"
+const level = [
+"###########",
+"#.........#",
+"#B.B.B.B.B#",
+"#.........#",
+"#.#.#.#.#.#",
+"#.#.#.#.#.#",
+"#.........#",
+"#.........#",
+"###########"
 ];
 
-let map;
-let player;
-let boxes;
+const goals = [
+ [1,7], [3,7], [5,7], [7,7], [9,7]
+];
+
+let walls = [];
+let boxes = [];
+let player = {x:5,y:1};
+let finished = false;
 
 function resetGame() {
-  map = originalMap.map(row => row.split(""));
+  walls = [];
   boxes = [];
-  player = null;
+  player = {x:5,y:1};
+  finished = false;
 
-  for(let y=0;y<map.length;y++) {
-    for(let x=0;x<map[y].length;x++) {
-      if(map[y][x] === "P") {
-        player = {x,y};
-        map[y][x] = ".";
-      }
-      if(map[y][x] === "B") {
-        boxes.push({x,y});
-        map[y][x] = ".";
-      }
+  for(let y=0;y<level.length;y++) {
+    for(let x=0;x<level[y].length;x++) {
+      const tile = level[y][x];
+
+      if(tile === "#") walls.push({x,y});
+      if(tile === "B") boxes.push({x,y});
     }
   }
 
@@ -119,33 +132,41 @@ function resetGame() {
   draw();
 }
 
+function hasWall(x,y) {
+  return walls.some(w => w.x===x && w.y===y);
+}
+
+function boxAt(x,y) {
+  return boxes.findIndex(b => b.x===x && b.y===y);
+}
+
 function isGoal(x,y) {
-  return originalMap[y][x] === "G";
+  return goals.some(g => g[0]===x && g[1]===y);
 }
 
 function move(dx,dy) {
-  if(document.getElementById("message").textContent) return;
+  if(finished) return;
 
-  const nx = player.x + dx;
-  const ny = player.y + dy;
+  const nx = player.x+dx;
+  const ny = player.y+dy;
 
-  if(map[ny][nx] === "#") return;
+  if(hasWall(nx,ny)) return;
 
-  const boxIndex = boxes.findIndex(
-    b => b.x === nx && b.y === ny
-  );
+  const index = boxAt(nx,ny);
 
-  if(boxIndex !== -1) {
-    const bx = nx + dx;
-    const by = ny + dy;
+  if(index !== -1) {
+    const bx = nx+dx;
+    const by = ny+dy;
 
-    if(map[by][bx] === "#" ||
-       boxes.some(b => b.x === bx && b.y === by)) return;
+    if(hasWall(bx,by) || boxAt(bx,by)!==-1) {
+      return;
+    }
 
-    boxes[boxIndex] = {x:bx,y:by};
+    boxes[index] = {x:bx,y:by};
   }
 
   player = {x:nx,y:ny};
+
   draw();
   checkWin();
 }
@@ -154,26 +175,23 @@ function draw() {
   const game = document.getElementById("game");
   game.innerHTML = "";
 
-  for(let y=0;y<map.length;y++) {
-    for(let x=0;x<map[y].length;x++) {
+  for(let y=0;y<level.length;y++) {
+    for(let x=0;x<level[y].length;x++) {
       const cell = document.createElement("div");
       cell.className = "cell";
 
-      if(map[y][x] === "#") {
+      if(hasWall(x,y)) {
         cell.classList.add("wall");
-        cell.textContent = "🌳";
+        cell.textContent = "🌲";
+      } else if(boxAt(x,y)!==-1) {
+        cell.textContent = "🎁";
+        if(isGoal(x,y)) cell.textContent = "🎁";
+      } else if(player.x===x && player.y===y) {
+        cell.textContent = "🎅";
       } else if(isGoal(x,y)) {
-        cell.classList.add("goal");
-        cell.textContent = "🪺";
-      }
-
-      if(boxes.some(b => b.x===x && b.y===y)) {
-        cell.textContent = isGoal(x,y) ? "🐦" : "🐦";
-      }
-
-      if(player.x===x && player.y===y) {
-        cell.classList.add("player");
-        cell.textContent = "🧒";
+        cell.textContent = "🧦";
+      } else {
+        cell.textContent = "❄️";
       }
 
       game.appendChild(cell);
@@ -182,15 +200,18 @@ function draw() {
 }
 
 function checkWin() {
-  const done = boxes.every(b => isGoal(b.x,b.y));
+  const count = boxes.filter(b =>
+    isGoal(b.x,b.y)
+  ).length;
 
-  if(done) {
+  if(count===5) {
+    finished = true;
     document.getElementById("message").textContent =
-      "🎉 Bra jobbat Leo! Bokstaven är T.";
+      "🎉 Bra jobbat Leo! Bokstaven är I.";
   }
 }
 
-document.addEventListener("keydown", e => {
+document.addEventListener("keydown", function(e) {
   const keys = {
     ArrowUp:[0,-1],
     ArrowDown:[0,1],
