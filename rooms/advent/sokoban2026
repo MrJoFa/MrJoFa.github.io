@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sokoban – Leo</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #eaf3e8;
+  padding: 20px;
+}
+h1 { color: #315b3b; }
+#game {
+  display: grid;
+  grid-template-columns: repeat(9, 42px);
+  gap: 3px;
+  justify-content: center;
+  margin: 25px auto;
+}
+.cell {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  background: #d7edce;
+}
+.wall { background: #607b61; }
+.goal { background: #f8dca0; }
+.player { background: #b7d9fa; }
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 6px;
+  justify-content: center;
+  margin: 20px;
+}
+button {
+  padding: 12px;
+  font-size: 22px;
+  border: none;
+  border-radius: 8px;
+  background: #47764b;
+  color: white;
+  cursor: pointer;
+}
+#message {
+  font-size: 23px;
+  font-weight: bold;
+  color: #16834a;
+  margin: 20px;
+}
+</style>
+</head>
+<body>
+
+<h1>🐦 Sokoban – Leos fågeläventyr</h1>
+<p>Flytta alla 5 fåglar till varsitt bo!</p>
+<p>Du kan använda piltangenterna eller knapparna.</p>
+
+<div id="game"></div>
+
+<div class="controls">
+  <span></span>
+  <button onclick="move(0,-1)">⬆️</button>
+  <span></span>
+  <button onclick="move(-1,0)">⬅️</button>
+  <button onclick="move(0,1)">⬇️</button>
+  <button onclick="move(1,0)">➡️</button>
+</div>
+
+<button onclick="resetGame()" style="font-size:16px">
+  Börja om
+</button>
+
+<div id="message"></div>
+
+<script>
+const originalMap = [
+"#########",
+"#.......#",
+"#..B.G..#",
+"#.B...G.#",
+"#...P...#",
+"#.G.B.B.#",
+"#.......#",
+"#..G.G..#",
+"#########"
+];
+
+let map;
+let player;
+let boxes;
+
+function resetGame() {
+  map = originalMap.map(row => row.split(""));
+  boxes = [];
+  player = null;
+
+  for(let y=0;y<map.length;y++) {
+    for(let x=0;x<map[y].length;x++) {
+      if(map[y][x] === "P") {
+        player = {x,y};
+        map[y][x] = ".";
+      }
+      if(map[y][x] === "B") {
+        boxes.push({x,y});
+        map[y][x] = ".";
+      }
+    }
+  }
+
+  document.getElementById("message").textContent = "";
+  draw();
+}
+
+function isGoal(x,y) {
+  return originalMap[y][x] === "G";
+}
+
+function move(dx,dy) {
+  if(document.getElementById("message").textContent) return;
+
+  const nx = player.x + dx;
+  const ny = player.y + dy;
+
+  if(map[ny][nx] === "#") return;
+
+  const boxIndex = boxes.findIndex(
+    b => b.x === nx && b.y === ny
+  );
+
+  if(boxIndex !== -1) {
+    const bx = nx + dx;
+    const by = ny + dy;
+
+    if(map[by][bx] === "#" ||
+       boxes.some(b => b.x === bx && b.y === by)) return;
+
+    boxes[boxIndex] = {x:bx,y:by};
+  }
+
+  player = {x:nx,y:ny};
+  draw();
+  checkWin();
+}
+
+function draw() {
+  const game = document.getElementById("game");
+  game.innerHTML = "";
+
+  for(let y=0;y<map.length;y++) {
+    for(let x=0;x<map[y].length;x++) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+
+      if(map[y][x] === "#") {
+        cell.classList.add("wall");
+        cell.textContent = "🌳";
+      } else if(isGoal(x,y)) {
+        cell.classList.add("goal");
+        cell.textContent = "🪺";
+      }
+
+      if(boxes.some(b => b.x===x && b.y===y)) {
+        cell.textContent = isGoal(x,y) ? "🐦" : "🐦";
+      }
+
+      if(player.x===x && player.y===y) {
+        cell.classList.add("player");
+        cell.textContent = "🧒";
+      }
+
+      game.appendChild(cell);
+    }
+  }
+}
+
+function checkWin() {
+  const done = boxes.every(b => isGoal(b.x,b.y));
+
+  if(done) {
+    document.getElementById("message").textContent =
+      "🎉 Bra jobbat Leo! Bokstaven är I.";
+  }
+}
+
+document.addEventListener("keydown", e => {
+  const keys = {
+    ArrowUp:[0,-1],
+    ArrowDown:[0,1],
+    ArrowLeft:[-1,0],
+    ArrowRight:[1,0]
+  };
+
+  if(keys[e.key]) {
+    e.preventDefault();
+    move(...keys[e.key]);
+  }
+});
+
+resetGame();
+</script>
+
+</body>
+</html>
