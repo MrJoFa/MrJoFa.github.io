@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tectonic till Leo</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f0f4fa;
+  padding: 20px;
+}
+h1 { color: #263b65; }
+#board {
+  display: grid;
+  grid-template-columns: repeat(5, 58px);
+  justify-content: center;
+  gap: 3px;
+  margin: 25px auto;
+}
+.cell {
+  width: 54px;
+  height: 54px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #536783;
+  border-radius: 6px;
+  background: #fff;
+}
+.cell:nth-child(-n+5) { background: #dceaff; }
+.cell:nth-child(n+6):nth-child(-n+10) { background: #fce6d5; }
+.cell:nth-child(n+11):nth-child(-n+15) { background: #e2f2df; }
+.cell:nth-child(n+16):nth-child(-n+20) { background: #f4e3fa; }
+.cell:nth-child(n+21) { background: #fff1c9; }
+.cell:disabled {
+  color: #263b65;
+  opacity: 1;
+}
+button {
+  padding: 12px 25px;
+  background: #263b65;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+}
+#message {
+  font-size: 23px;
+  font-weight: bold;
+  color: #16834a;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<h1>🧩 Tectonic till Leo</h1>
+<p>Fyll i siffrorna 1–5 i varje område.</p>
+<p>Samma siffror får inte ligga intill varandra,
+inte ens diagonalt!</p>
+
+<div id="board"></div>
+<button onclick="check()">Kontrollera svaret</button>
+<div id="message"></div>
+
+<script>
+const solution = [
+ [1,2,3,4,5],
+ [3,4,5,1,2],
+ [5,1,2,3,4],
+ [2,3,4,5,1],
+ [4,5,1,2,3]
+];
+
+const clues = [
+ [1,0,3,0,5],
+ [0,4,0,1,0],
+ [5,0,2,0,0],
+ [0,3,0,0,1],
+ [4,0,0,2,0]
+];
+
+const board = document.getElementById("board");
+
+for(let r=0;r<5;r++){
+  for(let c=0;c<5;c++){
+    const input = document.createElement("input");
+    input.className = "cell";
+    input.type = "text";
+    input.inputMode = "numeric";
+    input.maxLength = 1;
+    input.dataset.row = r;
+    input.dataset.col = c;
+
+    if(clues[r][c]){
+      input.value = clues[r][c];
+      input.disabled = true;
+    } else {
+      input.addEventListener("input", () => {
+        input.value = input.value.replace(/[^1-5]/g,"");
+      });
+    }
+    board.appendChild(input);
+  }
+}
+
+function check(){
+  const cells = [...document.querySelectorAll(".cell")];
+  const values = Array.from({length:5},()=>[]);
+
+  cells.forEach(cell=>{
+    values[+cell.dataset.row][+cell.dataset.col] =
+      Number(cell.value);
+  });
+
+  let valid = true;
+
+  for(let r=0;r<5;r++){
+    if(values[r].some(v=>v<1 || v>5) ||
+       new Set(values[r]).size!==5) valid=false;
+  }
+
+  for(let r=0;r<5;r++){
+    for(let c=0;c<5;c++){
+      for(let dr=-1;dr<=1;dr++){
+        for(let dc=-1;dc<=1;dc++){
+          if(!dr && !dc) continue;
+          let nr=r+dr, nc=c+dc;
+          if(nr>=0 && nr<5 && nc>=0 && nc<5){
+            if(values[r][c]===values[nr][nc])
+              valid=false;
+          }
+        }
+      }
+    }
+  }
+
+  if(valid){
+    document.getElementById("message").textContent =
+      "🎉 Bra jobbat Leo! Dagens bokstav är T";
+  } else {
+    document.getElementById("message").textContent =
+      "Inte riktigt än Leo! Försök igen 😊";
+  }
+}
+</script>
+</body>
+</html>
