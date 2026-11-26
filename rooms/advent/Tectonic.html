@@ -4,12 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tectonic till Leo</title>
+<title>Tectonic – Leo</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #f0f4fa;
+  background: #eef3fa;
   padding: 20px;
 }
 h1 { color: #263b65; }
@@ -17,27 +17,23 @@ h1 { color: #263b65; }
   display: grid;
   grid-template-columns: repeat(5, 58px);
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   margin: 25px auto;
 }
 .cell {
   width: 54px;
   height: 54px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 23px;
   text-align: center;
+  font-weight: bold;
   border: 2px solid #536783;
-  border-radius: 6px;
-  background: #fff;
+  border-radius: 5px;
+  background: white;
 }
-.cell:nth-child(-n+5) { background: #dceaff; }
-.cell:nth-child(n+6):nth-child(-n+10) { background: #fce6d5; }
-.cell:nth-child(n+11):nth-child(-n+15) { background: #e2f2df; }
-.cell:nth-child(n+16):nth-child(-n+20) { background: #f4e3fa; }
-.cell:nth-child(n+21) { background: #fff1c9; }
 .cell:disabled {
   color: #263b65;
   opacity: 1;
+  background: #dceaff;
 }
 button {
   padding: 12px 25px;
@@ -49,7 +45,7 @@ button {
   cursor: pointer;
 }
 #message {
-  font-size: 23px;
+  font-size: 22px;
   font-weight: bold;
   color: #16834a;
   margin-top: 20px;
@@ -59,9 +55,9 @@ button {
 <body>
 
 <h1>🧩 Tectonic till Leo</h1>
-<p>Fyll i siffrorna 1–5 i varje område.</p>
+<p>Fyll i siffrorna i de tomma rutorna.</p>
 <p>Samma siffror får inte ligga intill varandra,
-inte ens diagonalt!</p>
+inte ens diagonalt.</p>
 
 <div id="board"></div>
 <button onclick="check()">Kontrollera svaret</button>
@@ -69,19 +65,28 @@ inte ens diagonalt!</p>
 
 <script>
 const solution = [
- [1,2,3,4,5],
- [3,4,5,1,2],
- [5,1,2,3,4],
- [2,3,4,5,1],
- [4,5,1,2,3]
+ [1,2,3,1,2],
+ [3,1,2,3,1],
+ [2,3,1,2,3],
+ [1,2,3,1,2],
+ [3,1,2,3,1]
+];
+
+// Varje bokstav representerar ett eget område
+const regions = [
+ "AABBC",
+ "ADDBC",
+ "EEDFF",
+ "GEFFF",
+ "GGHHF"
 ];
 
 const clues = [
- [1,0,3,0,5],
- [0,4,0,1,0],
- [5,0,2,0,0],
- [0,3,0,0,1],
- [4,0,0,2,0]
+ [1,0,0,1,0],
+ [0,0,2,0,1],
+ [0,3,0,0,0],
+ [1,0,0,1,0],
+ [0,1,0,0,0]
 ];
 
 const board = document.getElementById("board");
@@ -119,11 +124,28 @@ function check(){
 
   let valid = true;
 
-  for(let r=0;r<5;r++){
-    if(values[r].some(v=>v<1 || v>5) ||
-       new Set(values[r]).size!==5) valid=false;
+  // Kontrollera att alla rutor är ifyllda
+  if(values.some(row=>row.some(v=>!v))){
+    valid = false;
   }
 
+  // Kontrollera områdenas siffror
+  const groups = {};
+  regions.forEach((row,r)=>{
+    [...row].forEach((group,c)=>{
+      if(!groups[group]) groups[group]=[];
+      groups[group].push(values[r][c]);
+    });
+  });
+
+  for(const group in groups){
+    const nums = groups[group];
+    const expected = nums.map((_,i)=>i+1).sort();
+    if(nums.slice().sort().some((v,i)=>v!==expected[i]))
+      valid = false;
+  }
+
+  // Kontrollera intilliggande rutor
   for(let r=0;r<5;r++){
     for(let c=0;c<5;c++){
       for(let dr=-1;dr<=1;dr++){
@@ -139,13 +161,10 @@ function check(){
     }
   }
 
-  if(valid){
-    document.getElementById("message").textContent =
-      "🎉 Bra jobbat Leo! Dagens bokstav är T";
-  } else {
-    document.getElementById("message").textContent =
-      "Inte riktigt än Leo! Försök igen 😊";
-  }
+  document.getElementById("message").textContent =
+    valid
+    ? "🎉 Bra jobbat Leo! Dagens bokstav är T"
+    : "Försök igen Leo! Du klarar det! 😊";
 }
 </script>
 </body>
