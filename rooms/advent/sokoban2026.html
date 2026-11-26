@@ -4,45 +4,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tomtens juluppdrag</title>
+<title>Tomtens svåra juluppdrag</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #e4f1e8;
-  padding: 15px;
-  color: #244b35;
+  background: #e7f2e8;
+  color: #234a32;
+  padding: 12px;
 }
 h1 { color: #b51f32; }
-p { font-size: 16px; }
 #game {
   display: grid;
-  grid-template-columns: repeat(11, min(7.5vw, 43px));
+  grid-template-columns: repeat(11, min(7.7vw, 42px));
   gap: 2px;
   justify-content: center;
   margin: 20px auto;
 }
 .cell {
-  width: min(7.5vw, 43px);
-  height: min(7.5vw, 43px);
+  width: min(7.7vw, 42px);
+  height: min(7.7vw, 42px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #f5f8f2;
   border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: min(6vw, 27px);
-  box-sizing: border-box;
+  font-size: min(6vw, 25px);
 }
-.wall {
-  background: #276344;
-}
-.controls {
-  display: grid;
-  grid-template-columns: repeat(3, 65px);
-  gap: 7px;
-  justify-content: center;
-  margin: 20px;
-}
+.wall { background: #285d3c; }
 button {
   background: #b51f32;
   color: white;
@@ -51,6 +40,13 @@ button {
   padding: 13px;
   font-size: 23px;
   cursor: pointer;
+}
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 62px);
+  gap: 6px;
+  justify-content: center;
+  margin: 18px;
 }
 .reset {
   font-size: 16px;
@@ -61,18 +57,15 @@ button {
   font-weight: bold;
   color: #16834a;
   margin: 20px auto;
-  max-width: 400px;
 }
 </style>
 </head>
 <body>
 
-<h1>🎅 Tomtens juluppdrag 🎄</h1>
-
-<p>Tomten har tappat bort sina julklappar!</p>
-<p>Hjälp honom att skjuta alla 5 julklappar
-till julstrumporna 🧦.</p>
-<p>Var försiktig! Du kan inte dra tillbaka en julklapp.</p>
+<h1>🎅 Tomtens svåra juluppdrag 🎄</h1>
+<p>Tomten har tappat bort sina fem julklappar!</p>
+<p>Flytta alla 🎁 till de fem 🧦.</p>
+<p>Akta dig för väggarna och tänk flera steg framåt!</p>
 
 <div id="game"></div>
 
@@ -85,32 +78,33 @@ till julstrumporna 🧦.</p>
   <button onclick="move(1,0)">➡️</button>
 </div>
 
-<button class="reset" onclick="resetGame()">
-  🔄 Börja om
-</button>
+<button class="reset" onclick="resetGame()">🔄 Börja om</button>
 
 <div id="message"></div>
 
 <script>
-const level = [
+const layout = [
 "###########",
 "#.........#",
-"#B.B.B.B.B#",
+"#.B.B.B.B.#",
 "#.........#",
-"#.#.#.#.#.#",
-"#.#.#.#.#.#",
+"#..#...#..#",
+"#..#...#..#",
 "#.........#",
+"#.G.G.G.G.#",
 "#.........#",
+"#..G.G....#",
 "###########"
 ];
 
+// Fem mål och fem julklappar
 const goals = [
- [1,7], [3,7], [5,7], [7,7], [9,7]
+ [1,7],[3,7],[5,7],[7,7],[4,9]
 ];
 
 let walls = [];
 let boxes = [];
-let player = {x:5,y:1};
+let player;
 let finished = false;
 
 function resetGame() {
@@ -119,12 +113,13 @@ function resetGame() {
   player = {x:5,y:1};
   finished = false;
 
-  for(let y=0;y<level.length;y++) {
-    for(let x=0;x<level[y].length;x++) {
-      const tile = level[y][x];
+  for(let y=0;y<layout.length;y++) {
+    for(let x=0;x<layout[y].length;x++) {
+      if(layout[y][x] === "#")
+        walls.push({x,y});
 
-      if(tile === "#") walls.push({x,y});
-      if(tile === "B") boxes.push({x,y});
+      if(layout[y][x] === "B")
+        boxes.push({x,y});
     }
   }
 
@@ -132,7 +127,7 @@ function resetGame() {
   draw();
 }
 
-function hasWall(x,y) {
+function wallAt(x,y) {
   return walls.some(w => w.x===x && w.y===y);
 }
 
@@ -140,7 +135,7 @@ function boxAt(x,y) {
   return boxes.findIndex(b => b.x===x && b.y===y);
 }
 
-function isGoal(x,y) {
+function goalAt(x,y) {
   return goals.some(g => g[0]===x && g[1]===y);
 }
 
@@ -150,7 +145,7 @@ function move(dx,dy) {
   const nx = player.x+dx;
   const ny = player.y+dy;
 
-  if(hasWall(nx,ny)) return;
+  if(wallAt(nx,ny)) return;
 
   const index = boxAt(nx,ny);
 
@@ -158,9 +153,8 @@ function move(dx,dy) {
     const bx = nx+dx;
     const by = ny+dy;
 
-    if(hasWall(bx,by) || boxAt(bx,by)!==-1) {
+    if(wallAt(bx,by) || boxAt(bx,by)!==-1)
       return;
-    }
 
     boxes[index] = {x:bx,y:by};
   }
@@ -175,20 +169,19 @@ function draw() {
   const game = document.getElementById("game");
   game.innerHTML = "";
 
-  for(let y=0;y<level.length;y++) {
-    for(let x=0;x<level[y].length;x++) {
+  for(let y=0;y<layout.length;y++) {
+    for(let x=0;x<layout[y].length;x++) {
       const cell = document.createElement("div");
       cell.className = "cell";
 
-      if(hasWall(x,y)) {
+      if(wallAt(x,y)) {
         cell.classList.add("wall");
         cell.textContent = "🌲";
       } else if(boxAt(x,y)!==-1) {
         cell.textContent = "🎁";
-        if(isGoal(x,y)) cell.textContent = "🎁";
       } else if(player.x===x && player.y===y) {
         cell.textContent = "🎅";
-      } else if(isGoal(x,y)) {
+      } else if(goalAt(x,y)) {
         cell.textContent = "🧦";
       } else {
         cell.textContent = "❄️";
@@ -200,11 +193,11 @@ function draw() {
 }
 
 function checkWin() {
-  const count = boxes.filter(b =>
-    isGoal(b.x,b.y)
+  const completed = boxes.filter(b =>
+    goalAt(b.x,b.y)
   ).length;
 
-  if(count===5) {
+  if(completed === 5 && boxes.length === 5) {
     finished = true;
     document.getElementById("message").textContent =
       "🎉 Bra jobbat Leo! Bokstaven är I.";
