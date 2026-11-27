@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Julens Memory</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #123b32, #23634c);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 550px;
+  margin: 20px auto;
+  background: #fffaf0;
+  color: #26352e;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 5px 25px #0005;
+}
+
+h1 { color: #b52e35; }
+
+.intro {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.info {
+  color: #176044;
+  font-weight: bold;
+  margin: 15px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px auto;
+}
+
+.card {
+  aspect-ratio: 1;
+  border: 3px solid #d5a34d;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #754326, #492713);
+  color: #ffe4a3;
+  font-size: 35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, background 0.3s;
+  box-shadow: 0 3px 6px #0003;
+}
+
+.card:hover {
+  transform: scale(1.04);
+}
+
+.card.flipped,
+.card.matched {
+  background: #fff;
+  border-color: #b52e35;
+  transform: rotateY(0deg);
+}
+
+.card.matched {
+  background: #dcefdc;
+  border-color: #176044;
+  cursor: default;
+}
+
+.card:disabled {
+  opacity: 1;
+}
+
+button.reset {
+  background: #b52e35;
+  color: white;
+  border: none;
+  padding: 13px 25px;
+  border-radius: 9px;
+  font-size: 17px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button.reset:hover {
+  background: #8e2028;
+}
+
+.success {
+  display: none;
+  background: #dcefdc;
+  color: #14532d;
+  padding: 25px;
+  border-radius: 15px;
+  font-size: 22px;
+  margin-top: 20px;
+  animation: appear 1s;
+}
+
+.letter {
+  font-size: 75px;
+  color: #b52e35;
+  font-weight: bold;
+  margin: 10px;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 400px) {
+  .grid { gap: 7px; }
+  .card { font-size: 29px; }
+  .container { padding: 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎄 Julens Memory 🎄</h1>
+
+<p class="intro">
+Tomten har gömt julens symboler bakom korten!
+Hitta alla 8 par för att klara utmaningen.
+</p>
+
+<p class="info" id="info">
+Hittade par: 0 av 8
+</p>
+
+<p id="moves">Antal försök: 0</p>
+
+<div class="grid" id="game"></div>
+
+<div class="success" id="success">
+🎉🎄 BRA SPELAT LEO! 🎄🎉
+
+<br><br>
+Du hittade alla julens par!
+
+<br><br>
+Dagens bokstav är:
+
+<div class="letter">N</div>
+
+⭐🎁⭐
+</div>
+
+<button class="reset" onclick="startGame()">
+Blanda korten igen 🔄
+</button>
+
+</div>
+
+<script>
+const symbols = [
+  "🎅", "🎄", "⛄", "🎁",
+  "⭐", "🔔", "🦌", "❄️"
+];
+
+let cards = [];
+let firstCard = null;
+let secondCard = null;
+let locked = false;
+let matches = 0;
+let attempts = 0;
+
+function startGame() {
+  cards = [...symbols, ...symbols]
+    .sort(() => Math.random() - 0.5);
+
+  firstCard = null;
+  secondCard = null;
+  locked = false;
+  matches = 0;
+  attempts = 0;
+
+  document.getElementById("info").textContent =
+    "Hittade par: 0 av 8";
+
+  document.getElementById("moves").textContent =
+    "Antal försök: 0";
+
+  document.getElementById("success").style.display =
+    "none";
+
+  const game = document.getElementById("game");
+  game.innerHTML = "";
+
+  cards.forEach((symbol, index) => {
+    const card = document.createElement("button");
+
+    card.className = "card";
+    card.type = "button";
+    card.textContent = "🎄";
+    card.dataset.symbol = symbol;
+    card.setAttribute("aria-label", "Dolt kort");
+
+    card.addEventListener("click", () => {
+      flipCard(card);
+    });
+
+    game.appendChild(card);
+  });
+}
+
+function flipCard(card) {
+  if (
+    locked ||
+    card.classList.contains("flipped") ||
+    card.classList.contains("matched")
+  ) {
+    return;
+  }
+
+  card.textContent = card.dataset.symbol;
+  card.classList.add("flipped");
+  card.setAttribute("aria-label", card.dataset.symbol);
+
+  if (!firstCard) {
+    firstCard = card;
+    return;
+  }
+
+  secondCard = card;
+  attempts++;
+
+  document.getElementById("moves").textContent =
+    "Antal försök: " + attempts;
+
+  if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+
+    firstCard.classList.add("matched");
+    secondCard.classList.add("matched");
+
+    firstCard.disabled = true;
+    secondCard.disabled = true;
+
+    matches++;
+
+    document.getElementById("info").textContent =
+      "Hittade par: " + matches + " av 8";
+
+    firstCard = null;
+    secondCard = null;
+
+    if (matches === 8) {
+      document.getElementById("success").style.display =
+        "block";
+    }
+
+  } else {
+
+    locked = true;
+
+    setTimeout(() => {
+      firstCard.textContent = "🎄";
+      secondCard.textContent = "🎄";
+
+      firstCard.classList.remove("flipped");
+      secondCard.classList.remove("flipped");
+
+      firstCard.setAttribute("aria-label", "Dolt kort");
+      secondCard.setAttribute("aria-label", "Dolt kort");
+
+      firstCard = null;
+      secondCard = null;
+      locked = false;
+
+    }, 900);
+  }
+}
+
+startGame();
+</script>
+
+</body>
+</html>
