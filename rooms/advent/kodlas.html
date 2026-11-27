@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Matteutmaning – Kodlåset</title>
+<title>Det hemliga kodlåset</title>
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -14,17 +14,17 @@ body {
 }
 .container {
   background: white;
-  max-width: 430px;
+  max-width: 460px;
   margin: auto;
-  padding: 25px;
+  padding: 22px;
   border-radius: 15px;
   box-shadow: 0 3px 12px #ccd3df;
 }
 h1 { color: #b51f32; }
 .question {
   background: #f0f5ef;
-  padding: 14px;
-  margin: 12px 0;
+  padding: 13px;
+  margin: 13px 0;
   border-radius: 10px;
 }
 input {
@@ -46,7 +46,7 @@ button {
   margin-top: 15px;
 }
 #result {
-  font-size: 21px;
+  font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
 }
@@ -60,27 +60,34 @@ button {
 Varje svar ger en siffra till koden!</p>
 
 <div class="question">
-  <p><b>Kluring 1</b></p>
-  <p>Vad är 18 ÷ 3 + 9?</p>
-  <input type="number" id="a">
+<b>Kluring 1 – Julhandeln</b>
+<p>Leo köper en julklapp för 85 kr.
+Han betalar med en 100-lapp.
+Hur mycket får han tillbaka?</p>
+<input type="number" id="a">
 </div>
 
 <div class="question">
-  <p><b>Kluring 2</b></p>
-  <p>Vad är 7 × 6 − 37?</p>
-  <input type="number" id="b">
+<b>Kluring 2 – Tidsutmaningen</b>
+<p>En film börjar kl. 18.45 och är 2 timmar och 20 minuter lång.
+Vilken minut slutar filmen på? (Svara bara med minut-talet.)</p>
+<input type="number" id="b">
 </div>
 
 <div class="question">
-  <p><b>Kluring 3</b></p>
-  <p>Vad är 45 ÷ 5 − 4?</p>
-  <input type="number" id="c">
+<b>Kluring 3 – Julgranen</b>
+<p>En julgran är 180 cm hög.
+Stjärnan är 15 cm hög och resten av granen är 165 cm.
+Hur många gånger högre är resten av granen än stjärnan?</p>
+<input type="number" id="c">
 </div>
 
 <div class="question">
-  <p><b>Kluring 4</b></p>
-  <p>Vad är 3 × 8 − 19?</p>
-  <input type="number" id="d">
+<b>Kluring 4 – Julgodiset</b>
+<p>Det finns 48 kolor.
+Leo äter en fjärdedel av dem.
+Hur många kolor har han ätit?</p>
+<input type="number" id="d">
 </div>
 
 <button onclick="checkCode()">Öppna kodlåset</button>
@@ -97,16 +104,17 @@ function checkCode() {
     document.getElementById("d").value
   ];
 
+  const correct = ["15","5","11","12"];
+
   const result = document.getElementById("result");
 
-  if (answers.every((v,i) =>
-      v === ["15","5","5","5"][i])) {
+  if (answers.every((v,i) => v === correct[i])) {
     result.textContent =
       "🎉 Rätt kod! 1515. Snyggt jobbat Leo!";
     result.style.color = "#16834a";
   } else {
     result.textContent =
-      "🔒 Fel kod! Kontrollera dina uträkningar och försök igen.";
+      "🔒 Inte riktigt! Kontrollera dina svar och försök igen.";
     result.style.color = "#b51f32";
   }
 }
