@@ -3,236 +3,186 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Julens Memory</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julmemory</title>
 
 <style>
-* { box-sizing: border-box; }
-
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #123b32, #23634c);
-  color: white;
+  background: linear-gradient(135deg, #173b2b, #315c3d);
   text-align: center;
   padding: 20px;
-  min-height: 100vh;
+  color: white;
 }
 
-.container {
-  max-width: 550px;
-  margin: 20px auto;
-  background: #fffaf0;
-  color: #26352e;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 5px 25px #0005;
-}
-
-h1 { color: #b52e35; }
-
-.intro {
-  font-size: 17px;
-  line-height: 1.5;
+h1 {
+  color: #ffe6a3;
+  font-size: 34px;
 }
 
 .info {
-  color: #176044;
-  font-weight: bold;
-  margin: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  font-size: 20px;
+  margin: 20px;
+  flex-wrap: wrap;
 }
 
-.grid {
+#timer {
+  color: #ffcf69;
+  font-weight: bold;
+}
+
+.game {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin: 20px auto;
+  grid-template-columns: repeat(4, 90px);
+  gap: 12px;
+  justify-content: center;
+  margin: 25px auto;
 }
 
 .card {
-  aspect-ratio: 1;
-  border: 3px solid #d5a34d;
+  width: 90px;
+  height: 100px;
+  background: #6b3528;
+  border: 3px solid #d6ad64;
   border-radius: 12px;
-  background: linear-gradient(135deg, #754326, #492713);
-  color: #ffe4a3;
-  font-size: 35px;
-  cursor: pointer;
+  font-size: 38px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  transition: transform 0.3s, background 0.3s;
-  box-shadow: 0 3px 6px #0003;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 7px #111;
+  user-select: none;
 }
 
-.card:hover {
-  transform: scale(1.04);
+.card.hidden {
+  background: #6b3528;
 }
 
-.card.flipped,
+.card.hidden::after {
+  content: "🎄";
+}
+
 .card.matched {
-  background: #fff;
-  border-color: #b52e35;
-  transform: rotateY(0deg);
-}
-
-.card.matched {
-  background: #dcefdc;
-  border-color: #176044;
+  background: #f7e9c5;
   cursor: default;
 }
 
-.card:disabled {
-  opacity: 1;
-}
-
-button.reset {
-  background: #b52e35;
+button {
+  background: #b52e32;
   color: white;
-  border: none;
-  padding: 13px 25px;
-  border-radius: 9px;
-  font-size: 17px;
+  border: 2px solid #ffe6a3;
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
-button.reset:hover {
-  background: #8e2028;
-}
-
-.success {
-  display: none;
-  background: #dcefdc;
-  color: #14532d;
-  padding: 25px;
-  border-radius: 15px;
-  font-size: 22px;
-  margin-top: 20px;
-  animation: appear 1s;
-}
-
-.letter {
-  font-size: 75px;
-  color: #b52e35;
+#message {
+  font-size: 25px;
   font-weight: bold;
-  margin: 10px;
+  color: #ffe6a3;
+  margin-top: 25px;
 }
 
-@keyframes appear {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@media (max-width: 430px) {
+  .game {
+    grid-template-columns: repeat(4, 70px);
+    gap: 8px;
+  }
 
-@media (max-width: 400px) {
-  .grid { gap: 7px; }
-  .card { font-size: 29px; }
-  .container { padding: 15px; }
+  .card {
+    width: 70px;
+    height: 80px;
+    font-size: 32px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>🎄 Julmemory 🎄</h1>
+<p>Hitta alla 8 julpar innan tiden tar slut!</p>
 
-<h1>🎄 Julens Memory 🎄</h1>
-
-<p class="intro">
-Tomten har gömt julens symboler bakom korten!
-Hitta alla 8 par för att klara utmaningen.
-</p>
-
-<p class="info" id="info">
-Hittade par: 0 av 8
-</p>
-
-<p id="moves">Antal försök: 0</p>
-
-<div class="grid" id="game"></div>
-
-<div class="success" id="success">
-🎉🎄 BRA SPELAT LEO! 🎄🎉
-
-<br><br>
-Du hittade alla julens par!
-
-<br><br>
-Dagens bokstav är:
-
-<div class="letter">N</div>
-
-⭐🎁⭐
+<div class="info">
+  <div>⏱ Tid: <span id="timer">60</span> sek</div>
+  <div>⭐ Par: <span id="pairs">0</span> / 8</div>
 </div>
 
-<button class="reset" onclick="startGame()">
-Blanda korten igen 🔄
-</button>
+<div class="game" id="game"></div>
 
-</div>
+<div id="message"></div>
+
+<button onclick="startGame()">Börja om</button>
 
 <script>
-const symbols = [
-  "🎅", "🎄", "⛄", "🎁",
-  "⭐", "🔔", "🦌", "❄️"
-];
+const symbols = ["🎅", "🎄", "⛄", "🎁", "⭐", "🔔", "🦌", "❄️"];
 
 let cards = [];
 let firstCard = null;
 let secondCard = null;
 let locked = false;
-let matches = 0;
+let matchedPairs = 0;
 let attempts = 0;
+let timeLeft = 60;
+let timerInterval;
+let gameOver = false;
 
 function startGame() {
-  cards = [...symbols, ...symbols]
-    .sort(() => Math.random() - 0.5);
+  clearInterval(timerInterval);
 
+  cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
   firstCard = null;
   secondCard = null;
   locked = false;
-  matches = 0;
+  matchedPairs = 0;
   attempts = 0;
+  timeLeft = 60;
+  gameOver = false;
 
-  document.getElementById("info").textContent =
-    "Hittade par: 0 av 8";
-
-  document.getElementById("moves").textContent =
-    "Antal försök: 0";
-
-  document.getElementById("success").style.display =
-    "none";
+  document.getElementById("pairs").textContent = "0";
+  document.getElementById("timer").textContent = "60";
+  document.getElementById("message").textContent = "";
 
   const game = document.getElementById("game");
   game.innerHTML = "";
 
   cards.forEach((symbol, index) => {
-    const card = document.createElement("button");
-
-    card.className = "card";
-    card.type = "button";
-    card.textContent = "🎄";
+    const card = document.createElement("div");
+    card.className = "card hidden";
     card.dataset.symbol = symbol;
-    card.setAttribute("aria-label", "Dolt kort");
-
-    card.addEventListener("click", () => {
-      flipCard(card);
-    });
-
+    card.dataset.index = index;
+    card.addEventListener("click", () => flipCard(card));
     game.appendChild(card);
   });
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById("timer").textContent = timeLeft;
+
+    if (timeLeft <= 0) {
+      endGame();
+    }
+  }, 1000);
 }
 
 function flipCard(card) {
   if (
+    gameOver ||
     locked ||
-    card.classList.contains("flipped") ||
-    card.classList.contains("matched")
+    card.classList.contains("matched") ||
+    card === firstCard ||
+    !card.classList.contains("hidden")
   ) {
     return;
   }
 
+  card.classList.remove("hidden");
   card.textContent = card.dataset.symbol;
-  card.classList.add("flipped");
-  card.setAttribute("aria-label", card.dataset.symbol);
 
   if (!firstCard) {
     firstCard = card;
@@ -240,52 +190,52 @@ function flipCard(card) {
   }
 
   secondCard = card;
+  locked = true;
   attempts++;
 
-  document.getElementById("moves").textContent =
-    "Antal försök: " + attempts;
-
   if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
-
     firstCard.classList.add("matched");
     secondCard.classList.add("matched");
 
-    firstCard.disabled = true;
-    secondCard.disabled = true;
-
-    matches++;
-
-    document.getElementById("info").textContent =
-      "Hittade par: " + matches + " av 8";
+    matchedPairs++;
+    document.getElementById("pairs").textContent = matchedPairs;
 
     firstCard = null;
     secondCard = null;
+    locked = false;
 
-    if (matches === 8) {
-      document.getElementById("success").style.display =
-        "block";
+    if (matchedPairs === 8) {
+      winGame();
     }
-
   } else {
-
-    locked = true;
-
     setTimeout(() => {
-      firstCard.textContent = "🎄";
-      secondCard.textContent = "🎄";
-
-      firstCard.classList.remove("flipped");
-      secondCard.classList.remove("flipped");
-
-      firstCard.setAttribute("aria-label", "Dolt kort");
-      secondCard.setAttribute("aria-label", "Dolt kort");
+      firstCard.classList.add("hidden");
+      secondCard.classList.add("hidden");
+      firstCard.textContent = "";
+      secondCard.textContent = "";
 
       firstCard = null;
       secondCard = null;
       locked = false;
-
     }, 900);
   }
+}
+
+function winGame() {
+  gameOver = true;
+  clearInterval(timerInterval);
+  document.getElementById("message").innerHTML =
+    "🎉 BRA SPELAT LEO! 🎉<br>" +
+    "Du hittade alla julens par!<br>" +
+    "Dagens bokstav är <span style='color:#ffcf69;font-size:42px'>N</span>";
+}
+
+function endGame() {
+  gameOver = true;
+  locked = true;
+  clearInterval(timerInterval);
+  document.getElementById("message").textContent =
+    "⏰ Tiden är slut! Försök igen!";
 }
 
 startGame();
