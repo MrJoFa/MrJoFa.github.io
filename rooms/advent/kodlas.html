@@ -65,19 +65,15 @@ h1 { color: #b52e35; }
 
 .riddle h2 { color: #176044; }
 
-.emoji {
-  font-size: 65px;
-  margin: 20px;
-}
-
 .question {
   font-size: 21px;
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: bold;
+  margin: 30px 5px;
 }
 
 input {
-  width: 190px;
+  width: 210px;
   padding: 13px;
   font-size: 19px;
   text-align: center;
@@ -133,7 +129,6 @@ button:hover { background: #8e2028; }
   margin-top: 20px;
   animation: appear 1s;
 }
-
 </style>
 </head>
 
@@ -160,7 +155,6 @@ Lös gåtorna för att komma vidare.
 <div class="stage active" id="stage1">
   <div class="riddle">
     <h2>🎅 Gåta 1 – Tänk efter!</h2>
-    <div class="emoji">🕰️</div>
 
     <p class="question">
       Vad är det som går och går,
@@ -181,7 +175,6 @@ Lös gåtorna för att komma vidare.
 <div class="stage" id="stage2">
   <div class="riddle">
     <h2>🎁 Gåta 2 – Vad kan det vara?</h2>
-    <div class="emoji">💇</div>
 
     <p class="question">
       Jag har massor av tänder,
@@ -203,7 +196,6 @@ Lös gåtorna för att komma vidare.
 <div class="stage" id="stage3">
   <div class="riddle">
     <h2>⭐ Gåta 3 – Sista utmaningen!</h2>
-    <div class="emoji">🧺</div>
 
     <p class="question">
       Ju mer jag torkar,
@@ -245,7 +237,7 @@ Lös gåtorna för att komma vidare.
 <script>
 
 const answers = {
-  1: ["klockan", "en klocka"],
+  1: ["klockan", "en klocka", "klocka"],
   2: ["kammen", "en kam", "kam"],
   3: ["handduken", "en handduk", "handduk"]
 };
@@ -253,13 +245,7 @@ const answers = {
 function checkAnswer(stage) {
 
   const input = document.getElementById("answer" + stage);
-
-  const answer = input.value
-    .trim()
-    .toLowerCase()
-    .replace(/å/g, "å")
-    .replace(/ä/g, "ä")
-    .replace(/ö/g, "ö");
+  const answer = input.value.trim().toLowerCase();
 
   const result = document.getElementById("result");
   const door = document.getElementById("door");
