@@ -4,118 +4,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Det hemliga kodlåset</title>
+<title>Julens kodlås</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #e8f3e9;
-  text-align: center;
-  padding: 20px;
-}
-.container {
-  background: white;
-  max-width: 460px;
-  margin: auto;
-  padding: 22px;
-  border-radius: 15px;
-  box-shadow: 0 3px 12px #ccd3df;
-}
-h1 { color: #b51f32; }
-.question {
-  background: #f0f5ef;
-  padding: 13px;
-  margin: 13px 0;
-  border-radius: 10px;
-}
-input {
-  width: 65px;
-  padding: 9px;
-  font-size: 22px;
-  text-align: center;
-  border: 2px solid #536783;
-  border-radius: 7px;
-}
-button {
-  background: #b51f32;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 13px 25px;
-  font-size: 17px;
-  cursor: pointer;
-  margin-top: 15px;
-}
-#result {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 20px;
-}
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #123b32, #23634c);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  .container {
+    max-width: 520px;
+    margin: 30px auto;
+    background: #fffaf0;
+    color: #26352e;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px #0005;
+  }
+  h1 { color: #b52e35; }
+  .riddle {
+    background: #f0eee3;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 12px;
+    text-align: left;
+  }
+  .riddle h3 { margin-top: 0; color: #176044; }
+  input {
+    width: 75px;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    border: 2px solid #aaa;
+    border-radius: 8px;
+  }
+  button {
+    background: #b52e35;
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 9px;
+    font-size: 17px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  button:hover { background: #8e2028; }
+  #result {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  .reward {
+    display: none;
+    background: #dcefdc;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    color: #14532d;
+    font-size: 22px;
+  }
 </style>
 </head>
 <body>
 
 <div class="container">
-<h1>🔐 Det hemliga kodlåset 🎄</h1>
-<p>Lös de fyra mattekluringarna.
-Varje svar ger en siffra till koden!</p>
+  <h1>🎄 Julens hemliga kodlås 🎄</h1>
+  <p>Tre kluringar måste lösas för att öppna låset!</p>
+  <p>Skriv in svaret på varje kluring. Varje svar ger en siffra till koden.</p>
 
-<div class="question">
-<b>Kluring 1 – Julhandeln</b>
-<p>Leo köper en julklapp för 85 kr.
-Han betalar med en 100-lapp.
-Hur mycket får han tillbaka?</p>
-<input type="number" id="a">
-</div>
+  <div class="riddle">
+    <h3>🎁 Kluring 1 – Räkna</h3>
+    <p>Tomten har 36 paket. Han delar dem lika mellan 6 tomtenissar.
+    Sedan får varje nisse 5 paket till.</p>
+    <p>Hur många paket får varje nisse sammanlagt?</p>
+    <input id="a1" type="number" min="0" max="9" placeholder="?">
+  </div>
 
-<div class="question">
-<b>Kluring 2 – Tidsutmaningen</b>
-<p>En film börjar kl. 18.45 och är 2 timmar och 20 minuter lång.
-Vilken minut slutar filmen på? (Svara bara med minut-talet.)</p>
-<input type="number" id="b">
-</div>
+  <div class="riddle">
+    <h3>🧝 Kluring 2 – Läs och tänk</h3>
+    <p>Tre tomtenissar ska dela på 15 julklappar.
+    Alla får lika många och ingen julklapp blir över.</p>
+    <p>Hur många julklappar får varje nisse?</p>
+    <input id="a2" type="number" min="0" max="9" placeholder="?">
+  </div>
 
-<div class="question">
-<b>Kluring 3 – Julgranen</b>
-<p>En julgran är 180 cm hög.
-Stjärnan är 15 cm hög och resten av granen är 165 cm.
-Hur många gånger högre är resten av granen än stjärnan?</p>
-<input type="number" id="c">
-</div>
+  <div class="riddle">
+    <h3>⭐ Kluring 3 – Räkna</h3>
+    <p>En julgran har 24 julgranskulor.
+    Hälften är röda. Av de röda kulorna går 11 sönder.</p>
+    <p>Hur många röda kulor finns kvar?</p>
+    <input id="a3" type="number" min="0" max="9" placeholder="?">
+  </div>
 
-<div class="question">
-<b>Kluring 4 – Julgodiset</b>
-<p>Det finns 48 kolor.
-Leo äter en fjärdedel av dem.
-Hur många kolor har han ätit?</p>
-<input type="number" id="d">
-</div>
+  <button onclick="checkAnswers()">Öppna kodlåset 🔒</button>
 
-<button onclick="checkCode()">Öppna kodlåset</button>
+  <div id="result"></div>
 
-<div id="result"></div>
+  <div class="reward" id="reward">
+    🎉 Snyggt jobbat Leo!<br><br>
+    Dagens bokstav är <strong>T</strong> ⭐
+  </div>
 </div>
 
 <script>
-function checkCode() {
+function checkAnswers() {
   const answers = [
-    document.getElementById("a").value,
-    document.getElementById("b").value,
-    document.getElementById("c").value,
-    document.getElementById("d").value
+    document.getElementById("a1").value.trim(),
+    document.getElementById("a2").value.trim(),
+    document.getElementById("a3").value.trim()
   ];
 
-  const correct = ["15","5","11","12"];
-
   const result = document.getElementById("result");
+  const reward = document.getElementById("reward");
 
-  if (answers.every((v,i) => v === correct[i])) {
-    result.textContent =
-      "🎉 Rätt kod! 1515. Snyggt jobbat Leo!";
-    result.style.color = "#16834a";
+  if (answers.some(answer => answer === "")) {
+    result.textContent = "Du måste svara på alla tre kluringar!";
+    reward.style.display = "none";
+    return;
+  }
+
+  if (answers.join("") === "151") {
+    result.textContent = "Rätt kod! Du har öppnat låset! 🔓";
+    reward.style.display = "block";
   } else {
-    result.textContent =
-      "🔒 Inte riktigt! Kontrollera dina svar och försök igen.";
-    result.style.color = "#b51f32";
+    result.textContent = "Fel kod! Stäm av dina svar och försök igen.";
+    reward.style.display = "none";
   }
 }
 </script>
