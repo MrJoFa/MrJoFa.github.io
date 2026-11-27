@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matteutmaning – Kodlåset</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #e8f3e9;
+  text-align: center;
+  padding: 20px;
+}
+.container {
+  background: white;
+  max-width: 430px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 3px 12px #ccd3df;
+}
+h1 { color: #b51f32; }
+.question {
+  background: #f0f5ef;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 10px;
+}
+input {
+  width: 65px;
+  padding: 9px;
+  font-size: 22px;
+  text-align: center;
+  border: 2px solid #536783;
+  border-radius: 7px;
+}
+button {
+  background: #b51f32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 25px;
+  font-size: 17px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+#result {
+  font-size: 21px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🔐 Det hemliga kodlåset 🎄</h1>
+<p>Lös de fyra mattekluringarna.
+Varje svar ger en siffra till koden!</p>
+
+<div class="question">
+  <p><b>Kluring 1</b></p>
+  <p>Vad är 18 ÷ 3 + 9?</p>
+  <input type="number" id="a">
+</div>
+
+<div class="question">
+  <p><b>Kluring 2</b></p>
+  <p>Vad är 7 × 6 − 37?</p>
+  <input type="number" id="b">
+</div>
+
+<div class="question">
+  <p><b>Kluring 3</b></p>
+  <p>Vad är 45 ÷ 5 − 4?</p>
+  <input type="number" id="c">
+</div>
+
+<div class="question">
+  <p><b>Kluring 4</b></p>
+  <p>Vad är 3 × 8 − 19?</p>
+  <input type="number" id="d">
+</div>
+
+<button onclick="checkCode()">Öppna kodlåset</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+function checkCode() {
+  const answers = [
+    document.getElementById("a").value,
+    document.getElementById("b").value,
+    document.getElementById("c").value,
+    document.getElementById("d").value
+  ];
+
+  const result = document.getElementById("result");
+
+  if (answers.every((v,i) =>
+      v === ["15","5","5","5"][i])) {
+    result.textContent =
+      "🎉 Rätt kod! 1515. Snyggt jobbat Leo!";
+    result.style.color = "#16834a";
+  } else {
+    result.textContent =
+      "🔒 Fel kod! Kontrollera dina uträkningar och försök igen.";
+    result.style.color = "#b51f32";
+  }
+}
+</script>
+
+</body>
+</html>
