@@ -3,92 +3,147 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Tre bildrebusar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Julens kodlås</title>
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #eaf2ff;
+  background: linear-gradient(135deg, #123b32, #23634c);
+  color: white;
   text-align: center;
-  padding: 30px;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
-
-h1 {
-  color: #23395d;
-}
-
 .container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.rebus {
-  background: white;
-  border-radius: 18px;
+  max-width: 520px;
+  margin: 30px auto;
+  background: #fffaf0;
+  color: #26352e;
   padding: 25px;
-  width: 220px;
-  box-shadow: 0 4px 12px #0002;
+  border-radius: 18px;
+  box-shadow: 0 5px 20px #0005;
 }
-
-.bilder {
-  font-size: 45px;
-  margin: 20px 0;
+h1 { color: #b52e35; }
+.riddle {
+  background: #f0eee3;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 12px;
+  text-align: left;
 }
-
-.tecken {
-  font-size: 28px;
-  font-weight: bold;
-  color: #e07827;
-}
-
-.fraga {
-  font-size: 17px;
-  color: #333;
-}
-
-input {
-  width: 50px;
-  padding: 10px;
-  font-size: 22px;
+.riddle h3 { margin-top: 0; color: #176044; }
+.picture {
+  font-size: 35px;
   text-align: center;
+  line-height: 1.8;
+}
+input {
+  width: 75px;
+  padding: 10px;
+  font-size: 20px;
+  text-align: center;
+  border: 2px solid #aaa;
+  border-radius: 8px;
+}
+button {
+  background: #b52e35;
+  color: white;
+  border: none;
+  padding: 13px 25px;
+  border-radius: 9px;
+  font-size: 17px;
+  cursor: pointer;
   margin-top: 15px;
+}
+button:hover { background: #8e2028; }
+#result {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.reward {
+  display: none;
+  background: #dcefdc;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  color: #14532d;
+  font-size: 22px;
 }
 </style>
 </head>
-
 <body>
 
-<h1>🕵️ Lös bildrebusarna!</h1>
-<p>Varje rebus bildar ett tal. Vilka tre siffror söker du?</p>
-
 <div class="container">
+<h1>🎄 Julens hemliga kodlås 🎄</h1>
+<p>Tre kluringar måste lösas för att öppna låset!</p>
+<p>Varje svar ger en siffra till koden.</p>
 
-  <div class="rebus">
-    <h2>Rebus 1</h2>
-    <div class="bilder">🐱 + 🐱</div>
-    <div class="tecken">KATT + KATT</div>
-    <p class="fraga">Hur många ben har två katter tillsammans?</p>
-    <input type="number" min="0" max="9">
-  </div>
-
-  <div class="rebus">
-    <h2>Rebus 2</h2>
-    <div class="bilder">🚲 + 🚲</div>
-    <div class="tecken">HJUL + HJUL</div>
-    <p class="fraga">Hur många hjul har två cyklar tillsammans?</p>
-    <input type="number" min="0" max="9">
-  </div>
-
-  <div class="rebus">
-    <h2>Rebus 3</h2>
-    <div class="bilder">🖐️ + 🖐️</div>
-    <div class="tecken">HAND + HAND</div>
-    <p class="fraga">Hur många fingrar har två händer tillsammans?</p>
-    <input type="number" min="0" max="9">
-  </div>
-
+<div class="riddle">
+<h3>🎁 Kluring 1 – Bildrebus</h3>
+<div class="picture">
+  ⭐ ⭐ ⭐ ⭐
+  <br>
+  ⭐ ⭐ ⭐
 </div>
+<p>Räkna alla stjärnor. Hur många är de tillsammans?</p>
+<input id="a1" type="number" placeholder="?">
+</div>
+
+<div class="riddle">
+<h3>🧝 Kluring 2 – Talrebus</h3>
+<p>Tomten har skrivit ett hemligt mattetal:</p>
+<h2 style="text-align:center;">(7 + 5) ÷ 2 = ?</h2>
+<p>Vilken siffra saknas?</p>
+<input id="a2" type="number" placeholder="?">
+</div>
+
+<div class="riddle">
+<h3>📖 Kluring 3 – Läs och tänk</h3>
+<p>Jag är ett udda tal.</p>
+<p>Jag är större än 3 men mindre än 7.</p>
+<p>Jag kommer direkt efter talet 4.</p>
+<p>Vilket tal är jag?</p>
+<input id="a3" type="number" placeholder="?">
+</div>
+
+<button onclick="checkAnswers()">Öppna kodlåset 🔒</button>
+
+<div id="result"></div>
+
+<div class="reward" id="reward">
+🎉 Snyggt jobbat Leo!<br><br>
+Dagens bokstav är <strong>T</strong> ⭐
+</div>
+</div>
+
+<script>
+function checkAnswers() {
+  const answers = [
+    document.getElementById("a1").value.trim(),
+    document.getElementById("a2").value.trim(),
+    document.getElementById("a3").value.trim()
+  ];
+
+  const result = document.getElementById("result");
+  const reward = document.getElementById("reward");
+
+  if (answers.some(answer => answer === "")) {
+    result.textContent = "Du måste svara på alla tre kluringar!";
+    reward.style.display = "none";
+    return;
+  }
+
+  if (answers.join("") === "765") {
+    result.textContent = "Rätt kod! Du har öppnat låset! 🔓";
+    reward.style.display = "block";
+  } else {
+    result.textContent = "Fel kod! Försök igen! 🎅";
+    reward.style.display = "none";
+  }
+}
+</script>
 
 </body>
 </html>
