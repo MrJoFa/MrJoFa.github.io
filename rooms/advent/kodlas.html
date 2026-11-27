@@ -3,138 +3,92 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Julens kodlås</title>
+<title>Tre bildrebusar</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #123b32, #23634c);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    min-height: 100vh;
-    box-sizing: border-box;
-  }
-  .container {
-    max-width: 520px;
-    margin: 30px auto;
-    background: #fffaf0;
-    color: #26352e;
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 5px 20px #0005;
-  }
-  h1 { color: #b52e35; }
-  .riddle {
-    background: #f0eee3;
-    padding: 15px;
-    margin: 15px 0;
-    border-radius: 12px;
-    text-align: left;
-  }
-  .riddle h3 { margin-top: 0; color: #176044; }
-  input {
-    width: 75px;
-    padding: 10px;
-    font-size: 20px;
-    text-align: center;
-    border: 2px solid #aaa;
-    border-radius: 8px;
-  }
-  button {
-    background: #b52e35;
-    color: white;
-    border: none;
-    padding: 13px 25px;
-    border-radius: 9px;
-    font-size: 17px;
-    cursor: pointer;
-    margin-top: 15px;
-  }
-  button:hover { background: #8e2028; }
-  #result {
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 20px;
-  }
-  .reward {
-    display: none;
-    background: #dcefdc;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
-    color: #14532d;
-    font-size: 22px;
-  }
+body {
+  font-family: Arial, sans-serif;
+  background: #eaf2ff;
+  text-align: center;
+  padding: 30px;
+}
+
+h1 {
+  color: #23395d;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.rebus {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  width: 220px;
+  box-shadow: 0 4px 12px #0002;
+}
+
+.bilder {
+  font-size: 45px;
+  margin: 20px 0;
+}
+
+.tecken {
+  font-size: 28px;
+  font-weight: bold;
+  color: #e07827;
+}
+
+.fraga {
+  font-size: 17px;
+  color: #333;
+}
+
+input {
+  width: 50px;
+  padding: 10px;
+  font-size: 22px;
+  text-align: center;
+  margin-top: 15px;
+}
 </style>
 </head>
+
 <body>
 
+<h1>🕵️ Lös bildrebusarna!</h1>
+<p>Varje rebus bildar ett tal. Vilka tre siffror söker du?</p>
+
 <div class="container">
-  <h1>🎄 Julens hemliga kodlås 🎄</h1>
-  <p>Tre kluringar måste lösas för att öppna låset!</p>
-  <p>Skriv in svaret på varje kluring. Varje svar ger en siffra till koden.</p>
 
-  <div class="riddle">
-    <h3>🎁 Kluring 1 – Räkna</h3>
-    <p>Tomten har 36 paket. Han delar dem lika mellan 6 tomtenissar.
-    Sedan får varje nisse 5 paket till.</p>
-    <p>Hur många paket får varje nisse sammanlagt?</p>
-    <input id="a1" type="number" min="0" max="9" placeholder="?">
+  <div class="rebus">
+    <h2>Rebus 1</h2>
+    <div class="bilder">🐱 + 🐱</div>
+    <div class="tecken">KATT + KATT</div>
+    <p class="fraga">Hur många ben har två katter tillsammans?</p>
+    <input type="number" min="0" max="9">
   </div>
 
-  <div class="riddle">
-    <h3>🧝 Kluring 2 – Läs och tänk</h3>
-    <p>Tre tomtenissar ska dela på 15 julklappar.
-    Alla får lika många och ingen julklapp blir över.</p>
-    <p>Hur många julklappar får varje nisse?</p>
-    <input id="a2" type="number" min="0" max="9" placeholder="?">
+  <div class="rebus">
+    <h2>Rebus 2</h2>
+    <div class="bilder">🚲 + 🚲</div>
+    <div class="tecken">HJUL + HJUL</div>
+    <p class="fraga">Hur många hjul har två cyklar tillsammans?</p>
+    <input type="number" min="0" max="9">
   </div>
 
-  <div class="riddle">
-    <h3>⭐ Kluring 3 – Räkna</h3>
-    <p>En julgran har 24 julgranskulor.
-    Hälften är röda. Av de röda kulorna går 11 sönder.</p>
-    <p>Hur många röda kulor finns kvar?</p>
-    <input id="a3" type="number" min="0" max="9" placeholder="?">
+  <div class="rebus">
+    <h2>Rebus 3</h2>
+    <div class="bilder">🖐️ + 🖐️</div>
+    <div class="tecken">HAND + HAND</div>
+    <p class="fraga">Hur många fingrar har två händer tillsammans?</p>
+    <input type="number" min="0" max="9">
   </div>
 
-  <button onclick="checkAnswers()">Öppna kodlåset 🔒</button>
-
-  <div id="result"></div>
-
-  <div class="reward" id="reward">
-    🎉 Snyggt jobbat Leo!<br><br>
-    Dagens bokstav är <strong>T</strong> ⭐
-  </div>
 </div>
-
-<script>
-function checkAnswers() {
-  const answers = [
-    document.getElementById("a1").value.trim(),
-    document.getElementById("a2").value.trim(),
-    document.getElementById("a3").value.trim()
-  ];
-
-  const result = document.getElementById("result");
-  const reward = document.getElementById("reward");
-
-  if (answers.some(answer => answer === "")) {
-    result.textContent = "Du måste svara på alla tre kluringar!";
-    reward.style.display = "none";
-    return;
-  }
-
-  if (answers.join("") === "151") {
-    result.textContent = "Rätt kod! Du har öppnat låset! 🔓";
-    reward.style.display = "block";
-  } else {
-    result.textContent = "Fel kod! Stäm av dina svar och försök igen.";
-    reward.style.display = "none";
-  }
-}
-</script>
 
 </body>
 </html>
